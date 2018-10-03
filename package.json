@@ -2,23 +2,27 @@
   "name": "designhome_parser",
   "version": "0.0.1",
   "description": "",
-  "main": "src/main.js",
+  "main": "src/js/main.js",
   "scripts": {
     "start": "electron .",
-    "compile": "npx babel --watch js --out-dir ./src --presets react-app/prod",
+    "compile": "npx babel --watch js --out-dir ./src/js",
     "build": "electron-packager . \"designhome_parser\" --platform=win32 --arch=ia32 --asar --overwrite --out=.\\dist --ignore=\"dist|\\js\\*|\\.idea|.*\\.md|.*\\.yml\""
   },
   "author": "Ma Tingchen",
   "license": "ISC",
   "dependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-react-app": "^3.1.2",
     "bootstrap": "^4.1.3",
     "electron": "^3.0.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2"
   },
   "devDependencies": {
-    "electron-packager": "^12.1.2"
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "electron-packager": "^12.1.2",
+    "eslint": "^5.6.1"
   }
 }
