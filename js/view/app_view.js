@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { remote } from 'electron';
 
-import { FileTree } from './js/view/file_tree';
+import { FileTree } from './js/view/file_tree/file_tree';
 
 
 const dialog = remote.dialog;
@@ -15,7 +15,7 @@ class DH_Parser extends React.Component {
         super();
 
         this.state = {
-            path: 'path'
+            path: ''
         };
     }
 
@@ -23,20 +23,20 @@ class DH_Parser extends React.Component {
         const dir_path = dialog.showOpenDialog({properties: ['openDirectory']});
         if (dir_path !== undefined && dir_path.length > 0) {
             this.setState({
-                path: dir_path
+                path: dir_path[0]
             });
         }
     }
 
-    handlePath(event, arg) {
-        this.setState({path: arg});
-    }
-
     render() {
         return (
-            <div>
-                <span>{this.state.path}</span><br />
-                <FileTree />
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-md-3 p-0 pl-1">
+                        <FileTree path={this.state.path} />
+                    </div>
+                    <div className="col bg-success">456</div>
+                </div>
             </div>
         );
     }
