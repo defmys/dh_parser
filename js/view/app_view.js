@@ -32,7 +32,7 @@ class DH_Parser extends React.Component {
         return (
             <div className="container-fluid">
                 <div className="row">
-                    <div className="col-md-3 p-0 pl-1">
+                    <div className="col-3 p-0 pl-1 text-nowrap">
                         <FileTree path={this.state.path} />
                     </div>
                     <div className="col bg-success">456</div>

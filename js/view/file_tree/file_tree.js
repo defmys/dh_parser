@@ -11,10 +11,31 @@ export class FileTree extends React.Component {
         super(props);
 
         this.state = {
-            loading: true,
+            style: FileTree.getStyle(),
             data: {}
         };
         this.onToggle = this.onToggle.bind(this);
+    }
+
+    static getStyle() {
+        const height = window.innerHeight.toString() + 'px';
+        return {
+            maxHeight: height,
+            minHeight: height,
+            overflow: 'auto'
+        };
+    }
+
+    componentDidMount() {
+        window.addEventListener("resize", this.updateDimensions.bind(this));
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateDimensions.bind(this));
+    }
+
+    updateDimensions() {
+        this.setState({style: FileTree.getStyle()});
     }
 
     componentDidUpdate(prevProps) {
@@ -57,17 +78,9 @@ export class FileTree extends React.Component {
         this.setState({ cursor: node });
     }
 
-    renderLoading() {
-        if (this.state.loading) {
-            return (<span>loading...</span>);
-        }
-        return '';
-    }
-
     render() {
         return (
-            <div>
-                {this.renderLoading()},
+            <div style={this.state.style}>
                 <Treebeard data={this.state.data} onToggle={this.onToggle} />
             </div>
         );
