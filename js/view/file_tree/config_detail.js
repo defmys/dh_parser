@@ -22,15 +22,18 @@ export class ConfigDetail extends React.Component {
         }
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps !== this.props) {
-            this.fillState();
-        }
+    componentDidMount() {
+        this.fillState();
     }
 
     handleInputChange(event) {
+        let value = event.target.value;
+        if (event.target.name === 'id') {
+            value = parseInt(value);
+        }
+
         this.setState({
-            [event.target.name]: event.target.value
+            [event.target.name]: value
         });
     }
 
