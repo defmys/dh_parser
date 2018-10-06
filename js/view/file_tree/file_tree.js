@@ -5,6 +5,7 @@ import React from 'react';
 import {Treebeard} from 'react-treebeard';
 import path from 'path'
 import {ConfigDetail} from "./config_detail";
+import {fileTreeTheme} from "./file_tree_theme";
 
 
 export class FileTree extends React.Component {
@@ -131,7 +132,7 @@ export class FileTree extends React.Component {
         return (
             <div className="row">
                 <div className="col-3 p-0 pl-1 text-nowrap" style={this.state.style}>
-                    <Treebeard data={this.state.dirList} onToggle={this.onToggle} />
+                    <Treebeard data={this.state.dirList} onToggle={this.onToggle} style={fileTreeTheme}/>
                 </div>
                 {this.renderConfigDetail()}
             </div>
