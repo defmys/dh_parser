@@ -4,6 +4,7 @@ import fs from 'fs';
 import React from 'react';
 import {Treebeard} from 'react-treebeard';
 import path from 'path'
+import {ConfigDetail} from "./config_detail";
 
 
 export class FileTree extends React.Component {
@@ -12,7 +13,8 @@ export class FileTree extends React.Component {
 
         this.state = {
             style: FileTree.getStyle(),
-            data: {}
+            dirList: {},
+            configDetail: {}
         };
         this.onToggle = this.onToggle.bind(this);
     }
@@ -42,13 +44,14 @@ export class FileTree extends React.Component {
         if (prevProps.path !== this.props.path && this.props.path && this.props.path !== '') {
             let newData = this.loadDirInfo(this.props.path, 'root');
             newData.toggled = true;
-            this.setState({data: newData});
+            this.setState({dirList: newData});
         }
     }
 
     loadDirInfo(dirPath, name) {
         let data = {
-            name: name
+            name: name,
+            path: dirPath
         };
         let children = [];
 
@@ -76,12 +79,46 @@ export class FileTree extends React.Component {
             node.toggled = toggled;
         }
         this.setState({ cursor: node });
+
+        this.openDir(node);
+    }
+
+    openDir(node) {
+        const configFile = path.resolve(node.path, 'config.json');
+        if (fs.existsSync(configFile)) {
+            let textContent = fs.readFileSync(configFile, 'utf8');
+            try {
+                let content = JSON.parse(textContent);
+                this.setState({configDetail: this.prepareConfigContent(content)});
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    }
+
+    fillWithDefault(fixedContent, content, key, defaultValue) {
+        fixedContent[key] = content[key] === undefined ? defaultValue: content[key];
+    }
+
+    prepareConfigContent(content) {
+        let fixedContent = {};
+        this.fillWithDefault(fixedContent, content, 'id', 0);
+        this.fillWithDefault(fixedContent, content, 'type', 'Material');
+        this.fillWithDefault(fixedContent, content, 'display_name', '');
+        this.fillWithDefault(fixedContent, content, 'package', '');
+
+        return fixedContent;
     }
 
     render() {
         return (
-            <div style={this.state.style}>
-                <Treebeard data={this.state.data} onToggle={this.onToggle} />
+            <div className="row">
+                <div className="col-3 p-0 pl-1 text-nowrap" style={this.state.style}>
+                    <Treebeard data={this.state.dirList} onToggle={this.onToggle} />
+                </div>
+                <div className="col bg-success">
+                    <ConfigDetail data={this.state.configDetail} />
+                </div>
             </div>
         );
     }
