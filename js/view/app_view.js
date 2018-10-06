@@ -4,6 +4,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { remote } from 'electron';
 
+import $ from 'jquery';
+import 'bootstrap';
+
 import { FileTree } from './js/view/file_tree/file_tree';
 
 
