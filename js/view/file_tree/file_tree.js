@@ -14,7 +14,8 @@ export class FileTree extends React.Component {
         this.state = {
             style: FileTree.getStyle(),
             dirList: {},
-            configDetail: {}
+            configDetail: {},
+            curPath: ''
         };
         this.onToggle = this.onToggle.bind(this);
     }
@@ -89,7 +90,10 @@ export class FileTree extends React.Component {
             let textContent = fs.readFileSync(configFile, 'utf8');
             try {
                 let content = JSON.parse(textContent);
-                this.setState({configDetail: this.prepareConfigContent(content)});
+                this.setState({
+                    configDetail: this.prepareConfigContent(content),
+                    curPath: configFile
+                });
             } catch (e) {
                 console.error(e);
             }
@@ -117,7 +121,7 @@ export class FileTree extends React.Component {
                     <Treebeard data={this.state.dirList} onToggle={this.onToggle} />
                 </div>
                 <div className="col bg-success">
-                    <ConfigDetail data={this.state.configDetail} />
+                    <ConfigDetail data={this.state.configDetail} path={this.state.curPath}/>
                 </div>
             </div>
         );
