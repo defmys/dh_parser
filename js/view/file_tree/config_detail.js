@@ -6,10 +6,10 @@ export class ConfigDetail extends React.Component {
         super(props);
 
         this.state = {};
-        this.fillState();
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
+        this.handleTypeChange = this.handleTypeChange.bind(this);
     }
 
     fillState() {
@@ -34,6 +34,12 @@ export class ConfigDetail extends React.Component {
         });
     }
 
+    handleTypeChange(event) {
+        this.setState({
+            type: event.target.text
+        })
+    }
+
     handleSave() {
         fs.writeFileSync(this.props.path, JSON.stringify(this.state, null, 2));
     }
@@ -48,7 +54,16 @@ export class ConfigDetail extends React.Component {
 
                 <div className="row">
                     <div className="col-2">Type</div>
-                    <div className="col"><input name="type" value={this.state.type || "Material"} onChange={this.handleInputChange}/></div>
+                    <div className="col">
+                        <button className="btn btn-secondary dropdown-toggle" type="button" id="typeDropDown"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {this.state.type || "Material"}
+                        </button>
+                        <div className="dropdown-menu" aria-labelledby="typeDropDown">
+                            <a className="dropdown-item" href="#" onClick={this.handleTypeChange}>Actor</a>
+                            <a className="dropdown-item" href="#" onClick={this.handleTypeChange}>Material</a>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="row">
