@@ -12,18 +12,40 @@ export class ConfigDetail extends React.Component {
         this.handleTypeChange = this.handleTypeChange.bind(this);
     }
 
-    fillState() {
-        for (let property in this.props.data) {
-            if (this.props.data.hasOwnProperty(property)) {
+    fillState(content) {
+        for (let property in content) {
+            if (content.hasOwnProperty(property)) {
                 this.setState({
-                    [property]: this.props.data[property]
+                    [property]: content[property]
                 });
             }
         }
     }
 
     componentDidMount() {
-        this.fillState();
+        let textContent = fs.readFileSync(this.props.path, 'utf8');
+        try {
+            let content = JSON.parse(textContent);
+            let fixedContent = this.prepareConfigContent(content);
+
+            this.fillState(fixedContent);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    fillWithDefault(fixedContent, content, key, defaultValue) {
+        fixedContent[key] = content[key] === undefined ? defaultValue: content[key];
+    }
+
+    prepareConfigContent(content) {
+        let fixedContent = {};
+        this.fillWithDefault(fixedContent, content, 'id', 0);
+        this.fillWithDefault(fixedContent, content, 'type', 'Material');
+        this.fillWithDefault(fixedContent, content, 'display_name', '');
+        this.fillWithDefault(fixedContent, content, 'package', '');
+
+        return fixedContent;
     }
 
     handleInputChange(event) {

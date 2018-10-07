@@ -15,7 +15,6 @@ export class FileTree extends React.Component {
         this.state = {
             style: FileTree.getStyle(),
             dirList: {},
-            configDetail: {},
             curPath: '',
             configurable: false
         };
@@ -90,39 +89,19 @@ export class FileTree extends React.Component {
     openDir(node) {
         const configFile = path.resolve(node.path, 'config.json');
         if (fs.existsSync(configFile)) {
-            let textContent = fs.readFileSync(configFile, 'utf8');
-            try {
-                let content = JSON.parse(textContent);
-                this.setState({
-                    configDetail: this.prepareConfigContent(content),
-                    curPath: configFile
-                });
-            } catch (e) {
-                console.error(e);
-            }
+            this.setState({
+                curPath: configFile
+            });
+
             return true;
         }
         return false;
     }
 
-    fillWithDefault(fixedContent, content, key, defaultValue) {
-        fixedContent[key] = content[key] === undefined ? defaultValue: content[key];
-    }
-
-    prepareConfigContent(content) {
-        let fixedContent = {};
-        this.fillWithDefault(fixedContent, content, 'id', 0);
-        this.fillWithDefault(fixedContent, content, 'type', 'Material');
-        this.fillWithDefault(fixedContent, content, 'display_name', '');
-        this.fillWithDefault(fixedContent, content, 'package', '');
-
-        return fixedContent;
-    }
-
     renderConfigDetail() {
         let ret = '';
         if (this.state.configurable) {
-            ret = <ConfigDetail data={this.state.configDetail} path={this.state.curPath}/>;
+            ret = <ConfigDetail path={this.state.curPath}/>;
         }
         return <div className="col bg-light">{ret}</div>;
     }
