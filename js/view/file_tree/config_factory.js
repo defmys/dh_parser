@@ -11,5 +11,5 @@ export function createConfig(content) {
         }
     }
 
-    return MaterialConfig();
+    return new MaterialConfig();
 }
