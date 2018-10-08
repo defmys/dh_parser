@@ -26,16 +26,18 @@ export class ConfigDetail extends React.Component {
     }
 
     componentDidMount() {
+        let content = {};
         let textContent = fs.readFileSync(this.props.path, 'utf8');
         try {
-            let content = JSON.parse(textContent);
-            this.concreteConfig = createConfig(content);
-            let fixedContent = this.concreteConfig.prepareConfigContent(content);
-
-            this.fillState(fixedContent);
+            content = JSON.parse(textContent);
         } catch (e) {
-            console.error(e);
+            content = {};
         }
+
+        this.concreteConfig = createConfig(content);
+        let fixedContent = this.concreteConfig.prepareConfigContent(content);
+
+        this.fillState(fixedContent);
     }
 
     handleInputChange(event) {
