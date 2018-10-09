@@ -23,17 +23,23 @@ class DH_Parser extends React.Component {
             path: '',
             fileTreeStyle: {}
         };
+
+        this.openFolder = this.openFolder.bind(this);
     }
 
-    componentDidMount() {
+    openFolder() {
         const dir_path = dialog.showOpenDialog({properties: ['openDirectory']});
         if (dir_path !== undefined && dir_path.length > 0) {
             this.setState({
                 path: dir_path[0]
             });
         }
-        window.addEventListener("resize", this.updateDimensions.bind(this));
+    }
 
+    componentDidMount() {
+        this.openFolder();
+
+        window.addEventListener("resize", this.updateDimensions.bind(this));
         this.updateDimensions();
     }
 
@@ -62,7 +68,8 @@ class DH_Parser extends React.Component {
                         <button className="btn btn-outline-secondary"
                                 data-toggle="tooltip"
                                 data-placement="bottom"
-                                title="打开目录">
+                                title="打开目录"
+                                onClick={this.openFolder}>
                             <FontAwesomeIcon icon={faFolderOpen} />
                         </button>
                     </div>
