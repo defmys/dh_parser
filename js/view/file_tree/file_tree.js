@@ -13,33 +13,11 @@ export class FileTree extends React.Component {
         super(props);
 
         this.state = {
-            style: FileTree.getStyle(),
             dirList: {},
             curPath: '',
             configurable: false
         };
         this.onToggle = this.onToggle.bind(this);
-    }
-
-    static getStyle() {
-        const height = window.innerHeight.toString() + 'px';
-        return {
-            maxHeight: height,
-            minHeight: height,
-            overflow: 'auto'
-        };
-    }
-
-    componentDidMount() {
-        window.addEventListener("resize", this.updateDimensions.bind(this));
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener("resize", this.updateDimensions.bind(this));
-    }
-
-    updateDimensions() {
-        this.setState({style: FileTree.getStyle()});
     }
 
     componentDidUpdate(prevProps) {
@@ -103,14 +81,13 @@ export class FileTree extends React.Component {
         if (this.state.configurable) {
             ret = <ConfigDetail path={this.state.curPath}/>;
         }
-        return <div className="col bg-light">{ret}</div>;
+        return <div className="col">{ret}</div>;
     }
-
 
     render() {
         return (
             <div className="row">
-                <div className="col-3 p-0 pl-1 text-nowrap" style={this.state.style}>
+                <div className="col-3 p-0 pl-1 text-nowrap" style={this.props.fileTreeStyle}>
                     <Treebeard data={this.state.dirList} onToggle={this.onToggle} style={fileTreeTheme}/>
                 </div>
                 {this.renderConfigDetail()}
