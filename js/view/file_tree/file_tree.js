@@ -91,7 +91,7 @@ export class FileTree extends React.Component {
         let ret = '';
         if (fs.existsSync(this.state.curPath)) {
             ret = <ConfigDetail path={this.state.curPath}/>;
-        } else {
+        } else if (this.state.cursor) {
             ret = <button className="btn btn-primary" onClick={this.createConfig}>创建配置文件</button>;
         }
         return <div className="col">{ret}</div>;
