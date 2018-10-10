@@ -10,6 +10,7 @@ import 'bootstrap';
 
 import { FileTree } from './js/view/file_tree/file_tree';
 import {faFolderOpen} from "@fortawesome/free-regular-svg-icons";
+import {faFolderPlus} from "@fortawesome/free-solid-svg-icons";
 
 
 const dialog = remote.dialog;
@@ -25,6 +26,9 @@ class DH_Parser extends React.Component {
         };
 
         this.openFolder = this.openFolder.bind(this);
+
+        this.fileTree = null;
+        this.createConfig = this.createConfig.bind(this);
     }
 
     openFolder() {
@@ -60,21 +64,39 @@ class DH_Parser extends React.Component {
         this.setState({fileTreeStyle: newFileTreeStyle});
     }
 
+    createConfig() {
+        if (this.fileTree) {
+            this.fileTree.createConfig();
+        }
+    }
+
+    renderMenuBar() {
+        return <div id="menuBar" className="row border-secondary border-bottom">
+            <div className="col p-1">
+                <button className="btn btn-outline-secondary"
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        title="打开目录"
+                        onClick={this.openFolder}>
+                    <FontAwesomeIcon icon={faFolderOpen}/>
+                </button>
+
+                <button className="btn btn-outline-secondary"
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        title="新建配置"
+                        onClick={this.createConfig}>
+                    <FontAwesomeIcon icon={faFolderPlus}/>
+                </button>
+            </div>
+        </div>
+    }
+
     render() {
         return (
             <div className="container-fluid bg-light">
-                <div id="menuBar" className="row border-secondary border-bottom">
-                    <div className="col text-right p-1">
-                        <button className="btn btn-outline-secondary"
-                                data-toggle="tooltip"
-                                data-placement="bottom"
-                                title="打开目录"
-                                onClick={this.openFolder}>
-                            <FontAwesomeIcon icon={faFolderOpen} />
-                        </button>
-                    </div>
-                </div>
-                <FileTree path={this.state.path} fileTreeStyle={this.state.fileTreeStyle}/>
+                {this.renderMenuBar()}
+                <FileTree path={this.state.path} fileTreeStyle={this.state.fileTreeStyle} ref={(fileTree) => {this.fileTree = fileTree;}}/>
             </div>
         );
     }

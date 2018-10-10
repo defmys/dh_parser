@@ -16,8 +16,7 @@ export class FileTree extends React.Component {
         this.state = {
             cursor: null,
             dirList: {},
-            curPath: '',
-            configurable: false
+            curPath: ''
         };
         this.onToggle = this.onToggle.bind(this);
         this.createConfig = this.createConfig.bind(this);
@@ -64,23 +63,21 @@ export class FileTree extends React.Component {
         }
         this.setState({ cursor: node });
 
-        const hasConfig = this.openDir(node);
-        this.setState({configurable: hasConfig});
+        const configPath = path.resolve(node.path, 'config.json');
+        this.openDir(configPath);
     }
 
-    openDir(node) {
-        const configFile = path.resolve(node.path, 'config.json');
-
+    openDir(configPath) {
         this.setState({
-            curPath: configFile
+            curPath: configPath
         });
-
-        return fs.existsSync(configFile);
     }
 
     createConfig() {
-        fs.writeFileSync(this.state.curPath, '');
-        this.openDir({path: this.state.curPath});
+        if (!fs.existsSync(this.state.curPath)) {
+            fs.writeFileSync(this.state.curPath, '');
+            this.openDir(this.state.curPath);
+        }
     }
 
     renderConfigDetail() {
