@@ -2,10 +2,11 @@
 
 import fs from 'fs';
 import React from 'react';
-import {Treebeard} from 'react-treebeard';
+import {Treebeard, decorators } from 'react-treebeard';
 import path from 'path'
 import {ConfigDetail} from "./config_detail";
 import {fileTreeTheme} from "./file_tree_theme";
+
 
 
 export class FileTree extends React.Component {
@@ -13,12 +14,14 @@ export class FileTree extends React.Component {
         super(props);
 
         this.state = {
+            cursor: null,
             dirList: {},
             curPath: '',
             configurable: false
         };
         this.onToggle = this.onToggle.bind(this);
         this.createConfig = this.createConfig.bind(this);
+        this.nodeHeaderStyle = this.nodeHeaderStyle.bind(this);
     }
 
     componentDidUpdate(prevProps) {
@@ -90,11 +93,22 @@ export class FileTree extends React.Component {
         return <div className="col">{ret}</div>;
     }
 
+    nodeHeaderStyle(props) {
+        const activeColor = this.state.cursor && this.state.cursor.path === props.node.path ? '#428BCA' : '#9DA5AB';
+        return (
+            <div style={props.style.base}>
+                <div id={props.node.path} style={{'color': activeColor}}>
+                    <span style={{'cursor': 'pointer'}}>{props.node.name}</span>
+                </div>
+            </div>
+        );
+    }
+
     render() {
         return (
             <div className="row">
                 <div className="col-3 p-0 pl-1 text-nowrap" style={this.props.fileTreeStyle}>
-                    <Treebeard data={this.state.dirList} onToggle={this.onToggle} style={fileTreeTheme}/>
+                    <Treebeard data={this.state.dirList} onToggle={this.onToggle} style={fileTreeTheme} decorators={{...decorators, Header: this.nodeHeaderStyle}}/>
                 </div>
                 {this.renderConfigDetail()}
             </div>
