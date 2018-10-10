@@ -27,7 +27,7 @@ class DH_Parser extends React.Component {
 
         this.openFolder = this.openFolder.bind(this);
 
-        this.fileTree = null;
+        this.fileTree = React.createRef();
         this.createConfig = this.createConfig.bind(this);
         this.removeConfig = this.removeConfig.bind(this);
     }
@@ -66,14 +66,14 @@ class DH_Parser extends React.Component {
     }
 
     createConfig() {
-        if (this.fileTree) {
-            this.fileTree.createConfig();
+        if (this.fileTree.current) {
+            this.fileTree.current.createConfig();
         }
     }
 
     removeConfig() {
-        if (this.fileTree) {
-            this.fileTree.removeConfig();
+        if (this.fileTree.current) {
+            this.fileTree.current.removeConfig();
         }
     }
 
@@ -112,7 +112,7 @@ class DH_Parser extends React.Component {
         return (
             <div className="container-fluid bg-light">
                 {this.renderMenuBar()}
-                <FileTree path={this.state.path} fileTreeStyle={this.state.fileTreeStyle} ref={(fileTree) => {this.fileTree = fileTree;}}/>
+                <FileTree path={this.state.path} fileTreeStyle={this.state.fileTreeStyle} ref={this.fileTree}/>
             </div>
         );
     }
