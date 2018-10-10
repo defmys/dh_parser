@@ -102,7 +102,7 @@ export class FileTree extends React.Component {
         return (
             <div style={props.style.base}>
                 <div id={props.node.path} style={{'color': activeColor}}>
-                    <span style={{'cursor': 'pointer'}}>{props.node.name}</span>
+                    {props.node.name}
                 </div>
             </div>
         );

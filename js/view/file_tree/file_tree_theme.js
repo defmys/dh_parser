@@ -7,7 +7,8 @@ export const fileTreeTheme = {
             padding: 0,
             color: '#9DA5AB',
             fontFamily: 'lucida grande ,tahoma,verdana,arial,sans-serif',
-            fontSize: '14px'
+            fontSize: '14px',
+            cursor: 'pointer'
         },
         node: {
             base: {
