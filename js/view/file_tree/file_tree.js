@@ -80,6 +80,13 @@ export class FileTree extends React.Component {
         }
     }
 
+    removeConfig() {
+        if (fs.existsSync(this.state.curPath)) {
+            fs.unlinkSync(this.state.curPath);
+            this.openDir(this.state.curPath);
+        }
+    }
+
     renderConfigDetail() {
         let ret = '';
         if (fs.existsSync(this.state.curPath)) {

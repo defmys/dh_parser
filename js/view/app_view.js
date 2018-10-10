@@ -10,7 +10,7 @@ import 'bootstrap';
 
 import { FileTree } from './js/view/file_tree/file_tree';
 import {faFolderOpen} from "@fortawesome/free-regular-svg-icons";
-import {faFolderPlus} from "@fortawesome/free-solid-svg-icons";
+import {faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
 
 
 const dialog = remote.dialog;
@@ -29,6 +29,7 @@ class DH_Parser extends React.Component {
 
         this.fileTree = null;
         this.createConfig = this.createConfig.bind(this);
+        this.removeConfig = this.removeConfig.bind(this);
     }
 
     openFolder() {
@@ -70,10 +71,17 @@ class DH_Parser extends React.Component {
         }
     }
 
+    removeConfig() {
+        if (this.fileTree) {
+            this.fileTree.removeConfig();
+        }
+    }
+
     renderMenuBar() {
+        const btnClass = "btn btn-outline-secondary mr-1";
         return <div id="menuBar" className="row border-secondary border-bottom">
             <div className="col p-1">
-                <button className="btn btn-outline-secondary"
+                <button className={btnClass}
                         data-toggle="tooltip"
                         data-placement="bottom"
                         title="打开目录"
@@ -81,12 +89,20 @@ class DH_Parser extends React.Component {
                     <FontAwesomeIcon icon={faFolderOpen}/>
                 </button>
 
-                <button className="btn btn-outline-secondary"
+                <button className={btnClass}
                         data-toggle="tooltip"
                         data-placement="bottom"
                         title="新建配置"
                         onClick={this.createConfig}>
-                    <FontAwesomeIcon icon={faFolderPlus}/>
+                    <FontAwesomeIcon icon={faPlus}/>
+                </button>
+
+                <button className={btnClass}
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        title="删除配置"
+                        onClick={this.removeConfig}>
+                    <FontAwesomeIcon icon={faMinus}/>
                 </button>
             </div>
         </div>
