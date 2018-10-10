@@ -25,7 +25,7 @@ export class ConfigDetail extends React.Component {
         }
     }
 
-    componentDidMount() {
+    initContent() {
         let content = {};
         let textContent = fs.readFileSync(this.props.path, 'utf8');
         try {
@@ -38,6 +38,16 @@ export class ConfigDetail extends React.Component {
         let fixedContent = this.concreteConfig.prepareConfigContent(content);
 
         this.fillState(fixedContent);
+    }
+
+    componentDidMount() {
+        this.initContent();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps !== this.props) {
+            this.initContent();
+        }
     }
 
     handleInputChange(event) {

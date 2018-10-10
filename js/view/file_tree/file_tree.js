@@ -18,6 +18,7 @@ export class FileTree extends React.Component {
             configurable: false
         };
         this.onToggle = this.onToggle.bind(this);
+        this.createConfig = this.createConfig.bind(this);
     }
 
     componentDidUpdate(prevProps) {
@@ -66,20 +67,25 @@ export class FileTree extends React.Component {
 
     openDir(node) {
         const configFile = path.resolve(node.path, 'config.json');
-        if (fs.existsSync(configFile)) {
-            this.setState({
-                curPath: configFile
-            });
 
-            return true;
-        }
-        return false;
+        this.setState({
+            curPath: configFile
+        });
+
+        return fs.existsSync(configFile);
+    }
+
+    createConfig() {
+        fs.writeFileSync(this.state.curPath, '');
+        this.openDir({path: this.state.curPath});
     }
 
     renderConfigDetail() {
         let ret = '';
-        if (this.state.configurable) {
+        if (fs.existsSync(this.state.curPath)) {
             ret = <ConfigDetail path={this.state.curPath}/>;
+        } else {
+            ret = <button className="btn btn-primary" onClick={this.createConfig}>创建配置文件</button>;
         }
         return <div className="col">{ret}</div>;
     }
