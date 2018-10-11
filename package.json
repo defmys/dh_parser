@@ -4,9 +4,8 @@
   "description": "",
   "main": "src/js/main.js",
   "scripts": {
-    "start": "electron .",
-    "compile": "npx babel --watch js --out-dir ./src/js",
-    "build": "electron-packager . \"designhome_parser\" --platform=win32 --arch=ia32 --asar --overwrite --out=.\\dist --ignore=\"\\dist|\\js\\*|\\.idea|.*\\.md|.*\\.yml\""
+    "start": "npx babel js --out-dir ./src/js && electron .",
+    "build": "npx babel js --out-dir ./src/js && electron-packager . \"designhome_parser\" --platform=win32 --arch=ia32 --asar --overwrite --out=.\\dist --ignore=\"\\dist|\\js\\*|\\.idea|.*\\.md|.*\\.yml\""
   },
   "author": "Ma Tingchen",
   "license": "ISC",
