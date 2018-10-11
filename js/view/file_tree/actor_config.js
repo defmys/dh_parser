@@ -11,6 +11,7 @@ export class ActorConfig extends BaseConfig {
         this.handleAddSlot = this.handleAddSlot.bind(this);
         this.handleSlotIndexChange = this.handleSlotIndexChange.bind(this);
         this.handleSlotValueChange = this.handleSlotValueChange.bind(this);
+        this.handleSlotDisplayNameChange = this.handleSlotDisplayNameChange.bind(this);
         this.handleRemoveSlot = this.handleRemoveSlot.bind(this);
     }
 
@@ -32,7 +33,6 @@ export class ActorConfig extends BaseConfig {
             }
         }
 
-        console.log(fixedContent);
         return fixedContent;
     }
 
@@ -87,6 +87,16 @@ export class ActorConfig extends BaseConfig {
         }
     }
 
+    handleSlotDisplayNameChange(event, idx) {
+        const value = event.target.value;
+        let slots = this.state.slots;
+        if (slots[idx]) {
+            slots[idx].display_name = event.target.value;
+
+            this.setState({slots: slots});
+        }
+    }
+
     handleRemoveSlot(idx) {
         let slots = this.state.slots;
         delete slots[idx];
@@ -96,29 +106,39 @@ export class ActorConfig extends BaseConfig {
     renderSlotItems() {
         let slotsBuffer = [];
         for (let index in this.state.slots) {
-            const idxName = `index_${index.toString()}`;
-            const valueName = `value_${index.toString()}`;
-            const slot = this.state.slots[index];
-            slotsBuffer.push(
-                <div className="row" key={index}>
-                    <input type="number"
-                           className="col-2 text-center"
-                           name={idxName}
-                           value={slot.index}
-                           onChange={(event) => this.handleSlotIndexChange(event, index)}
-                    />
-                    <input type="number"
-                           className="col"
-                           name={valueName}
-                           value={slot.value}
-                           onChange={(event) => this.handleSlotValueChange(event, index)}
-                    />
+            if (this.state.slots.hasOwnProperty(index)) {
+                const idxName = `index_${index.toString()}`;
+                const valueName = `value_${index.toString()}`;
+                const displayName = `display_${index.toString()}`;
+                const slot = this.state.slots[index];
+                slotsBuffer.push(
+                    <div className="row" key={index}>
+                        <input type="number"
+                               className="col-2 text-center"
+                               name={idxName}
+                               value={slot.index}
+                               onChange={(event) => this.handleSlotIndexChange(event, index)}
+                        />
+                        <input className="col"
+                               name={displayName}
+                               value={slot.display_name}
+                               onChange={(event) => this.handleSlotDisplayNameChange(event, index)}
+                        />
+                        <input type="number"
+                               className="col"
+                               name={valueName}
+                               value={slot.value}
+                               onChange={(event) => this.handleSlotValueChange(event, index)}
+                        />
 
-                    <div className="col-1">
-                        <button className="btn btn-outline-danger ml-1 mr-1" onClick={() => this.handleRemoveSlot(index)}><FontAwesomeIcon icon={faMinus}/></button>
+                        <div className="col-1">
+                            <button className="btn btn-outline-danger ml-1 mr-1"
+                                    onClick={() => this.handleRemoveSlot(index)}><FontAwesomeIcon icon={faMinus}/>
+                            </button>
+                        </div>
                     </div>
-                </div>
-            );
+                );
+            }
         }
 
         return slotsBuffer;
@@ -134,7 +154,7 @@ export class ActorConfig extends BaseConfig {
                 {this.renderSlotItems()}
 
                 <div className="row m-1 mt-2">
-                    <div className="col text-center">
+                    <div className="col ml-1">
                         <button className="btn btn-outline-primary ml-1 mr-1" onClick={this.handleAddSlot}><FontAwesomeIcon icon={faPlus}/></button>
                     </div>
                     <div className="col"> </div>
