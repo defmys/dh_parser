@@ -9,42 +9,96 @@ export class ActorConfig extends BaseConfig {
         super(props);
 
         this.handleAddSlot = this.handleAddSlot.bind(this);
+        this.handleSlotIndexChange = this.handleSlotIndexChange.bind(this);
+        this.handleSlotValueChange = this.handleSlotValueChange.bind(this);
     }
 
     prepareConfigContent(content) {
         let fixedContent = super.prepareConfigContent(content);
 
-        BaseConfig.fillWithDefault(fixedContent, content, 'slots', []);
+        BaseConfig.fillWithDefault(fixedContent, content, 'slots', {});
 
         return fixedContent;
     }
 
     content() {
         let content = super.content();
-        content.slots = this.state.slots;
+        let slots = [];
+
+        for (let idx in this.state.slots) {
+            if (this.state.slots.hasOwnProperty(idx)) {
+                slots.push(this.state.slots[idx]);
+            }
+        }
+        content.slots = slots;
+
         return content;
     }
 
     handleAddSlot() {
         let slots = this.state.slots;
-        slots.push({});
+
+        let index = 0;
+        while (slots[index]) {
+            index++;
+        }
+
+        slots[index] = {
+            index: index,
+            display_name: '',
+            value: 0
+        };
+
         this.setState({slots: slots});
     }
 
+    handleSlotIndexChange(event, idx) {
+        const value = parseInt(event.target.value);
+        let slots = this.state.slots;
+        if (slots[idx]) {
+            slots[idx].index = parseInt(event.target.value);
+
+            this.setState({slots: slots});
+        }
+    }
+
+    handleSlotValueChange(event, idx) {
+        const value = parseInt(event.target.value);
+        let slots = this.state.slots;
+        if (slots[idx]) {
+            slots[idx].value = parseInt(event.target.value);
+
+            this.setState({slots: slots});
+        }
+    }
+
     renderSlotItems() {
-        let slots = [];
-        let counter = 0;
-        for (let slot in this.state.slots) {
-            slots.push(
-                <div className="row" key={counter}>
-                    <div className="col-2 text-center"><input type="number" /></div>
-                    <div className="col"><input type="number" /></div>
+        let slotsBuffer = [];
+        for (let index in this.state.slots) {
+            const idxName = `index_${index.toString()}`;
+            const valueName = `value_${index.toString()}`;
+            const slot = this.state.slots[index];
+            slotsBuffer.push(
+                <div className="row" key={index}>
+                    <div className="col-2 text-center">
+                        <input type="number"
+                               name={idxName}
+                               value={slot.index}
+                               onChange={(event) => this.handleSlotIndexChange(event, index)}
+                        />
+                    </div>
+                    <div className="col">
+                        <input type="number"
+                               name={valueName}
+                               value={slot.value}
+                               onChange={(event) => this.handleSlotValueChange(event, index)}
+                        />
+                    </div>
                 </div>
             );
-            counter++;
         }
 
-        return slots;
+        return slotsBuffer;
     }
 
     renderSlots() {
