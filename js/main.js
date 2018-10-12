@@ -5,7 +5,7 @@ import { app, BrowserWindow } from 'electron';
 let win = null;
 
 function createWindow () {
-    win = new BrowserWindow({ width: 1080, height: 600 });
+    win = new BrowserWindow({ width: 1300, height: 800 });
     win.loadFile('src/index.html');
     // win.webContents.openDevTools();
 

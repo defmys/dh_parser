@@ -4,6 +4,11 @@ import {faPlus, faMinus} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 
+const materialBtnStyle = {
+    fontSize: "12px"
+};
+
+
 export class ActorConfig extends BaseConfig {
     constructor(props) {
         super(props);
@@ -15,6 +20,8 @@ export class ActorConfig extends BaseConfig {
         this.handleMaterialChange = this.handleMaterialChange.bind(this);
         this.handleAddMaterial = this.handleAddMaterial.bind(this);
         this.handleRemoveMaterial = this.handleRemoveMaterial.bind(this);
+        this.handleHighLight = this.handleHighLight.bind(this);
+        this.handleRemoveHighLight = this.handleRemoveHighLight.bind(this);
     }
 
     prepareConfigContent(content) {
@@ -120,6 +127,16 @@ export class ActorConfig extends BaseConfig {
         this.setState({slots: slots});
     }
 
+    handleHighLight(idText) {
+        let element = document.getElementById(idText);
+        element.classList.add("bg-warning");
+    };
+
+    handleRemoveHighLight(idText) {
+        let element = document.getElementById(idText);
+        element.classList.remove("bg-warning");
+    };
+
     renderMaterial(slotIndex) {
         let buffer = [];
 
@@ -129,13 +146,15 @@ export class ActorConfig extends BaseConfig {
             if (material.hasOwnProperty(idx)) {
                 const materialID = parseInt(material[idx]);
                 const key = `material_${idx.toString()}`;
-                buffer.push(<div className="row" key={key}>
-                    <div className="col">
+                buffer.push(<div id={key} key={key}>
                         <input type="number" value={materialID} onChange={(event) => this.handleMaterialChange(event, slotIndex, idx)}/>
-                    </div>
-                    <div className="col-1">
-                        <button className="btn btn-outline-danger ml-1 mr-1" onClick={() => this.handleRemoveMaterial(slotIndex, idx)}><FontAwesomeIcon icon={faMinus}/></button>
-                    </div>
+                        <button className="btn btn-sm btn-outline-danger ml-1 mr-1 mt-0 mb-1"
+                                style={materialBtnStyle}
+                                onClick={() => this.handleRemoveMaterial(slotIndex, idx)}
+                                onMouseEnter={() => this.handleHighLight(key)}
+                                onMouseLeave={() => this.handleRemoveHighLight(key)}>
+                            <FontAwesomeIcon icon={faMinus}/>
+                        </button>
                 </div>);
             }
         }
@@ -149,16 +168,22 @@ export class ActorConfig extends BaseConfig {
             if (this.state.slots.hasOwnProperty(index)) {
                 const idxName = `index_${index.toString()}`;
                 const displayName = `display_${index.toString()}`;
+                const tableID = `slotTable_${index.toString()}`;
                 const slot = this.state.slots[index];
                 slotsBuffer.push(
-                    <table className="table" key={index}>
+                    <table className="table text-center" id={tableID} key={index} style={{borderRadius: '10px'}}>
                         <thead>
-                            <tr className="text-center">
+                            <tr>
                                 <th scope="col-2">ID</th>
                                 <th scope="col">Display Name</th>
-                                <th scope="col">Material ID <button className="btn btn-outline-primary ml-1 mr-1" onClick={() => this.handleAddMaterial(index)}><FontAwesomeIcon icon={faPlus}/></button></th>
+                                <th scope="col">Material ID <button className="btn btn-sm btn-outline-primary  ml-1 mr-1 mt-0 mb-1" style={materialBtnStyle} onClick={() => this.handleAddMaterial(index)}><FontAwesomeIcon icon={faPlus}/></button></th>
                                 <th scope="col-1">
-                                    <button className="btn btn-outline-danger ml-1 mr-1" onClick={() => this.handleRemoveSlot(index)}><FontAwesomeIcon icon={faMinus}/></button>
+                                    <button className="btn btn-outline-danger ml-1 mr-1"
+                                            onClick={() => this.handleRemoveSlot(index)}
+                                            onMouseEnter={() => this.handleHighLight(tableID)}
+                                            onMouseLeave={() => this.handleRemoveHighLight(tableID)}>
+                                        <FontAwesomeIcon icon={faMinus}/>
+                                    </button>
                                 </th>
                             </tr>
                         </thead>
@@ -167,16 +192,17 @@ export class ActorConfig extends BaseConfig {
                             <tr>
                                 <td>
                                     <input type="number"
-                                       className="text-center"
-                                       name={idxName}
-                                       value={slot.index}
-                                       onChange={(event) => this.handleSlotIndexChange(event, index)}
+                                           className="text-center"
+                                           name={idxName}
+                                           value={slot.index}
+                                           onChange={(event) => this.handleSlotIndexChange(event, index)}
                                     />
                                 </td>
                                 <td>
                                     <input name={displayName}
-                                       value={slot.display_name}
-                                       onChange={(event) => this.handleSlotDisplayNameChange(event, index)}
+                                           className="text-center"
+                                           value={slot.display_name}
+                                           onChange={(event) => this.handleSlotDisplayNameChange(event, index)}
                                     />
                                 </td>
 
@@ -202,11 +228,12 @@ export class ActorConfig extends BaseConfig {
 
                 {this.renderSlotItems()}
 
-                <div className="row m-1 mt-2">
-                    <div className="col ml-1">
-                        <button className="btn btn-outline-primary ml-1 mr-1" onClick={this.handleAddSlot}><FontAwesomeIcon icon={faPlus}/></button>
+                <div className="row mt-2 mb-2">
+                    <div className="col-1"> </div>
+                    <div className="col">
+                        <button className="btn btn-block btn-outline-primary" onClick={this.handleAddSlot}><FontAwesomeIcon icon={faPlus}/></button>
                     </div>
-                    <div className="col"> </div>
+                    <div className="col-1"> </div>
                 </div>
             </div>
         </div>;
