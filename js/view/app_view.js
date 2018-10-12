@@ -36,7 +36,7 @@ class DH_Parser extends React.Component {
     }
 
     openFolder() {
-        const dir_path = dialog.showOpenDialog({properties: ['openDirectory']});
+        const dir_path = dialog.showOpenDialog(remote.getCurrentWindow(), {properties: ['openDirectory']});
         if (dir_path !== undefined && dir_path.length > 0) {
             this.setState({
                 path: dir_path[0]
@@ -50,6 +50,13 @@ class DH_Parser extends React.Component {
             const configDetail = fileTree.configDetailRef.current;
             if (configDetail) {
                 configDetail.save();
+
+                dialog.showMessageBox(
+                    remote.getCurrentWindow(),
+                    {
+                        type: "info",
+                        message: "保存成功"
+                    });
             }
         }
     }
