@@ -1,6 +1,6 @@
 import React from "react";
 import {BaseConfig} from "./base_config";
-import {faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
+import {faPlus, faMinus} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 
@@ -112,31 +112,46 @@ export class ActorConfig extends BaseConfig {
                 const displayName = `display_${index.toString()}`;
                 const slot = this.state.slots[index];
                 slotsBuffer.push(
-                    <div className="row" key={index}>
-                        <input type="number"
-                               className="col-2 text-center"
-                               name={idxName}
-                               value={slot.index}
-                               onChange={(event) => this.handleSlotIndexChange(event, index)}
-                        />
-                        <input className="col"
-                               name={displayName}
-                               value={slot.display_name}
-                               onChange={(event) => this.handleSlotDisplayNameChange(event, index)}
-                        />
-                        <input type="number"
-                               className="col"
-                               name={valueName}
-                               value={slot.value}
-                               onChange={(event) => this.handleSlotValueChange(event, index)}
-                        />
+                    <table className="table" key={index}>
+                        <thead>
+                            <tr className="text-center">
+                                <th scope="col-2">ID</th>
+                                <th scope="col">Display Name</th>
+                                <th scope="col">Material ID</th>
+                                <th scope="col-1">
+                                    <button className="btn btn-outline-danger ml-1 mr-1" onClick={() => this.handleRemoveSlot(index)}><FontAwesomeIcon icon={faMinus}/></button>
+                                </th>
+                            </tr>
+                        </thead>
 
-                        <div className="col-1">
-                            <button className="btn btn-outline-danger ml-1 mr-1"
-                                    onClick={() => this.handleRemoveSlot(index)}><FontAwesomeIcon icon={faMinus}/>
-                            </button>
-                        </div>
-                    </div>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input type="number"
+                                       className="text-center"
+                                       name={idxName}
+                                       value={slot.index}
+                                       onChange={(event) => this.handleSlotIndexChange(event, index)}
+                                    />
+                                </td>
+                                <td>
+                                    <input className="col"
+                                       name={displayName}
+                                       value={slot.display_name}
+                                       onChange={(event) => this.handleSlotDisplayNameChange(event, index)}
+                                    />
+                                </td>
+                                <td>
+                                    <input type="number"
+                                       className="col"
+                                       name={valueName}
+                                       value={slot.value}
+                                       onChange={(event) => this.handleSlotValueChange(event, index)}
+                                    />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 );
             }
         }
