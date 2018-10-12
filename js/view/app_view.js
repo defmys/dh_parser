@@ -27,6 +27,8 @@ class DH_Parser extends React.Component {
 
         this.openFolder = this.openFolder.bind(this);
 
+        this.handleHotKeySave = this.handleHotKeySave.bind(this);
+
         this.fileTree = React.createRef();
         this.createConfig = this.createConfig.bind(this);
         this.removeConfig = this.removeConfig.bind(this);
@@ -57,10 +59,13 @@ class DH_Parser extends React.Component {
 
         window.addEventListener("resize", this.updateDimensions.bind(this));
         this.updateDimensions();
+
+        window.addEventListener('keyup', this.handleHotKeySave, true)
     }
 
     componentWillUnmount() {
         window.removeEventListener("resize", this.updateDimensions.bind(this));
+        window.removeEventListener('keyup', this.handleHotKeySave, true)
     }
 
     updateDimensions() {
@@ -74,6 +79,12 @@ class DH_Parser extends React.Component {
         };
 
         this.setState({fileTreeStyle: newFileTreeStyle});
+    }
+
+    handleHotKeySave(event) {
+        if (event.key === "s" && event.ctrlKey === true) {
+            this.saveCurrentConfig();
+        }
     }
 
     createConfig() {
