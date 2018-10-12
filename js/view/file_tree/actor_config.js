@@ -145,10 +145,10 @@ export class ActorConfig extends BaseConfig {
         for (let idx in material) {
             if (material.hasOwnProperty(idx)) {
                 const materialID = parseInt(material[idx]);
-                const key = `material_${idx.toString()}`;
-                buffer.push(<div id={key} key={key}>
+                const key = `material_${slotIndex.toString()}_${idx.toString()}`;
+                buffer.push(<div id={key} key={key} className="d-flex justify-content-center mb-1" style={{borderRadius: "5px"}}>
                         <input type="number" value={materialID} onChange={(event) => this.handleMaterialChange(event, slotIndex, idx)}/>
-                        <button className="btn btn-sm btn-outline-danger ml-1 mr-1 mt-0 mb-1"
+                        <button className="btn btn-sm btn-outline-danger ml-1 mr-1"
                                 style={materialBtnStyle}
                                 onClick={() => this.handleRemoveMaterial(slotIndex, idx)}
                                 onMouseEnter={() => this.handleHighLight(key)}
@@ -223,7 +223,7 @@ export class ActorConfig extends BaseConfig {
         return <div className="row mt-4" key="slots">
             <div className="col m-1 border border-1 border-secondary rounded">
                 <div className="row">
-                    <div className="col">Slots:</div>
+                    <div className="col mt-4"><h5>Slots:</h5></div>
                 </div>
 
                 {this.renderSlotItems()}
