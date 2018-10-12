@@ -9,7 +9,7 @@ import $ from 'jquery';
 import 'bootstrap';
 
 import { FileTree } from './js/view/file_tree/file_tree';
-import {faFolderOpen} from "@fortawesome/free-regular-svg-icons";
+import {faFolderOpen, faSave} from "@fortawesome/free-regular-svg-icons";
 import {faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
 
 
@@ -30,6 +30,7 @@ class DH_Parser extends React.Component {
         this.fileTree = React.createRef();
         this.createConfig = this.createConfig.bind(this);
         this.removeConfig = this.removeConfig.bind(this);
+        this.saveCurrentConfig = this.saveCurrentConfig.bind(this);
     }
 
     openFolder() {
@@ -38,6 +39,16 @@ class DH_Parser extends React.Component {
             this.setState({
                 path: dir_path[0]
             });
+        }
+    }
+
+    saveCurrentConfig() {
+        const fileTree = this.fileTree.current;
+        if (fileTree) {
+            const configDetail = fileTree.configDetailRef.current;
+            if (configDetail) {
+                configDetail.save();
+            }
         }
     }
 
@@ -88,6 +99,16 @@ class DH_Parser extends React.Component {
                         onClick={this.openFolder}>
                     <FontAwesomeIcon icon={faFolderOpen}/>
                 </button>
+
+                <button className={btnClass}
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        title="保存当前配置"
+                        onClick={this.saveCurrentConfig}>
+                    <FontAwesomeIcon icon={faSave}/>
+                </button>
+
+                &nbsp;&nbsp;
 
                 <button className={btnClass}
                         data-toggle="tooltip"

@@ -11,6 +11,8 @@ export class ConfigDetail extends React.Component {
     constructor(props) {
         super(props);
 
+        this.configRef = React.createRef();
+
         this.state = {
             type: null,
             content: {}
@@ -49,14 +51,20 @@ export class ConfigDetail extends React.Component {
         this.setState({type: event.target.text});
     }
 
+    save() {
+        if (this.configRef.current) {
+            this.configRef.current.save();
+        }
+    }
+
     renderConfig() {
         let ret = '';
         if (this.state.type) {
             if (this.state.type === "Actor") {
-                ret = <ActorConfig path={this.props.path} configType={this.state.type} content={this.state.content}/>
+                ret = <ActorConfig path={this.props.path} configType={this.state.type} content={this.state.content} ref={this.configRef}/>
             }
             else {
-                ret = <MaterialConfig path={this.props.path} configType={this.state.type} content={this.state.content}/>
+                ret = <MaterialConfig path={this.props.path} configType={this.state.type} content={this.state.content} ref={this.configRef}/>
             }
         }
 

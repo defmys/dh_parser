@@ -13,6 +13,8 @@ export class FileTree extends React.Component {
     constructor(props) {
         super(props);
 
+        this.configDetailRef = React.createRef();
+
         this.state = {
             cursor: null,
             dirList: {},
@@ -90,11 +92,15 @@ export class FileTree extends React.Component {
     renderConfigDetail() {
         let ret = '';
         if (fs.existsSync(this.state.curPath)) {
-            ret = <ConfigDetail path={this.state.curPath}/>;
+            ret = <ConfigDetail path={this.state.curPath} ref={this.configDetailRef}/>;
         } else if (this.state.cursor) {
             ret = <button className="btn btn-primary" onClick={this.createConfig}>创建配置文件</button>;
         }
-        return <div className="col">{ret}</div>;
+        const style = {
+            maxHeight: this.props.fileTreeStyle.maxHeight,
+            overflowY: "auto"
+        };
+        return <div className="col" style={style}>{ret}</div>;
     }
 
     nodeHeaderStyle(props) {

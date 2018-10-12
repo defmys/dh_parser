@@ -15,7 +15,6 @@ export class BaseConfig extends React.Component {
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleSave = this.handleSave.bind(this);
     }
 
     componentDidMount() {
@@ -76,7 +75,7 @@ export class BaseConfig extends React.Component {
         });
     }
 
-    handleSave() {
+    save() {
         fs.writeFileSync(this.props.path, JSON.stringify(this.content(), null, 2));
     }
 
@@ -101,12 +100,6 @@ export class BaseConfig extends React.Component {
                 </div>;
     }
 
-    renderSaveBtn() {
-        return <div className="row" key="saveBtn">
-                <button className="btn btn-primary" onClick={this.handleSave}>Save</button>
-            </div>
-    }
-
     additionalRender(buffer) {}
 
     render() {
@@ -117,7 +110,6 @@ export class BaseConfig extends React.Component {
 
         this.additionalRender(buffer);
 
-        buffer.push(this.renderSaveBtn());
         return buffer;
     }
 }
