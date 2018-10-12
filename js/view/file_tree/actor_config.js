@@ -51,7 +51,7 @@ export class ActorConfig extends BaseConfig {
     }
 
     handleAddSlot() {
-        let slots = this.state.slots;
+        let slots = {...this.state.slots};
 
         let index = 0;
         while (slots[index]) {
@@ -69,9 +69,9 @@ export class ActorConfig extends BaseConfig {
 
     handleSlotIndexChange(event, idx) {
         const value = parseInt(event.target.value);
-        let slots = this.state.slots;
+        let slots = {...this.state.slots};
         if (slots[idx]) {
-            slots[idx].index = parseInt(event.target.value);
+            slots[idx].index = value;
 
             this.setState({slots: slots});
         }
@@ -79,7 +79,7 @@ export class ActorConfig extends BaseConfig {
 
     handleSlotValueChange(event, idx) {
         const value = parseInt(event.target.value);
-        let slots = this.state.slots;
+        let slots = {...this.state.slots};
         if (slots[idx]) {
             slots[idx].value = parseInt(event.target.value);
 
@@ -89,16 +89,16 @@ export class ActorConfig extends BaseConfig {
 
     handleSlotDisplayNameChange(event, idx) {
         const value = event.target.value;
-        let slots = this.state.slots;
+        let slots = {...this.state.slots};
         if (slots[idx]) {
-            slots[idx].display_name = event.target.value;
+            slots[idx].display_name = value;
 
             this.setState({slots: slots});
         }
     }
 
     handleRemoveSlot(idx) {
-        let slots = this.state.slots;
+        let slots = {...this.state.slots};
         delete slots[idx];
         this.setState({slots: slots});
     }
