@@ -236,10 +236,12 @@ export class ActorConfig extends BaseConfig {
                     <div className="col-1"> </div>
                 </div>
             </div>
-        </div>;
+        </div>
     }
 
-    additionalRender(buffer) {
+    additionalRender() {
+        let buffer = [];
         buffer.push(this.renderSlots());
+        return buffer;
     };
 }

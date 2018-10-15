@@ -83,42 +83,63 @@ export class BaseConfig extends React.Component {
 
     renderID() {
         return <div className="row mt-1" key="id">
-                    <div className="col-2">ID</div>
-                    <div className="col"><input type="number" name="id" className="text-center" value={this.state.id || 0} onChange={this.handleInputChange}/></div>
+                    <div className="col-4">ID</div>
+                    <div className="col-6"><input type="number" name="id" className="text-center" value={this.state.id || 0} onChange={this.handleInputChange}/></div>
                 </div>;
     }
 
     renderDisplayName() {
         return <div className="row mt-1" key="display_name">
-                    <div className="col-2">Display Name</div>
-                    <div className="col"><input name="display_name" className="text-center" value={this.state.display_name || ''} onChange={this.handleInputChange}/></div>
+                    <div className="col-4">Display Name</div>
+                    <div className="col-6"><input name="display_name" className="text-center" value={this.state.display_name || ''} onChange={this.handleInputChange}/></div>
                 </div>;
     }
 
     renderPackage() {
         return <div className="row mt-1" key="package">
-                    <div className="col-2">package</div>
-                    <div className="col"><input name="package" className="text-center" value={this.state.package || ''} onChange={this.handleInputChange}/></div>
+                    <div className="col-4">package</div>
+                    <div className="col-6"><input name="package" className="text-center" value={this.state.package || ''} onChange={this.handleInputChange}/></div>
                 </div>;
     }
 
     renderMountPoint() {
         return <div className="row mt-1" key="mount_point">
-            <div className="col-2">Mount Point</div>
-            <div className="col"><input name="mount_point" className="text-center" value={this.state.mount_point || ''} onChange={this.handleInputChange}/></div>
+            <div className="col-4">Mount Point</div>
+            <div className="col-6"><input name="mount_point" className="text-center" value={this.state.mount_point || ''} onChange={this.handleInputChange}/></div>
         </div>
     }
 
-    additionalRender(buffer) {}
-
-    render() {
+    renderBase() {
         let buffer = [];
+
         buffer.push(this.renderID());
         buffer.push(this.renderDisplayName());
         buffer.push(this.renderPackage());
         buffer.push(this.renderMountPoint());
 
-        this.additionalRender(buffer);
+        return buffer;
+    }
+
+    additionalRender() {
+        return ''
+    }
+
+    render() {
+        let buffer = [];
+        buffer.push(<div className="row">
+            <div className="col">
+                {this.renderBase()}
+            </div>
+            <div className="col"> </div>
+        </div>);
+
+        buffer.push(
+            <div className="row">
+                <div className="col">
+                    {this.additionalRender()};
+                </div>
+            </div>
+        );
 
         return buffer;
     }

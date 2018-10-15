@@ -74,22 +74,26 @@ export class ConfigDetail extends React.Component {
     render() {
         return (
             <div className="text-nowrap mt-2">
-                <div className="row mt-1">
-                    <div className="col-2">Type</div>
-                    <div className="col">
-                        <button className="btn btn-secondary dropdown-toggle text-center" type="button" id="typeDropDown"
+                <div className="row mt-2">
+                    <div className="col-2 text-center">Type</div>
+                    <div className="col-3">
+                        <button className="btn btn-block btn-secondary dropdown-toggle text-center" type="button" id="typeDropDown"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {this.state.type || defaultType}
                         </button>
-                        <div className="dropdown-menu" aria-labelledby="typeDropDown">
+                        <div className="dropdown-menu text-center" aria-labelledby="typeDropDown">
                             <a className="dropdown-item" href="#" onClick={this.handleTypeChange}>Actor</a>
                             <a className="dropdown-item" href="#" onClick={this.handleTypeChange}>Material</a>
                         </div>
                     </div>
                 </div>
 
+                <hr />
+
                 <div className="row">
-                    {this.renderConfig()}
+                    <div className="col">
+                        {this.renderConfig()}
+                    </div>
                 </div>
             </div>
         )
