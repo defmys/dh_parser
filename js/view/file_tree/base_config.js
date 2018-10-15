@@ -82,30 +82,30 @@ export class BaseConfig extends React.Component {
     }
 
     renderID() {
-        return <div className="row" key="id">
+        return <div className="row mt-1" key="id">
                     <div className="col-2">ID</div>
-                    <div className="col"><input type="number" name="id" value={this.state.id || 0} onChange={this.handleInputChange}/></div>
+                    <div className="col"><input type="number" name="id" className="text-center" value={this.state.id || 0} onChange={this.handleInputChange}/></div>
                 </div>;
     }
 
     renderDisplayName() {
-        return <div className="row" key="display_name">
+        return <div className="row mt-1" key="display_name">
                     <div className="col-2">Display Name</div>
-                    <div className="col"><input name="display_name" value={this.state.display_name || ''} onChange={this.handleInputChange}/></div>
+                    <div className="col"><input name="display_name" className="text-center" value={this.state.display_name || ''} onChange={this.handleInputChange}/></div>
                 </div>;
     }
 
     renderPackage() {
-        return <div className="row" key="package">
+        return <div className="row mt-1" key="package">
                     <div className="col-2">package</div>
-                    <div className="col"><input name="package" value={this.state.package || ''} onChange={this.handleInputChange}/></div>
+                    <div className="col"><input name="package" className="text-center" value={this.state.package || ''} onChange={this.handleInputChange}/></div>
                 </div>;
     }
 
     renderMountPoint() {
-        return <div className="row" key="mount_point">
+        return <div className="row mt-1" key="mount_point">
             <div className="col-2">Mount Point</div>
-            <div className="col"><input name="mount_point" value={this.state.mount_point || ''} onChange={this.handleInputChange}/></div>
+            <div className="col"><input name="mount_point" className="text-center" value={this.state.mount_point || ''} onChange={this.handleInputChange}/></div>
         </div>
     }
 

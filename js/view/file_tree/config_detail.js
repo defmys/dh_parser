@@ -73,10 +73,11 @@ export class ConfigDetail extends React.Component {
 
     render() {
         return (
-            <div className="text-nowrap">
-                <div className="row">
+            <div className="text-nowrap mt-2">
+                <div className="row mt-1">
+                    <div className="col-2">Type</div>
                     <div className="col">
-                        <button className="btn btn-secondary dropdown-toggle" type="button" id="typeDropDown"
+                        <button className="btn btn-secondary dropdown-toggle text-center" type="button" id="typeDropDown"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {this.state.type || defaultType}
                         </button>

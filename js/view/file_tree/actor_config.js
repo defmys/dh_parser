@@ -147,7 +147,7 @@ export class ActorConfig extends BaseConfig {
                 const materialID = parseInt(material[idx]);
                 const key = `material_${slotIndex.toString()}_${idx.toString()}`;
                 buffer.push(<div id={key} key={key} className="d-flex justify-content-center mb-1" style={{borderRadius: "5px"}}>
-                        <input type="number" value={materialID} onChange={(event) => this.handleMaterialChange(event, slotIndex, idx)}/>
+                        <input type="number" className="text-center" value={materialID} onChange={(event) => this.handleMaterialChange(event, slotIndex, idx)}/>
                         <button className="btn btn-sm btn-outline-danger ml-1 mr-1"
                                 style={materialBtnStyle}
                                 onClick={() => this.handleRemoveMaterial(slotIndex, idx)}
@@ -176,7 +176,7 @@ export class ActorConfig extends BaseConfig {
                             <tr>
                                 <th scope="col-2">ID</th>
                                 <th scope="col">Display Name</th>
-                                <th scope="col">Material ID <button className="btn btn-sm btn-outline-primary  ml-1 mr-1 mt-0 mb-1" style={materialBtnStyle} onClick={() => this.handleAddMaterial(index)}><FontAwesomeIcon icon={faPlus}/></button></th>
+                                <th scope="col">Material ID <button className="btn btn-sm btn-outline-primary  ml-1 mr-1 mt-0 mb-1 text-center" style={materialBtnStyle} onClick={() => this.handleAddMaterial(index)}><FontAwesomeIcon icon={faPlus}/></button></th>
                                 <th scope="col-1">
                                     <button className="btn btn-outline-danger ml-1 mr-1"
                                             onClick={() => this.handleRemoveSlot(index)}
