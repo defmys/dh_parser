@@ -174,7 +174,7 @@ export class ActorConfig extends BaseConfig {
                     <table className="table text-center" id={tableID} key={index} style={{borderRadius: '10px'}}>
                         <thead>
                             <tr>
-                                <th scope="col-2">ID</th>
+                                <th scope="col-2">Index</th>
                                 <th scope="col">Display Name</th>
                                 <th scope="col">Material ID <button className="btn btn-sm btn-outline-primary  ml-1 mr-1 mt-0 mb-1 text-center" style={materialBtnStyle} onClick={() => this.handleAddMaterial(index)}><FontAwesomeIcon icon={faPlus}/></button></th>
                                 <th scope="col-1">
