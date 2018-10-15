@@ -59,7 +59,8 @@ export class BaseConfig extends React.Component {
         BaseConfig.fillWithDefault(fixedContent, content, 'type', 'Material');
         BaseConfig.fillWithDefault(fixedContent, content, 'display_name', '');
         BaseConfig.fillWithDefault(fixedContent, content, 'package', '');
-        BaseConfig.fillWithDefault(fixedContent, content, 'mount_point');
+        BaseConfig.fillWithDefault(fixedContent, content, 'mount_point', '');
+        BaseConfig.fillWithDefault(fixedContent, content, 'ref_path', '');
 
         return fixedContent;
     }
@@ -83,6 +84,7 @@ export class BaseConfig extends React.Component {
         content.display_name = this.state.display_name;
         content.package = this.state.package;
         content.mount_point = this.state.mount_point;
+        content.ref_path = this.state.ref_path;
         return content;
     }
 
@@ -122,6 +124,13 @@ export class BaseConfig extends React.Component {
                 </div>;
     }
 
+    renderRefPath() {
+        return <div className="row mt-1" key="ref_path">
+            <div className="col-4">Reference Path</div>
+            <div className="col-6"><input name="ref_path" className="text-center" value={this.state.ref_path || ''} onChange={this.handleInputChange}/></div>
+        </div>
+    }
+
     renderMountPoint() {
         return <div className="row mt-1" key="mount_point">
             <div className="col-4">Mount Point</div>
@@ -136,6 +145,7 @@ export class BaseConfig extends React.Component {
         buffer.push(this.renderDisplayName());
         buffer.push(this.renderPackage());
         buffer.push(this.renderMountPoint());
+        buffer.push(this.renderRefPath());
 
         return buffer;
     }
