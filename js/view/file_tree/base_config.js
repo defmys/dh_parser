@@ -39,6 +39,7 @@ export class BaseConfig extends React.Component {
         BaseConfig.fillWithDefault(fixedContent, content, 'type', 'Material');
         BaseConfig.fillWithDefault(fixedContent, content, 'display_name', '');
         BaseConfig.fillWithDefault(fixedContent, content, 'package', '');
+        BaseConfig.fillWithDefault(fixedContent, content, 'mount_point');
 
         return fixedContent;
     }
@@ -61,6 +62,7 @@ export class BaseConfig extends React.Component {
         content.type = this.state.type;
         content.display_name = this.state.display_name;
         content.package = this.state.package;
+        content.mount_point = this.state.mount_point;
         return content;
     }
 
@@ -100,6 +102,13 @@ export class BaseConfig extends React.Component {
                 </div>;
     }
 
+    renderMountPoint() {
+        return <div className="row" key="mount_point">
+            <div className="col-2">Mount Point</div>
+            <div className="col"><input name="mount_point" value={this.state.mount_point || ''} onChange={this.handleInputChange}/></div>
+        </div>
+    }
+
     additionalRender(buffer) {}
 
     render() {
@@ -107,6 +116,7 @@ export class BaseConfig extends React.Component {
         buffer.push(this.renderID());
         buffer.push(this.renderDisplayName());
         buffer.push(this.renderPackage());
+        buffer.push(this.renderMountPoint());
 
         this.additionalRender(buffer);
 
