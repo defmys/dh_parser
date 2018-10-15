@@ -1,5 +1,8 @@
 import React from "react";
 import fs from "fs";
+import path from "path"
+import {faTimesCircle} from "@fortawesome/free-regular-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 
 export class BaseConfig extends React.Component {
@@ -11,7 +14,8 @@ export class BaseConfig extends React.Component {
         super(props);
 
         this.state = {
-            type: props.configType
+            type: props.configType,
+            imgPath: ''
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -30,6 +34,22 @@ export class BaseConfig extends React.Component {
     initContent() {
         let fixedContent = this.prepareConfigContent(this.props.content);
         this.fillState(fixedContent);
+
+        this.initThumbnailPath();
+    }
+
+    initThumbnailPath() {
+        const dirPath = path.dirname(this.props.path);
+        const dirName = dirPath.split(path.sep).pop();
+
+        let imgPath = path.join(dirPath, dirName + '.png');
+        if (!fs.existsSync(imgPath)) {
+            imgPath = path.join(dirPath, dirName + '.jpg');
+            if (!fs.existsSync(imgPath)) {
+                imgPath = ''
+            }
+        }
+        this.setState({imgPath: imgPath});
     }
 
     prepareConfigContent(content) {
@@ -126,17 +146,27 @@ export class BaseConfig extends React.Component {
 
     render() {
         let buffer = [];
-        buffer.push(<div className="row">
+
+        let img = '';
+        if (this.state.imgPath !== '') {
+            img = <img className="border border-1" src={this.state.imgPath} height="130px" width="130px" data-toggle="tooltip" data-placement="bottom" title="缩略图"/>
+        } else {
+            img = <div style={{opacity: 0.1}}><FontAwesomeIcon icon={faTimesCircle} className="fa-8x" data-toggle="tooltip" data-placement="bottom" title="未找到缩略图"/></div>
+        }
+
+        buffer.push(<div className="row" key="configBaseRow">
             <div className="col">
                 {this.renderBase()}
             </div>
-            <div className="col"> </div>
+            <div className="col text-center">
+                {img}
+            </div>
         </div>);
 
         buffer.push(
-            <div className="row">
+            <div className="row" key="configAdditionalRow">
                 <div className="col">
-                    {this.additionalRender()};
+                    {this.additionalRender()}
                 </div>
             </div>
         );
