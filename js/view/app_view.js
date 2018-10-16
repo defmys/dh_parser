@@ -4,13 +4,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { remote } from 'electron';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faFolderOpen, faSave} from "@fortawesome/free-regular-svg-icons";
+import {faFileExport, faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
+import { FileTree } from './js/view/file_tree/file_tree';
+import {exportScript} from "./js/controller/exporter";
 
 import $ from 'jquery';
 import 'bootstrap';
-
-import { FileTree } from './js/view/file_tree/file_tree';
-import {faFolderOpen, faSave} from "@fortawesome/free-regular-svg-icons";
-import {faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
 
 
 const dialog = remote.dialog;
@@ -33,6 +33,7 @@ class DH_Parser extends React.Component {
         this.createConfig = this.createConfig.bind(this);
         this.removeConfig = this.removeConfig.bind(this);
         this.saveCurrentConfig = this.saveCurrentConfig.bind(this);
+        this.exportScript = this.exportScript.bind(this);
     }
 
     openFolder() {
@@ -88,6 +89,18 @@ class DH_Parser extends React.Component {
         this.setState({fileTreeStyle: newFileTreeStyle});
     }
 
+    exportScript() {
+        if (this.state.path !== '') {
+            exportScript(this.state.path);
+
+            dialog.showMessageBox(remote.getCurrentWindow(),
+                {
+                    type: "info",
+                    message: "导出完毕"
+                });
+        }
+    }
+
     handleHotKeySave(event) {
         if (event.key === "s" && event.ctrlKey === true) {
             this.saveCurrentConfig();
@@ -110,6 +123,16 @@ class DH_Parser extends React.Component {
         const btnClass = "btn btn-outline-secondary mr-1";
         return <div id="menuBar" className="row border-secondary border-bottom">
             <div className="col p-1">
+                <button className={btnClass}
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        title="导出"
+                        onClick={this.exportScript}>
+                    <FontAwesomeIcon icon={faFileExport}/>
+                </button>
+
+                &nbsp;&nbsp;
+
                 <button className={btnClass}
                         data-toggle="tooltip"
                         data-placement="bottom"
