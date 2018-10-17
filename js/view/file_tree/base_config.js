@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path"
 import {faTimesCircle} from "@fortawesome/free-regular-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {ColorTag} from "../../model/tag";
 
 
 export class BaseConfig extends React.Component {
@@ -15,10 +16,12 @@ export class BaseConfig extends React.Component {
 
         this.state = {
             type: props.configType,
-            imgPath: ''
+            imgPath: '',
+            color_tag: []
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleColorTagChange = this.handleColorTagChange.bind(this);
     }
 
     componentDidMount() {
@@ -61,6 +64,7 @@ export class BaseConfig extends React.Component {
         BaseConfig.fillWithDefault(fixedContent, content, 'package', '');
         BaseConfig.fillWithDefault(fixedContent, content, 'mount_point', '');
         BaseConfig.fillWithDefault(fixedContent, content, 'ref_path', '');
+        BaseConfig.fillWithDefault(fixedContent, content, 'color_tag', []);
 
         return fixedContent;
     }
@@ -85,6 +89,7 @@ export class BaseConfig extends React.Component {
         content.package = this.state.package;
         content.mount_point = this.state.mount_point;
         content.ref_path = this.state.ref_path;
+        content.color_tag = this.state.color_tag;
         return content;
     }
 
@@ -97,6 +102,16 @@ export class BaseConfig extends React.Component {
         this.setState({
             [event.target.name]: value
         });
+    }
+
+    handleColorTagChange(event, idx) {
+        let color_tag = Object.assign([], this.state.color_tag);
+        if (color_tag.includes(idx)) {
+            color_tag.splice(color_tag.indexOf(idx), 1);
+        } else {
+            color_tag.push(idx);
+        }
+        this.setState({color_tag: color_tag});
     }
 
     save() {
@@ -138,6 +153,29 @@ export class BaseConfig extends React.Component {
         </div>
     }
 
+    renderColorTag() {
+        const dropDown = [];
+        const tags = ColorTag.inst().tags;
+
+        for (let tag_idx in tags) {
+            if (tags.hasOwnProperty(tag_idx)) {
+                dropDown.push(<div className="input-group-text" key={tag_idx}>
+                    <input type="checkbox" aria-label={tags[tag_idx]} onChange={(event) => this.handleColorTagChange(event, parseInt(tag_idx))}
+                           checked={this.state.color_tag.includes(parseInt(tag_idx))}/>{tags[tag_idx]}
+                </div>);
+            }
+        }
+
+        return <div className="row mt-2 mb-2" key="color_tag">
+            <div className="col-2">Color Tag</div>
+            <div className="col">
+                <div className="input-group">
+                    {dropDown}
+                </div>
+            </div>
+        </div>
+    }
+
     renderBase() {
         let buffer = [];
 
@@ -170,6 +208,12 @@ export class BaseConfig extends React.Component {
             </div>
             <div className="col text-center">
                 {img}
+            </div>
+        </div>);
+
+        buffer.push(<div className="row mt-2 border border-1 border-secondary rounded" key="tagRow">
+            <div className="col">
+                {this.renderColorTag()}
             </div>
         </div>);
 
