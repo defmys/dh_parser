@@ -220,8 +220,8 @@ export class ActorConfig extends BaseConfig {
     }
 
     renderSlots() {
-        return <div className="row mt-4" key="slots">
-            <div className="col m-1 border border-1 border-secondary rounded">
+        return <div className="row mt-4 border border-1 border-secondary rounded" key="slots">
+            <div className="col m-1">
                 <div className="row">
                     <div className="col mt-4"><h5>Slots:</h5></div>
                 </div>
