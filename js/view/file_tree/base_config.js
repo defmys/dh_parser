@@ -104,7 +104,7 @@ export class BaseConfig extends React.Component {
         });
     }
 
-    handleColorTagChange(event, idx) {
+    handleColorTagChange(idx) {
         let color_tag = Object.assign([], this.state.color_tag);
         if (color_tag.includes(idx)) {
             color_tag.splice(color_tag.indexOf(idx), 1);
@@ -159,9 +159,11 @@ export class BaseConfig extends React.Component {
 
         for (let tag_idx in tags) {
             if (tags.hasOwnProperty(tag_idx)) {
-                dropDown.push(<div className="input-group-text" key={tag_idx}>
-                    <input type="checkbox" aria-label={tags[tag_idx]} onChange={(event) => this.handleColorTagChange(event, parseInt(tag_idx))}
-                           checked={this.state.color_tag.includes(parseInt(tag_idx))}/>{tags[tag_idx]}
+                dropDown.push(<div className="colorTagCheckboxDiv input-group-text mr-1 mt-1" style={{cursor: 'pointer', width: '90px'}} key={tag_idx}  onClick={() => this.handleColorTagChange(parseInt(tag_idx))}>
+                    <input type="checkbox" aria-label={tags[tag_idx]} style={{cursor: 'pointer'}}
+                           onChange={() => this.handleColorTagChange(parseInt(tag_idx))}
+                           checked={this.state.color_tag.includes(parseInt(tag_idx))}/>
+                    {tags[tag_idx]}
                 </div>);
             }
         }
