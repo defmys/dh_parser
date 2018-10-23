@@ -7,7 +7,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderOpen, faSave} from "@fortawesome/free-regular-svg-icons";
 import {faFileExport, faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
 import { FileTree } from './js/view/file_tree/file_tree';
-import {exportScript} from "./js/controller/exporter";
+import {exportScript} from "./js/utils/exporter";
+import {NodeCache} from "./js/model/nodeCache";
 
 import $ from 'jquery';
 import 'bootstrap';
@@ -32,7 +33,7 @@ class DH_Parser extends React.Component {
         this.fileTree = React.createRef();
         this.createConfig = this.createConfig.bind(this);
         this.removeConfig = this.removeConfig.bind(this);
-        this.saveCurrentConfig = this.saveCurrentConfig.bind(this);
+        this.saveAllConfig = this.saveAllConfig.bind(this);
         this.exportScript = this.exportScript.bind(this);
     }
 
@@ -45,20 +46,22 @@ class DH_Parser extends React.Component {
         }
     }
 
-    saveCurrentConfig() {
+    saveAllConfig() {
         const fileTree = this.fileTree.current;
         if (fileTree) {
             const configDetail = fileTree.configDetailRef.current;
             if (configDetail) {
                 configDetail.save();
-
-                dialog.showMessageBox(
-                    remote.getCurrentWindow(),
-                    {
-                        type: "info",
-                        message: "保存成功"
-                    });
             }
+
+            NodeCache.inst().saveToDisk();
+
+            dialog.showMessageBox(
+                remote.getCurrentWindow(),
+                {
+                    type: "info",
+                    message: "保存成功"
+                });
         }
     }
 
@@ -103,7 +106,7 @@ class DH_Parser extends React.Component {
 
     handleHotKeySave(event) {
         if (event.key === "s" && event.ctrlKey === true) {
-            this.saveCurrentConfig();
+            this.saveAllConfig();
         }
     }
 
@@ -144,8 +147,8 @@ class DH_Parser extends React.Component {
                 <button className={btnClass}
                         data-toggle="tooltip"
                         data-placement="bottom"
-                        title="保存当前配置"
-                        onClick={this.saveCurrentConfig}>
+                        title="保存配置"
+                        onClick={this.saveAllConfig}>
                     <FontAwesomeIcon icon={faSave}/>
                 </button>
 

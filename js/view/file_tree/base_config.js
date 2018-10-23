@@ -114,10 +114,6 @@ export class BaseConfig extends React.Component {
         this.setState({color_tag: color_tag});
     }
 
-    save() {
-        fs.writeFileSync(this.props.path, JSON.stringify(this.content(), null, 2));
-    }
-
     renderID() {
         return <div className="row mt-1" key="id">
                     <div className="col-4">ID</div>

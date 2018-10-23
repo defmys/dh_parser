@@ -2,6 +2,7 @@ import React from "react";
 import fs from 'fs';
 import {ActorConfig} from "./actor_config";
 import {MaterialConfig} from "./material_config";
+import {NodeCache} from "../../model/nodeCache";
 
 
 const defaultType = 'Material';
@@ -23,13 +24,28 @@ export class ConfigDetail extends React.Component {
 
     initContent() {
         let content = {};
-        let textContent = fs.readFileSync(this.props.path, 'utf8');
-        try {
-            content = JSON.parse(textContent);
-        } catch (e) {
-            content = {
-                type: defaultType
-            };
+
+        if (NodeCache.inst().hasCache(this.props.path)) {
+            console.log('hit cache');
+
+            content = NodeCache.inst().load(this.props.path);
+
+            if (!content.type) {
+                content = {
+                    type: defaultType
+                }
+            }
+        } else {
+            let textContent = fs.readFileSync(this.props.path, 'utf8');
+            try {
+                content = JSON.parse(textContent);
+            } catch (e) {
+                content = {
+                    type: defaultType
+                };
+            }
+
+            NodeCache.inst().save(this.props.path, content)
         }
 
         if (content.type) {
@@ -43,6 +59,8 @@ export class ConfigDetail extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps !== this.props) {
+            this.saveToCache(prevProps.path);
+
             this.initContent();
         }
     }
@@ -51,10 +69,14 @@ export class ConfigDetail extends React.Component {
         this.setState({type: event.target.text});
     }
 
-    save() {
-        if (this.configRef.current) {
-            this.configRef.current.save();
+    saveToCache(configPath) {
+        if (this.configRef.current && configPath !== undefined && configPath !== '') {
+            NodeCache.inst().save(configPath, this.configRef.current.content());
         }
+    }
+
+    save() {
+        this.saveToCache(this.props.path);
     }
 
     renderConfig() {
