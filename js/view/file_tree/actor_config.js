@@ -115,6 +115,9 @@ export class ActorConfig extends BaseConfig {
         let slots = {...this.state.slots};
         let slot = slots[parseInt(idx)];
 
+        if (slot.materials === undefined) {
+            slot.materials = [];
+        }
         slot.materials.push(0);
 
         this.setState({slots: slots});
