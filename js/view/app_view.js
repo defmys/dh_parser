@@ -129,16 +129,6 @@ class DH_Parser extends React.Component {
                 <button className={btnClass}
                         data-toggle="tooltip"
                         data-placement="bottom"
-                        title="导出"
-                        onClick={this.exportScript}>
-                    <FontAwesomeIcon icon={faFileExport}/>
-                </button>
-
-                &nbsp;&nbsp;
-
-                <button className={btnClass}
-                        data-toggle="tooltip"
-                        data-placement="bottom"
                         title="打开目录"
                         onClick={this.openFolder}>
                     <FontAwesomeIcon icon={faFolderOpen}/>
@@ -168,6 +158,16 @@ class DH_Parser extends React.Component {
                         title="删除配置"
                         onClick={this.removeConfig}>
                     <FontAwesomeIcon icon={faMinus}/>
+                </button>
+
+                &nbsp;&nbsp;
+
+                <button className={btnClass}
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        title="导出"
+                        onClick={this.exportScript}>
+                    <FontAwesomeIcon icon={faFileExport}/>
                 </button>
             </div>
         </div>

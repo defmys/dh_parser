@@ -57,6 +57,10 @@ export class FileTree extends React.Component {
     }
 
     onToggle(node, toggled){
+        if (this.props.path === undefined || this.props.path === '') {
+            return;
+        }
+
         if(this.state.cursor) {
             this.state.cursor.active = false;
         }
