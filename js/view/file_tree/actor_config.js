@@ -27,17 +27,17 @@ export class ActorConfig extends BaseConfig {
     prepareConfigContent(content) {
         let fixedContent = super.prepareConfigContent(content);
 
-        fixedContent['slots'] = {};
-        if (content['slots'] !== undefined) {
-            for (let idx in content['slots']) {
-                if (content['slots'].hasOwnProperty(idx)) {
-                    fixedContent['slots'][idx] = content['slots'][idx];
+        fixedContent["slots"] = {};
+        if (content["slots"] !== undefined) {
+            for (let idx in content["slots"]) {
+                if (content["slots"].hasOwnProperty(idx)) {
+                    fixedContent["slots"][idx] = content["slots"][idx];
 
-                    let from = content['slots'][idx];
-                    let target = fixedContent['slots'][idx];
-                    BaseConfig.fillWithDefault(target, from, 'index', idx);
-                    BaseConfig.fillWithDefault(target, from, 'display_name', '');
-                    BaseConfig.fillWithDefault(target, from, 'materials', []);
+                    let from = content["slots"][idx];
+                    let target = fixedContent["slots"][idx];
+                    BaseConfig.fillWithDefault(target, from, "index", idx);
+                    BaseConfig.fillWithDefault(target, from, "display_name", "");
+                    BaseConfig.fillWithDefault(target, from, "materials", []);
                 }
             }
         }
@@ -69,7 +69,7 @@ export class ActorConfig extends BaseConfig {
 
         slots[index] = {
             index: index,
-            display_name: '',
+            display_name: "",
             value: 0
         };
 
@@ -133,12 +133,12 @@ export class ActorConfig extends BaseConfig {
     handleHighLight(idText) {
         let element = document.getElementById(idText);
         element.classList.add("bg-warning");
-    };
+    }
 
     handleRemoveHighLight(idText) {
         let element = document.getElementById(idText);
         element.classList.remove("bg-warning");
-    };
+    }
 
     renderMaterial(slotIndex) {
         let buffer = [];
@@ -150,14 +150,14 @@ export class ActorConfig extends BaseConfig {
                 const materialID = parseInt(material[idx]);
                 const key = `material_${slotIndex.toString()}_${idx.toString()}`;
                 buffer.push(<div id={key} key={key} className="d-flex justify-content-center mb-1" style={{borderRadius: "5px"}}>
-                        <input type="number" className="text-center" value={materialID} onChange={(event) => this.handleMaterialChange(event, slotIndex, idx)}/>
-                        <button className="btn btn-sm btn-outline-danger ml-1 mr-1"
-                                style={materialBtnStyle}
-                                onClick={() => this.handleRemoveMaterial(slotIndex, idx)}
-                                onMouseEnter={() => this.handleHighLight(key)}
-                                onMouseLeave={() => this.handleRemoveHighLight(key)}>
-                            <FontAwesomeIcon icon={faMinus}/>
-                        </button>
+                    <input type="number" className="text-center" value={materialID} onChange={(event) => this.handleMaterialChange(event, slotIndex, idx)}/>
+                    <button className="btn btn-sm btn-outline-danger ml-1 mr-1"
+                        style={materialBtnStyle}
+                        onClick={() => this.handleRemoveMaterial(slotIndex, idx)}
+                        onMouseEnter={() => this.handleHighLight(key)}
+                        onMouseLeave={() => this.handleRemoveHighLight(key)}>
+                        <FontAwesomeIcon icon={faMinus}/>
+                    </button>
                 </div>);
             }
         }
@@ -174,7 +174,7 @@ export class ActorConfig extends BaseConfig {
                 const tableID = `slotTable_${index.toString()}`;
                 const slot = this.state.slots[index];
                 slotsBuffer.push(
-                    <table className="table text-center" id={tableID} key={index} style={{borderRadius: '10px'}}>
+                    <table className="table text-center" id={tableID} key={index} style={{borderRadius: "10px"}}>
                         <thead>
                             <tr>
                                 <th scope="col-2">Index</th>
@@ -182,9 +182,9 @@ export class ActorConfig extends BaseConfig {
                                 <th scope="col">Material ID <button className="btn btn-sm btn-outline-primary  ml-1 mr-1 mt-0 mb-1 text-center" style={materialBtnStyle} onClick={() => this.handleAddMaterial(index)}><FontAwesomeIcon icon={faPlus}/></button></th>
                                 <th scope="col-1">
                                     <button className="btn btn-outline-danger ml-1 mr-1"
-                                            onClick={() => this.handleRemoveSlot(index)}
-                                            onMouseEnter={() => this.handleHighLight(tableID)}
-                                            onMouseLeave={() => this.handleRemoveHighLight(tableID)}>
+                                        onClick={() => this.handleRemoveSlot(index)}
+                                        onMouseEnter={() => this.handleHighLight(tableID)}
+                                        onMouseLeave={() => this.handleRemoveHighLight(tableID)}>
                                         <FontAwesomeIcon icon={faMinus}/>
                                     </button>
                                 </th>
@@ -195,17 +195,17 @@ export class ActorConfig extends BaseConfig {
                             <tr>
                                 <td>
                                     <input type="number"
-                                           className="text-center"
-                                           name={idxName}
-                                           value={slot.index}
-                                           onChange={(event) => this.handleSlotIndexChange(event, index)}
+                                        className="text-center"
+                                        name={idxName}
+                                        value={slot.index}
+                                        onChange={(event) => this.handleSlotIndexChange(event, index)}
                                     />
                                 </td>
                                 <td>
                                     <input name={displayName}
-                                           className="text-center"
-                                           value={slot.display_name}
-                                           onChange={(event) => this.handleSlotDisplayNameChange(event, index)}
+                                        className="text-center"
+                                        value={slot.display_name}
+                                        onChange={(event) => this.handleSlotDisplayNameChange(event, index)}
                                     />
                                 </td>
 
@@ -239,12 +239,12 @@ export class ActorConfig extends BaseConfig {
                     <div className="col-1"> </div>
                 </div>
             </div>
-        </div>
+        </div>;
     }
 
     additionalRender() {
         let buffer = [];
         buffer.push(this.renderSlots());
         return buffer;
-    };
+    }
 }

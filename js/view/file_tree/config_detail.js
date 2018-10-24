@@ -1,14 +1,21 @@
 import React from "react";
-import fs from 'fs';
+import fs from "fs";
 import {ActorConfig} from "./actor_config";
 import {MaterialConfig} from "./material_config";
 import {NodeCache} from "../../model/nodeCache";
+import PropTypes from "prop-types";
 
 
-const defaultType = 'Material';
+const defaultType = "Material";
 
 
 export class ConfigDetail extends React.Component {
+    static get propTypes() {
+        return {
+            path: PropTypes.string
+        };
+    }
+
     constructor(props) {
         super(props);
 
@@ -31,10 +38,10 @@ export class ConfigDetail extends React.Component {
             if (!content.type) {
                 content = {
                     type: defaultType
-                }
+                };
             }
         } else {
-            let textContent = fs.readFileSync(this.props.path, 'utf8');
+            let textContent = fs.readFileSync(this.props.path, "utf8");
             try {
                 content = JSON.parse(textContent);
             } catch (e) {
@@ -43,7 +50,7 @@ export class ConfigDetail extends React.Component {
                 };
             }
 
-            NodeCache.inst().save(this.props.path, content)
+            NodeCache.inst().save(this.props.path, content);
         }
 
         if (content.type) {
@@ -68,7 +75,7 @@ export class ConfigDetail extends React.Component {
     }
 
     saveToCache(configPath) {
-        if (this.configRef.current && configPath !== undefined && configPath !== '') {
+        if (this.configRef.current && configPath !== undefined && configPath !== "") {
             NodeCache.inst().save(configPath, this.configRef.current.content());
         }
     }
@@ -78,17 +85,17 @@ export class ConfigDetail extends React.Component {
     }
 
     renderConfig() {
-        let ret = '';
+        let ret = "";
         if (this.state.type) {
             if (this.state.type === "Actor") {
-                ret = <ActorConfig path={this.props.path} configType={this.state.type} content={this.state.content} ref={this.configRef}/>
+                ret = <ActorConfig path={this.props.path} configType={this.state.type} content={this.state.content} ref={this.configRef}/>;
             }
             else {
-                ret = <MaterialConfig path={this.props.path} configType={this.state.type} content={this.state.content} ref={this.configRef}/>
+                ret = <MaterialConfig path={this.props.path} configType={this.state.type} content={this.state.content} ref={this.configRef}/>;
             }
         }
 
-        return <div className="col">{ret}</div>
+        return <div className="col">{ret}</div>;
     }
 
     render() {
@@ -98,7 +105,7 @@ export class ConfigDetail extends React.Component {
                     <div className="col-2 text-center">Type</div>
                     <div className="col-3">
                         <button className="btn btn-block btn-secondary dropdown-toggle text-center" type="button" id="typeDropDown"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {this.state.type || defaultType}
                         </button>
                         <div className="dropdown-menu text-center" aria-labelledby="typeDropDown">
@@ -116,6 +123,6 @@ export class ConfigDetail extends React.Component {
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 }

@@ -17,7 +17,7 @@ export class NodeCache {
     }
 
     save(nodePath, content) {
-        this._cache[nodePath] = content
+        this._cache[nodePath] = content;
     }
 
     load(nodePath) {
@@ -25,11 +25,11 @@ export class NodeCache {
     }
 
     hasCache(nodePath) {
-        return this._cache[nodePath] !== undefined
+        return this._cache[nodePath] !== undefined;
     }
 
     clear() {
-        this._cache = {}
+        this._cache = {};
     }
 
     remove(nodePath) {

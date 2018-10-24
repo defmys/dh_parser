@@ -21,14 +21,8 @@ function loadConfigFile(dirPath) {
         nextList.forEach((next) => {
             if (next === "config.json") {
                 const configPath = path.resolve(dirPath, next);
-                let content = '';
-                let textContent = fs.readFileSync(configPath, 'utf8');
-                try {
-                    content = JSON.parse(textContent);
-                } catch (e) {
-                    console.error(e);
-                    return;
-                }
+                let textContent = fs.readFileSync(configPath, "utf8");
+                let content = JSON.parse(textContent);
                 dataList.push(content);
             } else {
                 const curPath = path.resolve(dirPath, next);
@@ -46,23 +40,23 @@ function loadConfigFile(dirPath) {
 
 function exportToFile(rootPath, contentList, type, dbCollection) {
     let targetContentList = filterByType(contentList, type);
-    let stringList = targetContentList.map((value) => {return JSON.stringify(value)});
+    let stringList = targetContentList.map((value) => {return JSON.stringify(value);});
 
     let scriptContent = [];
 
     scriptContent.push(`db.${dbCollection}.deleteMany();`);
 
     scriptContent.push(`db.${dbCollection}.insertMany([`);
-    scriptContent.push(stringList.join(',\n'));
+    scriptContent.push(stringList.join(",\n"));
     scriptContent.push("]);");
 
-    fs.writeFileSync(path.resolve(rootPath, `export_${type}.js`), scriptContent.join('\n'));
+    fs.writeFileSync(path.resolve(rootPath, `export_${type}.js`), scriptContent.join("\n"));
 }
 
 
 export function exportScript(rootPath) {
     let configList = loadConfigFile(rootPath);
 
-    exportToFile(rootPath, configList, 'Actor', 'actor');
-    exportToFile(rootPath, configList, 'Material', 'material');
+    exportToFile(rootPath, configList, "Actor", "actor");
+    exportToFile(rootPath, configList, "Material", "material");
 }

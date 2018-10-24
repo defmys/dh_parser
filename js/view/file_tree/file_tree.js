@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-import fs from 'fs';
-import React from 'react';
-import {Treebeard, decorators } from 'react-treebeard';
-import path from 'path'
+import fs from "fs";
+import React from "react";
+import {Treebeard, decorators } from "react-treebeard";
+import path from "path";
 import {ConfigDetail} from "./config_detail";
 import {fileTreeTheme} from "./file_tree_theme";
 import {NodeCache} from "../../model/nodeCache";
@@ -19,7 +19,7 @@ export class FileTree extends React.Component {
         this.state = {
             cursor: null,
             dirList: {},
-            curPath: ''
+            curPath: ""
         };
         this.onToggle = this.onToggle.bind(this);
         this.createConfig = this.createConfig.bind(this);
@@ -28,8 +28,8 @@ export class FileTree extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.path !== this.props.path && this.props.path && this.props.path !== '') {
-            let newData = this.loadDirInfo(this.props.path, 'root');
+        if (prevProps.path !== this.props.path && this.props.path && this.props.path !== "") {
+            let newData = this.loadDirInfo(this.props.path, "root");
             newData.toggled = true;
             this.setState({dirList: newData});
         }
@@ -58,12 +58,13 @@ export class FileTree extends React.Component {
     }
 
     onToggle(node, toggled){
-        if (this.props.path === undefined || this.props.path === '') {
+        if (this.props.path === undefined || this.props.path === "") {
             return;
         }
 
         if(this.state.cursor) {
-            this.state.cursor.active = false;
+            let curCursor = this.state.cursor;
+            curCursor.active = false;
         }
         node.active = true;
         if(node.children) {
@@ -71,7 +72,7 @@ export class FileTree extends React.Component {
         }
         this.setState({ cursor: node });
 
-        const configPath = path.resolve(node.path, 'config.json');
+        const configPath = path.resolve(node.path, "config.json");
         this.openDir(configPath);
     }
 
@@ -83,7 +84,7 @@ export class FileTree extends React.Component {
 
     createConfig() {
         if (!fs.existsSync(this.state.curPath)) {
-            fs.writeFileSync(this.state.curPath, '');
+            fs.writeFileSync(this.state.curPath, "");
             this.openDir(this.state.curPath);
         }
     }
@@ -97,7 +98,7 @@ export class FileTree extends React.Component {
     }
 
     renderConfigDetail() {
-        let ret = '';
+        let ret = "";
         if (fs.existsSync(this.state.curPath)) {
             ret = <ConfigDetail path={this.state.curPath} ref={this.configDetailRef}/>;
         } else if (this.state.cursor) {
@@ -121,7 +122,7 @@ export class FileTree extends React.Component {
     }
 
     containerDecorator(props) {
-        const activeColor = this.state.cursor && this.state.cursor.path === props.node.path ? '#003d7d' : props.style.base.backgroundColor;
+        const activeColor = this.state.cursor && this.state.cursor.path === props.node.path ? "#003d7d" : props.style.base.backgroundColor;
         return (
             <div className="treeNodeDiv" onClick={props.onClick} style={{backgroundColor: activeColor}}>
                 <props.decorators.Toggle {...props} style={props.style.toggle} />

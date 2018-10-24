@@ -1,10 +1,10 @@
-import fs from 'fs';
-import path from 'path'
+import fs from "fs";
+import path from "path";
 
 
 class ColorTagImpl {
     constructor() {
-        this.tags = JSON.parse(fs.readFileSync(path.join(__dirname, '../../../asset/colorTag.json'), 'utf8'));
+        this.tags = JSON.parse(fs.readFileSync(path.join(__dirname, "../../../asset/colorTag.json"), "utf8"));
     }
 }
 
