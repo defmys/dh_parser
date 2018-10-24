@@ -6,6 +6,7 @@ import {Treebeard, decorators } from 'react-treebeard';
 import path from 'path'
 import {ConfigDetail} from "./config_detail";
 import {fileTreeTheme} from "./file_tree_theme";
+import {NodeCache} from "../../model/nodeCache";
 
 
 
@@ -88,6 +89,7 @@ export class FileTree extends React.Component {
     }
 
     removeConfig() {
+        NodeCache.inst().remove(this.state.curPath);
         if (fs.existsSync(this.state.curPath)) {
             fs.unlinkSync(this.state.curPath);
             this.openDir(this.state.curPath);

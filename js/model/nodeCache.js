@@ -32,6 +32,12 @@ export class NodeCache {
         this._cache = {}
     }
 
+    remove(nodePath) {
+        if (this._cache[nodePath]) {
+            delete this._cache[nodePath];
+        }
+    }
+
     saveToDisk() {
         for (let nodePath in this._cache) {
             if (this._cache.hasOwnProperty(nodePath)) {
