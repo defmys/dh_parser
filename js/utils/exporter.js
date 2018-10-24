@@ -44,7 +44,7 @@ function exportToFile(rootPath, contentList, type, dbCollection) {
 
     let scriptContent = [];
 
-    scriptContent.push(`db.${dbCollection}.deleteMany();`);
+    scriptContent.push(`db.${dbCollection}.deleteMany({});`);
 
     scriptContent.push(`db.${dbCollection}.insertMany([`);
     scriptContent.push(stringList.join(",\n"));
