@@ -71,7 +71,10 @@ export class ConfigDetail extends React.Component {
     }
 
     handleTypeChange(event) {
-        this.setState({type: event.target.text});
+        if (this.configRef.current) {
+            let content = this.configRef.current.content();
+            this.setState({type: event.target.text, content: content});
+        }
     }
 
     saveToCache(configPath) {
