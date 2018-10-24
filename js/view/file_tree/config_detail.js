@@ -26,8 +26,6 @@ export class ConfigDetail extends React.Component {
         let content = {};
 
         if (NodeCache.inst().hasCache(this.props.path)) {
-            console.log('hit cache');
-
             content = NodeCache.inst().load(this.props.path);
 
             if (!content.type) {

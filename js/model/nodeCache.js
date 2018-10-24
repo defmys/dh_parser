@@ -42,7 +42,6 @@ export class NodeCache {
         for (let nodePath in this._cache) {
             if (this._cache.hasOwnProperty(nodePath)) {
                 fs.writeFileSync(nodePath, JSON.stringify(this._cache[nodePath], null, 2));
-                console.log(`save ${nodePath}`);
             }
         }
 
