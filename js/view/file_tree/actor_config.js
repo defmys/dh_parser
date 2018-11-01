@@ -176,6 +176,7 @@ export class ActorConfig extends BaseConfig {
                                         className="text-center"
                                         name={idxName}
                                         value={slot.index}
+                                        style={{width: "100px"}}
                                         onChange={(event) => this.handleSlotIndexChange(event, index)}
                                     />
                                 </td>
@@ -188,7 +189,7 @@ export class ActorConfig extends BaseConfig {
                                 </td>
 
                                 <td>
-                                    <div className="input-group">
+                                    <div className="input-group d-flex justify-content-center">
                                         {this.renderMaterial(index)}
                                     </div>
                                 </td>
