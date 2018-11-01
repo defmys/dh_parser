@@ -61,7 +61,7 @@ export class ActorConfig extends BaseConfig {
         }
 
         slots[index] = {
-            index: index,
+            index: 0,
             display_name: "",
             material_tags: []
         };
