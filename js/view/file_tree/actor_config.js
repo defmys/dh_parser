@@ -63,7 +63,7 @@ export class ActorConfig extends BaseConfig {
         slots[index] = {
             index: index,
             display_name: "",
-            value: 0
+            material_tags: []
         };
 
         this.setState({slots: slots});
@@ -108,10 +108,6 @@ export class ActorConfig extends BaseConfig {
     handleMaterialTagChange(slotIndex, materialIdx) {
         let slots = {...this.state.slots};
         let slot = slots[slotIndex];
-
-        if (slot.material_tags === undefined) {
-            slot.material_tags = [];
-        }
 
         const tag_idx = parseInt(materialIdx);
         if (slot.material_tags.includes(tag_idx)) {
