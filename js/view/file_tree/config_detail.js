@@ -103,8 +103,8 @@ export class ConfigDetail extends React.Component {
 
     render() {
         return (
-            <div className="text-nowrap mt-2">
-                <div className="row mt-2">
+            <div className="text-nowrap mt-3 mb-3">
+                <div className="row">
                     <div className="col-2 text-center">Type</div>
                     <div className="col-3">
                         <button className="btn btn-block btn-secondary dropdown-toggle text-center" type="button" id="typeDropDown"

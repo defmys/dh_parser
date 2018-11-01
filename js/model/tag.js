@@ -20,6 +20,19 @@ class ColorTagImpl extends TagImpl {
 }
 
 
+
+const _colorCheckboxStyle = {
+    "1": {fontWeight: "bold"},
+    "2": {fontWeight: "bold", backgroundColor: "#3366ff", color: "white", textShadow: "1px 1px 0px #000000"},
+    "3": {fontWeight: "bold", backgroundColor: "#996600", color: "white", textShadow: "1px 1px 0px #000000"},
+    "4": {fontWeight: "bold", backgroundColor: "#00e600", color: "white", textShadow: "1px 1px 0px #000000"},
+    "5": {fontWeight: "bold", backgroundColor: "#ffff33"},
+    "6": {fontWeight: "bold", backgroundColor: "#ffad33"},
+    "7": {fontWeight: "bold", backgroundColor: "#ffb3ff"},
+    "8": {fontWeight: "bold", backgroundColor: "#b84dff", color: "white", textShadow: "1px 1px 0px #000000"},
+    "9": {fontWeight: "bold", backgroundColor: "#ff3300", color: "white", textShadow: "1px 1px 0px #000000"}
+};
+
 let _colorTag = null;
 export class ColorTag {
     static inst() {
@@ -28,6 +41,15 @@ export class ColorTag {
         }
 
         return _colorTag;
+    }
+
+    static getCheckboxStyle(colorTagIdx) {
+        const idx = colorTagIdx.toString();
+        if (_colorCheckboxStyle.hasOwnProperty(idx)) {
+            return _colorCheckboxStyle[idx];
+        }
+
+        return {};
     }
 }
 

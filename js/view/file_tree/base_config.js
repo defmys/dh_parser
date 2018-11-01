@@ -127,45 +127,47 @@ export class BaseConfig extends React.Component {
     renderID() {
         return <div className="row mt-1" key="id">
             <div className="col-4">ID</div>
-            <div className="col-6"><input type="number" name="id" className="text-center" value={this.state.id || 0} onChange={this.handleInputChange}/></div>
+            <div className="col-8"><input type="number" name="id" className="text-center" value={this.state.id || 0} style={{width: "100%"}} onChange={this.handleInputChange}/></div>
         </div>;
     }
 
     renderDisplayName() {
         return <div className="row mt-1" key="display_name">
             <div className="col-4">Display Name</div>
-            <div className="col-6"><input name="display_name" className="text-center" value={this.state.display_name || ""} onChange={this.handleInputChange}/></div>
+            <div className="col-8"><input name="display_name" className="text-center" value={this.state.display_name || ""} style={{width: "100%"}} onChange={this.handleInputChange}/></div>
         </div>;
     }
 
     renderPackage() {
         return <div className="row mt-1" key="package">
             <div className="col-4">package</div>
-            <div className="col-6"><input name="package" className="text-center" value={this.state.package || ""} onChange={this.handleInputChange}/></div>
+            <div className="col-8"><input name="package" className="text-center" value={this.state.package || ""} style={{width: "100%"}} onChange={this.handleInputChange}/></div>
         </div>;
     }
 
     renderRefPath() {
         return <div className="row mt-1" key="ref_path">
-            <div className="col-4">Reference Path</div>
-            <div className="col-6"><input name="ref_path" className="text-center" value={this.state.ref_path || ""} onChange={this.handleInputChange}/></div>
+            <div className="col-2">Reference Path</div>
+            <div className="col"><input name="ref_path" className="" value={this.state.ref_path || ""} style={{width: "100%"}} onChange={this.handleInputChange}/></div>
         </div>;
     }
 
     renderMountPoint() {
         return <div className="row mt-1" key="mount_point">
-            <div className="col-4">Mount Point</div>
-            <div className="col-6"><input name="mount_point" className="text-center" value={this.state.mount_point || ""} onChange={this.handleInputChange}/></div>
+            <div className="col-2">Mount Point</div>
+            <div className="col"><input name="mount_point" className="" value={this.state.mount_point || ""} style={{width: "100%"}} onChange={this.handleInputChange}/></div>
         </div>;
     }
 
     renderColorTag() {
         const dropDown = [];
         const tags = ColorTag.inst().tags;
+        const basicStyle={cursor: "pointer", width: "90px"};
 
         for (let tag_idx in tags) {
             if (tags.hasOwnProperty(tag_idx)) {
-                dropDown.push(<div className="colorTagCheckboxDiv input-group-text mr-1 mt-1" style={{cursor: "pointer", width: "90px"}} key={tag_idx}  onClick={() => this.handleColorTagChange(parseInt(tag_idx))}>
+                const style = {...basicStyle, ...ColorTag.getCheckboxStyle(tag_idx)};
+                dropDown.push(<div className="colorTagCheckboxDiv input-group-text mr-1 mt-1" key={tag_idx} style={style} onClick={() => this.handleColorTagChange(parseInt(tag_idx))}>
                     <input type="checkbox" aria-label={tags[tag_idx]} style={{cursor: "pointer"}}
                         onChange={() => {}}
                         checked={this.state.color_tag.includes(parseInt(tag_idx))}/>
@@ -184,12 +186,20 @@ export class BaseConfig extends React.Component {
         </div>;
     }
 
-    renderBase() {
+    renderBasePart1() {
         let buffer = [];
+
 
         buffer.push(this.renderID());
         buffer.push(this.renderDisplayName());
         buffer.push(this.renderPackage());
+
+        return buffer;
+    }
+
+    renderBasePart2() {
+        let buffer = [];
+
         buffer.push(this.renderMountPoint());
         buffer.push(this.renderRefPath());
 
@@ -210,16 +220,22 @@ export class BaseConfig extends React.Component {
             img = <div style={{opacity: 0.1}}><FontAwesomeIcon icon={faTimesCircle} className="fa-8x" data-toggle="tooltip" data-placement="bottom" title="未找到缩略图"/></div>;
         }
 
-        buffer.push(<div className="row" key="configBaseRow">
-            <div className="col">
-                {this.renderBase()}
+        buffer.push(<div className="row" key="configBaseRow1">
+            <div className="col d-flex justify-content-center flex-column">
+                {this.renderBasePart1()}
             </div>
             <div className="col text-center">
                 {img}
             </div>
         </div>);
 
-        buffer.push(<div className="row mt-2 border border-1 border-secondary rounded" key="tagRow">
+        buffer.push(<div className="row" key="configBaseRow2">
+            <div className="col mt-2">
+                {this.renderBasePart2()}
+            </div>
+        </div>);
+
+        buffer.push(<div className="row mt-4 border border-1 border-secondary rounded" key="tagRow">
             <div className="col">
                 {this.renderColorTag()}
             </div>
