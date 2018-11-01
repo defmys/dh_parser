@@ -2,11 +2,7 @@ import React from "react";
 import {BaseConfig} from "./base_config";
 import {faPlus, faMinus} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-
-
-const materialBtnStyle = {
-    fontSize: "12px"
-};
+import {MaterialTag} from "../../model/tag";
 
 
 export class ActorConfig extends BaseConfig {
@@ -17,9 +13,6 @@ export class ActorConfig extends BaseConfig {
         this.handleSlotIndexChange = this.handleSlotIndexChange.bind(this);
         this.handleSlotDisplayNameChange = this.handleSlotDisplayNameChange.bind(this);
         this.handleRemoveSlot = this.handleRemoveSlot.bind(this);
-        this.handleMaterialChange = this.handleMaterialChange.bind(this);
-        this.handleAddMaterial = this.handleAddMaterial.bind(this);
-        this.handleRemoveMaterial = this.handleRemoveMaterial.bind(this);
         this.handleHighLight = this.handleHighLight.bind(this);
         this.handleRemoveHighLight = this.handleRemoveHighLight.bind(this);
     }
@@ -37,7 +30,7 @@ export class ActorConfig extends BaseConfig {
                     let target = fixedContent["slots"][idx];
                     BaseConfig.fillWithDefault(target, from, "index", idx);
                     BaseConfig.fillWithDefault(target, from, "display_name", "");
-                    BaseConfig.fillWithDefault(target, from, "materials", []);
+                    BaseConfig.fillWithDefault(target, from, "material_tags", []);
                 }
             }
         }
@@ -102,34 +95,6 @@ export class ActorConfig extends BaseConfig {
         this.setState({slots: slots});
     }
 
-    handleMaterialChange(event, idx, materialIdx) {
-        let slots = {...this.state.slots};
-        let slot = slots[parseInt(idx)];
-
-        slot.materials[parseInt(materialIdx)] = parseInt(event.target.value);
-
-        this.setState({slots: slots});
-    }
-
-    handleAddMaterial(idx) {
-        let slots = {...this.state.slots};
-        let slot = slots[parseInt(idx)];
-
-        if (slot.materials === undefined) {
-            slot.materials = [];
-        }
-        slot.materials.push(0);
-
-        this.setState({slots: slots});
-    }
-
-    handleRemoveMaterial(idx, materialIdx) {
-        let slots = {...this.state.slots};
-        let slot = slots[parseInt(idx)];
-        slot.materials.splice(parseInt(materialIdx), 1);
-        this.setState({slots: slots});
-    }
-
     handleHighLight(idText) {
         let element = document.getElementById(idText);
         element.classList.add("bg-warning");
@@ -140,24 +105,37 @@ export class ActorConfig extends BaseConfig {
         element.classList.remove("bg-warning");
     }
 
+    handleMaterialTagChange(slotIndex, materialIdx) {
+        let slots = {...this.state.slots};
+        let slot = slots[slotIndex];
+
+        if (slot.material_tags === undefined) {
+            slot.material_tags = [];
+        }
+
+        const tag_idx = parseInt(materialIdx);
+        if (slot.material_tags.includes(tag_idx)) {
+            slot.material_tags.splice(slot.material_tags.indexOf(tag_idx), 1);
+        } else {
+            slot.material_tags.push(tag_idx);
+        }
+
+        this.setState({slots: slots});
+    }
+
     renderMaterial(slotIndex) {
         let buffer = [];
 
         let slot = this.state.slots[slotIndex];
-        const material = slot.materials;
-        for (let idx in material) {
-            if (material.hasOwnProperty(idx)) {
-                const materialID = parseInt(material[idx]);
-                const key = `material_${slotIndex.toString()}_${idx.toString()}`;
-                buffer.push(<div id={key} key={key} className="d-flex justify-content-center mb-1" style={{borderRadius: "5px"}}>
-                    <input type="number" className="text-center" value={materialID} onChange={(event) => this.handleMaterialChange(event, slotIndex, idx)}/>
-                    <button className="btn btn-sm btn-outline-danger ml-1 mr-1"
-                        style={materialBtnStyle}
-                        onClick={() => this.handleRemoveMaterial(slotIndex, idx)}
-                        onMouseEnter={() => this.handleHighLight(key)}
-                        onMouseLeave={() => this.handleRemoveHighLight(key)}>
-                        <FontAwesomeIcon icon={faMinus}/>
-                    </button>
+        const tags = MaterialTag.inst().tags;
+        const material_tags = slot.material_tags;
+        for (let tag_idx in tags) {
+            if (tags.hasOwnProperty(tag_idx)) {
+                buffer.push(<div className="MaterialTagCheckboxDiv input-group-text mb-1 mr-1" style={{cursor: "pointer", width: "70px"}} key={tag_idx}  onClick={() => this.handleMaterialTagChange(slotIndex, parseInt(tag_idx))}>
+                    <input type="checkbox" aria-label={tags[tag_idx]} style={{cursor: "pointer"}}
+                        onChange={() => {}}
+                        checked={material_tags.includes(parseInt(tag_idx))}/>
+                    {tags[tag_idx]}
                 </div>);
             }
         }
@@ -177,9 +155,9 @@ export class ActorConfig extends BaseConfig {
                     <table className="table text-center" id={tableID} key={index} style={{borderRadius: "10px"}}>
                         <thead>
                             <tr>
-                                <th scope="col-2">Index</th>
-                                <th scope="col">Display Name</th>
-                                <th scope="col">Material ID <button className="btn btn-sm btn-outline-primary  ml-1 mr-1 mt-0 mb-1 text-center" style={materialBtnStyle} onClick={() => this.handleAddMaterial(index)}><FontAwesomeIcon icon={faPlus}/></button></th>
+                                <th scope="col-1">Index</th>
+                                <th scope="col-2">Display Name</th>
+                                <th scope="col">Material Tag</th>
                                 <th scope="col-1">
                                     <button className="btn btn-outline-danger ml-1 mr-1"
                                         onClick={() => this.handleRemoveSlot(index)}
@@ -210,7 +188,9 @@ export class ActorConfig extends BaseConfig {
                                 </td>
 
                                 <td>
-                                    {this.renderMaterial(index)}
+                                    <div className="input-group">
+                                        {this.renderMaterial(index)}
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
