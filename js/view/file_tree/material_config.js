@@ -54,7 +54,7 @@ export class MaterialConfig extends BaseConfig {
         }
 
         return <div className="row mt-2 mb-2" key="color_tag">
-            <div className="col-2">Color Tag</div>
+            <div className="col-2">色系</div>
             <div className="col">
                 <div className="input-group">
                     {dropDown}

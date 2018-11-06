@@ -119,28 +119,28 @@ export class BaseConfig extends React.Component {
 
     renderDisplayName() {
         return <div className="row mt-1" key="display_name">
-            <div className="col-4">Display Name</div>
+            <div className="col-4">显示名称</div>
             <div className="col-8"><input name="display_name" className="text-center" value={this.state.display_name || ""} style={{width: "100%"}} onChange={this.handleInputChange}/></div>
         </div>;
     }
 
     renderPackage() {
         return <div className="row mt-1" key="package">
-            <div className="col-4">package</div>
+            <div className="col-4">包名</div>
             <div className="col-8"><input name="package" className="text-center" value={this.state.package || ""} style={{width: "100%"}} onChange={this.handleInputChange}/></div>
         </div>;
     }
 
     renderRefPath() {
         return <div className="row mt-1" key="ref_path">
-            <div className="col-2">Reference Path</div>
+            <div className="col-2">引用路径</div>
             <div className="col"><input name="ref_path" className="" value={this.state.ref_path || ""} style={{width: "100%"}} onChange={this.handleInputChange}/></div>
         </div>;
     }
 
     renderMountPoint() {
         return <div className="row mt-1" key="mount_point">
-            <div className="col-2">Mount Point</div>
+            <div className="col-2">挂载点</div>
             <div className="col"><input name="mount_point" className="" value={this.state.mount_point || ""} style={{width: "100%"}} onChange={this.handleInputChange}/></div>
         </div>;
     }

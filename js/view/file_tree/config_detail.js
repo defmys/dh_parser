@@ -6,7 +6,17 @@ import {NodeCache} from "../../model/nodeCache";
 import PropTypes from "prop-types";
 
 
-const defaultType = "Material";
+const types = {
+    Actor: "Actor",
+    Material: "Material"
+};
+
+const typeName = {
+    "Actor": "模型",
+    "Material": "材质"
+};
+
+const defaultType = types.Material;
 
 
 export class ConfigDetail extends React.Component {
@@ -70,10 +80,10 @@ export class ConfigDetail extends React.Component {
         }
     }
 
-    handleTypeChange(event) {
+    handleTypeChange(type) {
         if (this.configRef.current) {
             let content = this.configRef.current.content();
-            this.setState({type: event.target.text, content: content});
+            this.setState({type: type, content: content});
         }
     }
 
@@ -90,7 +100,7 @@ export class ConfigDetail extends React.Component {
     renderConfig() {
         let ret = "";
         if (this.state.type) {
-            if (this.state.type === "Actor") {
+            if (this.state.type === types.Actor) {
                 ret = <ActorConfig path={this.props.path} configType={this.state.type} content={this.state.content} ref={this.configRef}/>;
             }
             else {
@@ -102,18 +112,25 @@ export class ConfigDetail extends React.Component {
     }
 
     render() {
+        let curType = "";
+        if (this.state.type) {
+            curType = this.state.type;
+        } else {
+            curType = defaultType;
+        }
+
         return (
             <div className="text-nowrap mt-3 mb-3">
                 <div className="row">
-                    <div className="col-2 text-center">Type</div>
+                    <div className="col-2 text-center">类型</div>
                     <div className="col-3">
                         <button className="btn btn-block btn-secondary dropdown-toggle text-center" type="button" id="typeDropDown"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {this.state.type || defaultType}
+                            {typeName[curType]}
                         </button>
                         <div className="dropdown-menu text-center" aria-labelledby="typeDropDown">
-                            <a className="dropdown-item" href="#" onClick={this.handleTypeChange}>Actor</a>
-                            <a className="dropdown-item" href="#" onClick={this.handleTypeChange}>Material</a>
+                            <a className="dropdown-item" href="#" onClick={() => this.handleTypeChange(types.Actor)}>模型</a>
+                            <a className="dropdown-item" href="#" onClick={() => this.handleTypeChange(types.Material)}>材质</a>
                         </div>
                     </div>
                 </div>
