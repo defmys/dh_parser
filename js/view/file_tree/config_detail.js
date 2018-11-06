@@ -12,7 +12,7 @@ const types = {
 };
 
 const typeName = {
-    "Actor": "模型",
+    "Actor": "物件",
     "Material": "材质"
 };
 
@@ -129,8 +129,8 @@ export class ConfigDetail extends React.Component {
                             {typeName[curType]}
                         </button>
                         <div className="dropdown-menu text-center" aria-labelledby="typeDropDown">
-                            <a className="dropdown-item" href="#" onClick={() => this.handleTypeChange(types.Actor)}>模型</a>
-                            <a className="dropdown-item" href="#" onClick={() => this.handleTypeChange(types.Material)}>材质</a>
+                            <a className="dropdown-item" href="#" onClick={() => this.handleTypeChange(types.Actor)}>{typeName[types.Actor]}</a>
+                            <a className="dropdown-item" href="#" onClick={() => this.handleTypeChange(types.Material)}>{typeName[types.Material]}</a>
                         </div>
                     </div>
                 </div>
