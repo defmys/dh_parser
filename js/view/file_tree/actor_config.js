@@ -203,7 +203,7 @@ export class ActorConfig extends BaseConfig {
         return <div className="row mt-4 border border-1 border-secondary rounded" key="slots">
             <div className="col m-1">
                 <div className="row">
-                    <div className="col mt-4"><h5>材质</h5></div>
+                    <div className="col mt-4">材质</div>
                 </div>
 
                 {this.renderSlotItems()}

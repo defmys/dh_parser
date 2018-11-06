@@ -194,6 +194,13 @@ export class BaseConfig extends React.Component {
             </div>
         </div>);
 
+        buffer.push(<div className="row mt-4 border border-1 border-secondary rounded" key="configBaseTags">
+            <div className="col mt-4">
+                关键字
+                <hr />
+            </div>
+        </div>);
+
         buffer.push(
             <div className="row" key="configAdditionalRow">
                 <div className="col">
