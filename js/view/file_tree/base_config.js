@@ -22,14 +22,16 @@ export class BaseConfig extends React.Component {
 
     constructor(props) {
         super(props);
-
-        this.state = {
-            type: props.configType,
-            imgPath: "",
-            color_tag: []
-        };
+        this.state = this.initialSate(props);
 
         this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    initialSate(props) {
+        return {
+            type: props.configType,
+            imgPath: ""
+        };
     }
 
     componentDidMount() {
@@ -191,13 +193,6 @@ export class BaseConfig extends React.Component {
         buffer.push(<div className="row" key="configBaseRow2">
             <div className="col mt-2">
                 {this.renderBasePart2()}
-            </div>
-        </div>);
-
-        buffer.push(<div className="row mt-4 border border-1 border-secondary rounded" key="configBaseTags">
-            <div className="col mt-4">
-                关键字
-                <hr />
             </div>
         </div>);
 

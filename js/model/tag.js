@@ -71,3 +71,60 @@ export class MaterialTag {
         return _materialTag;
     }
 }
+
+
+class MajorTagImpl extends TagImpl {
+    get filename() {
+        return "majorTag.json";
+    }
+}
+
+
+let _majorTag = null;
+export class MajorTag {
+    static inst() {
+        if (_majorTag === null) {
+            _majorTag = new MajorTagImpl();
+        }
+
+        return _majorTag;
+    }
+}
+
+
+class SubTagImpl extends TagImpl {
+    get filename() {
+        return "subTag.json";
+    }
+}
+
+
+let _subTag = null;
+export class SubTag {
+    static inst() {
+        if (_subTag === null) {
+            _subTag = new SubTagImpl();
+        }
+
+        return _subTag;
+    }
+}
+
+
+class tagHierarchyImpl extends TagImpl {
+    get filename() {
+        return "tagHierarchy.json";
+    }
+}
+
+
+let _tagHierarchy = null;
+export class TagHierarchy {
+    static inst() {
+        if (_tagHierarchy === null) {
+            _tagHierarchy = new tagHierarchyImpl();
+        }
+
+        return _tagHierarchy;
+    }
+}

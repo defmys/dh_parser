@@ -2,7 +2,7 @@ import React from "react";
 import {BaseConfig} from "./base_config";
 import {faPlus, faMinus} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {MaterialTag} from "../../model/tag";
+import {MajorTag, MaterialTag, SubTag, TagHierarchy} from "../../model/tag";
 
 
 export class ActorConfig extends BaseConfig {
@@ -15,10 +15,21 @@ export class ActorConfig extends BaseConfig {
         this.handleRemoveSlot = this.handleRemoveSlot.bind(this);
         this.handleHighLight = this.handleHighLight.bind(this);
         this.handleRemoveHighLight = this.handleRemoveHighLight.bind(this);
+        this.handleMajorTagChange = this.handleMajorTagChange.bind(this);
+        this.handleSubTagChange = this.handleSubTagChange.bind(this);
+    }
+
+    initialSate(props) {
+        let state = super.initialSate(props);
+        state["major_tag"] = "1";
+        state["sub_tag"] = "1";
+        return state;
     }
 
     prepareConfigContent(content) {
         let fixedContent = super.prepareConfigContent(content);
+        BaseConfig.fillWithDefault(fixedContent, content, "major_tag", "1");
+        BaseConfig.fillWithDefault(fixedContent, content, "sub_tag", "1");
 
         fixedContent["slots"] = {};
         if (content["slots"] !== undefined) {
@@ -48,6 +59,9 @@ export class ActorConfig extends BaseConfig {
             }
         }
         content.slots = slots;
+
+        content.major_tag = this.state.major_tag;
+        content.sub_tag = this.state.sub_tag;
 
         return content;
     }
@@ -117,6 +131,22 @@ export class ActorConfig extends BaseConfig {
         }
 
         this.setState({slots: slots});
+    }
+
+    handleMajorTagChange(tagIdx) {
+        this.setState({"major_tag": tagIdx});
+
+        const hierarchy = TagHierarchy.inst().tags[tagIdx];
+        for (let tag_idx in hierarchy) {
+            if (hierarchy.hasOwnProperty(tag_idx)) {
+                this.setState({"sub_tag": tag_idx});
+                break;
+            }
+        }
+    }
+
+    handleSubTagChange(tagIdx) {
+        this.setState({"sub_tag": tagIdx});
     }
 
     renderMaterial(slotIndex) {
@@ -199,6 +229,73 @@ export class ActorConfig extends BaseConfig {
         return slotsBuffer;
     }
 
+    renderMajorTag() {
+        const tags = MajorTag.inst().tags;
+
+        let majorTag = this.state["major_tag"];
+        if (tags[majorTag] === undefined) {
+            majorTag = "1";
+        }
+
+        let buffer = [];
+        for (let tag_idx in tags) {
+            if (tags.hasOwnProperty(tag_idx)) {
+                buffer.push(<a className="dropdown-item" href="#" key={tag_idx} onClick={() => this.handleMajorTagChange(tag_idx)}>{tags[tag_idx]}</a>);
+            }
+        }
+
+        return <div className="col">
+            <button className="btn btn-block btn-secondary dropdown-toggle text-center" type="button" id="majorTagDropDown"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {tags[majorTag]}
+            </button>
+            <div className="dropdown-menu text-center" aria-labelledby="majorTagDropDown">
+                {buffer}
+            </div>
+        </div>;
+    }
+
+    renderSubTag() {
+        const tags = SubTag.inst().tags;
+        const hierarchy = TagHierarchy.inst().tags[this.state.major_tag];
+
+        let subTag = this.state["sub_tag"];
+        if (tags[subTag] === undefined) {
+            subTag = "1";
+        }
+
+        let buffer = [];
+        for (let tag_idx in hierarchy) {
+            if (hierarchy.hasOwnProperty(tag_idx)) {
+                buffer.push(<a className="dropdown-item" href="#" key={tag_idx} onClick={() => this.handleSubTagChange(tag_idx)}>{tags[tag_idx]}</a>);
+            }
+        }
+
+        return <div className="col">
+            <button className="btn btn-block btn-secondary dropdown-toggle text-center" type="button" id="subTagDropDown"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {tags[subTag]}
+            </button>
+            <div className="dropdown-menu text-center" aria-labelledby="subTagDropDown">
+                {buffer}
+            </div>
+        </div>;
+    }
+
+    renderKeyword() {
+        return <div className="row mt-4 pb-3 pb-3 border border-1 border-secondary rounded" key="configBaseTags">
+            <div className="col">
+                关键字
+                <hr />
+                <div className="row">
+                    {this.renderMajorTag()}
+                    {this.renderSubTag()}
+                    <div className="col"> </div>
+                </div>
+            </div>
+        </div>;
+    }
+
     renderSlots() {
         return <div className="row mt-4 border border-1 border-secondary rounded" key="slots">
             <div className="col m-1">
@@ -221,7 +318,10 @@ export class ActorConfig extends BaseConfig {
 
     additionalRender() {
         let buffer = [];
+
+        buffer.push(this.renderKeyword());
         buffer.push(this.renderSlots());
+
         return buffer;
     }
 }

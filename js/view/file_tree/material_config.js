@@ -10,6 +10,12 @@ export class MaterialConfig extends BaseConfig {
         this.handleColorTagChange = this.handleColorTagChange.bind(this);
     }
 
+    initialSate(props) {
+        let state = super.initialSate(props);
+        state["color_tag"] = [];
+        return state;
+    }
+
     prepareConfigContent (content) {
         let fixedContent = super.prepareConfigContent(content);
 
@@ -63,6 +69,15 @@ export class MaterialConfig extends BaseConfig {
         </div>;
     }
 
+    renderKeyword() {
+        return <div className="row mt-4 border border-1 border-secondary rounded" key="configBaseTags">
+            <div className="col mt-4">
+                关键字
+                <hr />
+            </div>
+        </div>;
+    }
+
     additionalRender() {
         let buffer = [];
 
@@ -71,6 +86,7 @@ export class MaterialConfig extends BaseConfig {
                 {this.renderColorTag()}
             </div>
         </div>);
+        buffer.push(this.renderKeyword());
 
         return buffer;
     }
