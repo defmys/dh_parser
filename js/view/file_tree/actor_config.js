@@ -60,8 +60,8 @@ export class ActorConfig extends BaseConfig {
         }
         content.slots = slots;
 
-        content.major_tag = this.state.major_tag;
-        content.sub_tag = this.state.sub_tag;
+        content.major_tag = parseInt(this.state.major_tag);
+        content.sub_tag = parseInt(this.state.sub_tag);
 
         return content;
     }
@@ -232,7 +232,7 @@ export class ActorConfig extends BaseConfig {
     renderMajorTag() {
         const tags = MajorTag.inst().tags;
 
-        let majorTag = this.state["major_tag"];
+        let majorTag = this.state["major_tag"].toString();
         if (tags[majorTag] === undefined) {
             majorTag = "1";
         }
@@ -257,9 +257,9 @@ export class ActorConfig extends BaseConfig {
 
     renderSubTag() {
         const tags = SubTag.inst().tags;
-        const hierarchy = TagHierarchy.inst().tags[this.state.major_tag];
+        const hierarchy = TagHierarchy.inst().tags[this.state.major_tag.toString()];
 
-        let subTag = this.state["sub_tag"];
+        let subTag = this.state["sub_tag"].toString();
         if (tags[subTag] === undefined) {
             subTag = "1";
         }
