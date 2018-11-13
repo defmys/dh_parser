@@ -183,7 +183,7 @@ export class ActorConfig extends BaseConfig {
                             <tr>
                                 <th scope="col-1">Index</th>
                                 <th scope="col-2">显示名称</th>
-                                <th scope="col">材质关键字</th>
+                                <th scope="col">材质类别</th>
                                 <th scope="col-1">
                                     <button className="btn btn-outline-danger ml-1 mr-1"
                                         onClick={() => this.handleRemoveSlot(index)}
@@ -284,9 +284,9 @@ export class ActorConfig extends BaseConfig {
 
     renderCategory() {
         return <div className="row mt-4 pb-3 pb-3 border border-1 border-secondary rounded" key="configBaseTags">
-            <div className="col m-1">
+            <div className="col mt-4">
                 分类
-                <hr />
+                <hr className="mt-0" />
                 <div className="row text-center">
                     <div className="col"> </div>
                     {this.renderMajorTag()}
@@ -301,7 +301,7 @@ export class ActorConfig extends BaseConfig {
         return <div className="row mt-4 border border-1 border-secondary rounded" key="slots">
             <div className="col m-1">
                 <div className="row">
-                    <div className="col mt-4">材质</div>
+                    <div className="col mt-4">可替换元素</div>
                 </div>
 
                 {this.renderSlotItems()}
