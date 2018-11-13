@@ -232,7 +232,7 @@ export class ActorConfig extends BaseConfig {
     renderMajorTag() {
         const tags = MajorTag.inst().tags;
 
-        let majorTag = this.state["major_tag"].toString();
+        let majorTag = this.state["major_tag"];
         if (tags[majorTag] === undefined) {
             majorTag = "1";
         }
@@ -257,9 +257,9 @@ export class ActorConfig extends BaseConfig {
 
     renderSubTag() {
         const tags = SubTag.inst().tags;
-        const hierarchy = TagHierarchy.inst().tags[this.state.major_tag.toString()];
+        const hierarchy = TagHierarchy.inst().tags[this.state.major_tag];
 
-        let subTag = this.state["sub_tag"].toString();
+        let subTag = this.state["sub_tag"];
         if (tags[subTag] === undefined) {
             subTag = "1";
         }
