@@ -2,7 +2,7 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import { remote } from "electron";
+import {ipcRenderer, remote} from "electron";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderOpen, faSave} from "@fortawesome/free-regular-svg-icons";
 import {faFileExport, faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
@@ -34,6 +34,8 @@ class DH_Parser extends React.Component {
         this.removeConfig = this.removeConfig.bind(this);
         this.saveAllConfig = this.saveAllConfig.bind(this);
         this.exportScript = this.exportScript.bind(this);
+
+        ipcRenderer.on("saveAll", this.saveAllConfig);
     }
 
     openFolder() {
