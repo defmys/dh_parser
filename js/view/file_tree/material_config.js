@@ -1,6 +1,6 @@
 import {BaseConfig} from "./base_config";
 import React from "react";
-import {ColorTag, MajorTag, SubTag, TagHierarchy} from "../../model/tag";
+import {ColorTag, MajorTag, MaterialTag, SubTag, TagHierarchy} from "../../model/tag";
 
 export class MaterialConfig extends BaseConfig {
 
@@ -9,12 +9,14 @@ export class MaterialConfig extends BaseConfig {
 
         this.handleColorTagChange = this.handleColorTagChange.bind(this);
         this.handleSubTagChange = this.handleSubTagChange.bind(this);
+        this.handleCategoryChange = this.handleCategoryChange.bind(this);
     }
 
     initialSate(props) {
         let state = super.initialSate(props);
         state["color_tag"] = [];
         state["sub_tag"] = [];
+        state["category"] = [];
         return state;
     }
 
@@ -23,6 +25,7 @@ export class MaterialConfig extends BaseConfig {
 
         BaseConfig.fillWithDefault(fixedContent, content, "color_tag", []);
         BaseConfig.fillWithDefault(fixedContent, content, "sub_tag", []);
+        BaseConfig.fillWithDefault(fixedContent, content, "category", 1);
 
         return fixedContent;
     }
@@ -32,6 +35,7 @@ export class MaterialConfig extends BaseConfig {
 
         content.color_tag = this.state.color_tag;
         content.sub_tag = this.state.sub_tag;
+        content.category = this.state.category;
 
         return content;
     }
@@ -56,6 +60,10 @@ export class MaterialConfig extends BaseConfig {
         this.setState({sub_tag: sub_tag});
     }
 
+    handleCategoryChange(idx) {
+        this.setState({"category": idx});
+    }
+
     renderColorTag() {
         const dropDown = [];
         const tags = ColorTag.inst().tags;
@@ -78,6 +86,35 @@ export class MaterialConfig extends BaseConfig {
             <div className="col">
                 <div className="input-group">
                     {dropDown}
+                </div>
+            </div>
+        </div>;
+    }
+
+    renderCategory() {
+        const tags = MaterialTag.inst().tags;
+
+        let category = this.state.category;
+        if (tags[category] === undefined) {
+            category = 1;
+        }
+
+        let buffer = [];
+        for (let tagIdx in tags) {
+            if (tags.hasOwnProperty(tagIdx)) {
+                buffer.push(<a className="dropdown-item" href="#" key={tagIdx} onClick={() => this.handleCategoryChange(parseInt(tagIdx))}>{tags[tagIdx]}</a>);
+            }
+        }
+
+        return <div className="row mt-4 pt-4 pb-4 border border-1 border-secondary rounded" key="category">
+            <div className="col-2">材质类别</div>
+            <div className="col-4">
+                <button className="btn btn-block btn-secondary dropdown-toggle text-center" type="button" id="categoryDropDown"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {tags[category.toString()]}
+                </button>
+                <div className="dropdown-menu text-center" aria-labelledby="categoryDropDown">
+                    {buffer}
                 </div>
             </div>
         </div>;
@@ -110,7 +147,7 @@ export class MaterialConfig extends BaseConfig {
         return buffer;
     }
 
-    renderCategory() {
+    renderUsage() {
         const hierarchy = TagHierarchy.inst().tags;
         const majorTags = MajorTag.inst().tags;
 
@@ -131,7 +168,7 @@ export class MaterialConfig extends BaseConfig {
 
         return <div className="row mt-4 pt-4 pb-4 border border-1 border-secondary rounded" key="configBaseTags">
             <div className="col">
-                材质类别
+                使用部位
                 <hr />
 
                 <div>
@@ -150,6 +187,7 @@ export class MaterialConfig extends BaseConfig {
             </div>
         </div>);
         buffer.push(this.renderCategory());
+        buffer.push(this.renderUsage());
 
         return buffer;
     }
