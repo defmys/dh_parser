@@ -13,17 +13,32 @@ function createWindow () {
         win = null;
     });
 
-    win.on("close", () => {
+    win.on("close", (event) => {
         const options = {
             title: "关闭",
             message: "是否保存修改？",
             type: "question",
-            buttons: ["保存", "取消"],
+            buttons: ["是", "否", "取消"],
             defaultId: 0
         };
 
-        if (dialog.showMessageBox(win, options) === 0) {
+        const response = dialog.showMessageBox(win, options);
+        if (response === 0) {
             win.webContents.send("saveAll");
+        }
+
+        switch (response) {
+        case 0:  // 是
+            win.webContents.send("saveAll");
+            break;
+        case 1:  // 否
+            // 不保存，直接退出
+            break;
+        case 2:  // 取消
+            event.preventDefault();
+            break;
+        default:
+            break;
         }
     });
 }
