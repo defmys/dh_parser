@@ -276,7 +276,7 @@ export class ActorConfig extends BaseConfig {
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {tags[subTag]}
             </button>
-            <div className="dropdown-menu text-center" aria-labelledby="subTagDropDown">
+            <div className="dropdown-menu text-center" aria-labelledby="subTagDropDown" style={{maxHeight: "500px", overflowX: "hidden"}}>
                 {buffer}
             </div>
         </div>;
