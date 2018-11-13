@@ -282,12 +282,13 @@ export class ActorConfig extends BaseConfig {
         </div>;
     }
 
-    renderKeyword() {
+    renderCategory() {
         return <div className="row mt-4 pb-3 pb-3 border border-1 border-secondary rounded" key="configBaseTags">
-            <div className="col">
-                关键字
+            <div className="col m-1">
+                分类
                 <hr />
-                <div className="row">
+                <div className="row text-center">
+                    <div className="col"> </div>
                     {this.renderMajorTag()}
                     {this.renderSubTag()}
                     <div className="col"> </div>
@@ -319,7 +320,7 @@ export class ActorConfig extends BaseConfig {
     additionalRender() {
         let buffer = [];
 
-        buffer.push(this.renderKeyword());
+        buffer.push(this.renderCategory());
         buffer.push(this.renderSlots());
 
         return buffer;
