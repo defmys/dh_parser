@@ -128,3 +128,41 @@ export class TagHierarchy {
         return _tagHierarchy;
     }
 }
+
+
+class MaterialKeywordImpl extends TagImpl {
+    get filename() {
+        return "materialKeyword.json";
+    }
+}
+
+
+let _materialKeyWord = null;
+export class MaterialKeyword {
+    static inst() {
+        if (_materialKeyWord === null) {
+            _materialKeyWord = new MaterialKeywordImpl();
+        }
+
+        return _materialKeyWord;
+    }
+}
+
+
+class MaterialHierarchyImpl extends TagImpl {
+    get filename() {
+        return "materialHierarchy.json";
+    }
+}
+
+
+let _materialHierarchy = null;
+export class MaterialHierarchy {
+    static inst() {
+        if (_materialHierarchy === null) {
+            _materialHierarchy = new MaterialHierarchyImpl();
+        }
+
+        return _materialHierarchy;
+    }
+}

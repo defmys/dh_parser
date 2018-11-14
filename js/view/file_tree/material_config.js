@@ -1,6 +1,14 @@
 import {BaseConfig} from "./base_config";
 import React from "react";
-import {ColorTag, MajorTag, MaterialTag, SubTag, TagHierarchy} from "../../model/tag";
+import {
+    ColorTag,
+    MajorTag,
+    MaterialHierarchy,
+    MaterialKeyword,
+    MaterialTag,
+    SubTag,
+    TagHierarchy
+} from "../../model/tag";
 
 export class MaterialConfig extends BaseConfig {
 
@@ -10,6 +18,7 @@ export class MaterialConfig extends BaseConfig {
         this.handleColorTagChange = this.handleColorTagChange.bind(this);
         this.handleSubTagChange = this.handleSubTagChange.bind(this);
         this.handleCategoryChange = this.handleCategoryChange.bind(this);
+        this.handleKeywordChange = this.handleKeywordChange.bind(this);
     }
 
     initialSate(props) {
@@ -17,6 +26,7 @@ export class MaterialConfig extends BaseConfig {
         state["color_tag"] = [];
         state["sub_tag"] = [];
         state["category"] = [];
+        state["keyword"] = [];
         return state;
     }
 
@@ -26,6 +36,7 @@ export class MaterialConfig extends BaseConfig {
         BaseConfig.fillWithDefault(fixedContent, content, "color_tag", []);
         BaseConfig.fillWithDefault(fixedContent, content, "sub_tag", []);
         BaseConfig.fillWithDefault(fixedContent, content, "category", 1);
+        BaseConfig.fillWithDefault(fixedContent, content, "keyword", []);
 
         return fixedContent;
     }
@@ -36,6 +47,7 @@ export class MaterialConfig extends BaseConfig {
         content.color_tag = this.state.color_tag;
         content.sub_tag = this.state.sub_tag;
         content.category = this.state.category;
+        content.keyword = this.state.keyword;
 
         return content;
     }
@@ -61,7 +73,17 @@ export class MaterialConfig extends BaseConfig {
     }
 
     handleCategoryChange(idx) {
-        this.setState({"category": idx});
+        this.setState({"category": idx, "keyword": []});
+    }
+
+    handleKeywordChange(idx) {
+        let keyword = Object.assign([], this.state.keyword);
+        if (keyword.includes(idx)) {
+            keyword.splice(keyword.indexOf(idx), 1);
+        } else {
+            keyword.push(idx);
+        }
+        this.setState({keyword: keyword});
     }
 
     renderColorTag() {
@@ -91,6 +113,42 @@ export class MaterialConfig extends BaseConfig {
         </div>;
     }
 
+    renderKeyword(categoryInput) {
+        const category = categoryInput.toString();
+        const keywordHierarchy = MaterialHierarchy.inst().tags;
+        const materialTags = MaterialKeyword.inst().tags;
+        const baseClass = "input-group-text ml-1 mr-1 ";
+
+        let buffer = [];
+
+        const keyword_list = keywordHierarchy[category];
+        if (keyword_list) {
+            keyword_list.forEach((keywordIdx) => {
+                if (materialTags.hasOwnProperty(keywordIdx.toString())) {
+                    const name = materialTags[keywordIdx.toString()];
+                    const checked = this.state.keyword.includes(keywordIdx);
+
+                    let divClass = baseClass;
+                    if (checked) {
+                        divClass = baseClass + "bg-secondary text-light font-weight-bold";
+                    }
+
+                    buffer.push(
+                        <div className={divClass} key={keywordIdx} style={{cursor: "pointer", width: "150px"}}
+                            onClick={() => this.handleKeywordChange(keywordIdx)}>
+                            <input type="checkbox" aria-label={name} style={{cursor: "pointer"}}
+                                onChange={() => {}}
+                                checked={checked}/>
+                            <span className="ml-2">{name}</span>
+                        </div>
+                    );
+                }
+            });
+        }
+
+        return <div className="input-group">{buffer}</div>;
+    }
+
     renderCategory() {
         const tags = MaterialTag.inst().tags;
 
@@ -107,16 +165,29 @@ export class MaterialConfig extends BaseConfig {
         }
 
         return <div className="row mt-4 pt-4 pb-4 border border-1 border-secondary rounded" key="category">
-            <div className="col-2">材质类别</div>
-            <div className="col-4">
-                <button className="btn btn-block btn-secondary dropdown-toggle text-center" type="button" id="categoryDropDown"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {tags[category.toString()]}
-                </button>
-                <div className="dropdown-menu text-center" aria-labelledby="categoryDropDown" style={{maxHeight: "500px", overflowX: "hidden"}}>
-                    {buffer}
-                </div>
-            </div>
+            <table className="col table table-bordered text-center" style={{borderRadius: "10px"}}>
+                <thead>
+                    <tr>
+                        <th scope="col" style={{width: "200px"}}>材质类别</th>
+                        <th scope="col">关键字(可选)</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>
+                            <button className="btn btn-block btn-secondary dropdown-toggle text-center" type="button" id="categoryDropDown"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {tags[category.toString()]}
+                            </button>
+                            <div className="dropdown-menu text-center" aria-labelledby="categoryDropDown" style={{maxHeight: "500px", overflowX: "hidden"}}>
+                                {buffer}
+                            </div>
+                        </td>
+                        <td>{this.renderKeyword(category)}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>;
     }
 
