@@ -17,12 +17,14 @@ export class ActorConfig extends BaseConfig {
         this.handleRemoveHighLight = this.handleRemoveHighLight.bind(this);
         this.handleMajorTagChange = this.handleMajorTagChange.bind(this);
         this.handleSubTagChange = this.handleSubTagChange.bind(this);
+        this.handleDisplaySizeChange = this.handleDisplaySizeChange.bind(this);
     }
 
     initialSate(props) {
         let state = super.initialSate(props);
         state["major_tag"] = "1";
         state["sub_tag"] = "1";
+        state["display_size"] = "";
         return state;
     }
 
@@ -30,6 +32,7 @@ export class ActorConfig extends BaseConfig {
         let fixedContent = super.prepareConfigContent(content);
         BaseConfig.fillWithDefault(fixedContent, content, "major_tag", "1");
         BaseConfig.fillWithDefault(fixedContent, content, "sub_tag", "1");
+        BaseConfig.fillWithDefault(fixedContent, content, "display_size", "");
 
         fixedContent["slots"] = {};
         if (content["slots"] !== undefined) {
@@ -62,6 +65,7 @@ export class ActorConfig extends BaseConfig {
 
         content.major_tag = parseInt(this.state.major_tag);
         content.sub_tag = parseInt(this.state.sub_tag);
+        content.display_size = this.state.display_size;
 
         return content;
     }
@@ -147,6 +151,17 @@ export class ActorConfig extends BaseConfig {
 
     handleSubTagChange(tagIdx) {
         this.setState({"sub_tag": tagIdx});
+    }
+
+    handleDisplaySizeChange(event) {
+        this.setState({"display_size": event.target.value});
+    }
+
+    renderDisplaySize() {
+        return <div className="row mt-1" key="id">
+            <div className="col-4">模型尺寸</div>
+            <div className="col-8"><input name="displaySize" className="text-center" value={this.state.display_size} style={{width: "100%"}} onChange={this.handleDisplaySizeChange}/></div>
+        </div>;
     }
 
     renderMaterial(slotIndex) {
@@ -323,6 +338,12 @@ export class ActorConfig extends BaseConfig {
         buffer.push(this.renderCategory());
         buffer.push(this.renderSlots());
 
+        return buffer;
+    }
+
+    renderBasePart1() {
+        let buffer = super.renderBasePart1();
+        buffer.push(this.renderDisplaySize());
         return buffer;
     }
 }
