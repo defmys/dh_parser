@@ -157,11 +157,11 @@ export class ActorConfig extends BaseConfig {
         const material_tags = slot.material_tags;
         for (let tag_idx in tags) {
             if (tags.hasOwnProperty(tag_idx)) {
-                buffer.push(<div className="MaterialTagCheckboxDiv input-group-text mb-1 mr-1" style={{cursor: "pointer", width: "70px"}} key={tag_idx}  onClick={() => this.handleMaterialTagChange(slotIndex, parseInt(tag_idx))}>
+                buffer.push(<div className="MaterialTagCheckboxDiv input-group-text mb-1 mr-1" style={{cursor: "pointer", width: "110px"}} key={tag_idx}  onClick={() => this.handleMaterialTagChange(slotIndex, parseInt(tag_idx))}>
                     <input type="checkbox" aria-label={tags[tag_idx]} style={{cursor: "pointer"}}
                         onChange={() => {}}
                         checked={material_tags.includes(parseInt(tag_idx))}/>
-                    {tags[tag_idx]}
+                    <span className="ml-1">{tags[tag_idx]}</span>
                 </div>);
             }
         }
@@ -215,7 +215,7 @@ export class ActorConfig extends BaseConfig {
                                 </td>
 
                                 <td>
-                                    <div className="input-group d-flex justify-content-center">
+                                    <div className="input-group">
                                         {this.renderMaterial(index)}
                                     </div>
                                 </td>

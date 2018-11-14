@@ -113,7 +113,7 @@ export class MaterialConfig extends BaseConfig {
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {tags[category.toString()]}
                 </button>
-                <div className="dropdown-menu text-center" aria-labelledby="categoryDropDown">
+                <div className="dropdown-menu text-center" aria-labelledby="categoryDropDown" style={{maxHeight: "500px", overflowX: "hidden"}}>
                     {buffer}
                 </div>
             </div>
@@ -135,7 +135,7 @@ export class MaterialConfig extends BaseConfig {
                     divClass += "bg-secondary text-light font-weight-bold";
                 }
 
-                buffer.push(<div className={divClass} key={subTagIdx} style={{cursor: "pointer", width: "180px"}} onClick={() => this.handleSubTagChange(parseInt(subTagIdx))}>
+                buffer.push(<div className={divClass} key={subTagIdx} style={{cursor: "pointer", width: "150px"}} onClick={() => this.handleSubTagChange(parseInt(subTagIdx))}>
                     <input type="checkbox" aria-label={subTagName} style={{cursor: "pointer"}}
                         onChange={() => {}}
                         checked={checked}/>
