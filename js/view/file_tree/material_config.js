@@ -9,6 +9,8 @@ import {
     SubTag,
     TagHierarchy
 } from "../../model/tag";
+import {faPlusCircle, faMinusCircle} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 export class MaterialConfig extends BaseConfig {
 
@@ -19,6 +21,9 @@ export class MaterialConfig extends BaseConfig {
         this.handleSubTagChange = this.handleSubTagChange.bind(this);
         this.handleCategoryChange = this.handleCategoryChange.bind(this);
         this.handleKeywordChange = this.handleKeywordChange.bind(this);
+        this.handleAddTextureRef = this.handleAddTextureRef.bind(this);
+        this.handleTextureRefChange = this.handleTextureRefChange.bind(this);
+        this.handleRemoveTextureRef = this.handleRemoveTextureRef.bind(this);
     }
 
     initialSate(props) {
@@ -27,6 +32,7 @@ export class MaterialConfig extends BaseConfig {
         state["sub_tag"] = [];
         state["category"] = [];
         state["keyword"] = [];
+        state["texture_ref_path"] = [];
         return state;
     }
 
@@ -37,6 +43,7 @@ export class MaterialConfig extends BaseConfig {
         BaseConfig.fillWithDefault(fixedContent, content, "sub_tag", []);
         BaseConfig.fillWithDefault(fixedContent, content, "category", 1);
         BaseConfig.fillWithDefault(fixedContent, content, "keyword", []);
+        BaseConfig.fillWithDefault(fixedContent, content, "texture_ref_path", []);
 
         return fixedContent;
     }
@@ -49,7 +56,35 @@ export class MaterialConfig extends BaseConfig {
         content.category = this.state.category;
         content.keyword = this.state.keyword;
 
+        let ref_path = [];
+        this.state.texture_ref_path.forEach((element) => {
+            ref_path.push(element.trim());
+        });
+        content.texture_ref_path = ref_path;
+
         return content;
+    }
+
+    handleAddTextureRef() {
+        let refPath = Object.assign([], this.state.texture_ref_path);
+        refPath.push("");
+        this.setState({"texture_ref_path": refPath});
+    }
+
+    handleTextureRefChange(event, idx) {
+        let refPath = Object.assign([], this.state.texture_ref_path);
+        if (refPath.hasOwnProperty(idx)) {
+            refPath[idx] = event.target.value;
+        }
+        this.setState({"texture_ref_path": refPath});
+    }
+
+    handleRemoveTextureRef(idx) {
+        let refPath = Object.assign([], this.state.texture_ref_path);
+        if (refPath.hasOwnProperty(idx)) {
+            refPath.splice(idx, 1);
+        }
+        this.setState({"texture_ref_path": refPath});
     }
 
     handleColorTagChange(idx) {
@@ -84,6 +119,44 @@ export class MaterialConfig extends BaseConfig {
             keyword.push(idx);
         }
         this.setState({keyword: keyword});
+    }
+
+    renderTextureRefPathTextEle() {
+        let buffer = [];
+        const style = {width: "100%", height: "100%"};
+        for (let idx in this.state.texture_ref_path) {
+            if (this.state.texture_ref_path.hasOwnProperty(idx)) {
+                const text = this.state.texture_ref_path[idx];
+                const divID = `textureRefPath${idx}`;
+                buffer.push(<div id={divID} className="row rounded pt-1 pb-1 mr-1" key={idx}>
+                    <div className="col">
+                        <input type="text" value={text} style={style} onChange={(event) => this.handleTextureRefChange(event, idx)} />
+                    </div>
+                    <div className="col-1 mr-1">
+                        <button className="btn btn-outline-warning"
+                            onClick={() => this.handleRemoveTextureRef(idx)}
+                            onMouseEnter={() => {document.getElementById(divID).classList.add("bg-warning");}}
+                            onMouseLeave={() => {document.getElementById(divID).classList.remove("bg-warning");}}
+                        >
+                            <FontAwesomeIcon icon={faMinusCircle}/>
+                        </button>
+                    </div>
+                </div>);
+            }
+        }
+        return buffer;
+    }
+
+    renderTextureRefPath() {
+        return <div className="row mt-4 pt-2 pb-2 border border-1 border-secondary rounded" key="textureRefPath">
+            <div className="col-2">贴图引用路径</div>
+            <div className="col">
+                {this.renderTextureRefPathTextEle()}
+                <div className="row mr-1">
+                    <button className="col btn btn-block btn-outline-primary" onClick={this.handleAddTextureRef}><FontAwesomeIcon icon={faPlusCircle}/></button>
+                </div>
+            </div>
+        </div>;
     }
 
     renderColorTag() {
@@ -260,6 +333,12 @@ export class MaterialConfig extends BaseConfig {
         buffer.push(this.renderCategory());
         buffer.push(this.renderUsage());
 
+        return buffer;
+    }
+
+    renderBasePart2() {
+        let buffer = super.renderBasePart2();
+        buffer.push(this.renderTextureRefPath());
         return buffer;
     }
 }
