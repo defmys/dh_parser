@@ -158,7 +158,7 @@ export class ActorConfig extends BaseConfig {
     }
 
     renderDisplaySize() {
-        return <div className="row mt-1" key="id">
+        return <div className="row mt-1" key="display_size">
             <div className="col-4">模型尺寸</div>
             <div className="col-8"><input name="displaySize" className="text-center" value={this.state.display_size} style={{width: "100%"}} onChange={this.handleDisplaySizeChange}/></div>
         </div>;

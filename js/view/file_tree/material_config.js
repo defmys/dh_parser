@@ -334,11 +334,11 @@ export class MaterialConfig extends BaseConfig {
                 buffer.push(<div className="col mt-3" key={majorTagIdx}>
                     <div className="row" key={majorTagIdx}>
                         <div className="col">
-                            <div className="row">
+                            <div className="row mb-1">
                                 <div className="col-1">
                                     {majorTagName}
                                 </div>
-                                <div className="col-1" style={{fontSize: "9pt"}}>
+                                <div className="col" style={{fontSize: "9pt", paddingLeft: "0"}}>
                                     <button className="btn btn-outline-secondary" style={buttonStyle}
                                         onClick={() => {this.handleChooseAllSubTag(subHierarchy);}}>
                                         全选
