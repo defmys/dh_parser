@@ -24,6 +24,8 @@ export class MaterialConfig extends BaseConfig {
         this.handleAddTextureRef = this.handleAddTextureRef.bind(this);
         this.handleTextureRefChange = this.handleTextureRefChange.bind(this);
         this.handleRemoveTextureRef = this.handleRemoveTextureRef.bind(this);
+        this.handleChooseAllSubTag = this.handleChooseAllSubTag.bind(this);
+        this.handleRemoveAllSubTag = this.handleRemoveAllSubTag.bind(this);
     }
 
     initialSate(props) {
@@ -103,6 +105,32 @@ export class MaterialConfig extends BaseConfig {
             sub_tag.splice(sub_tag.indexOf(idx), 1);
         } else {
             sub_tag.push(idx);
+        }
+        this.setState({sub_tag: sub_tag});
+    }
+
+    handleChooseAllSubTag(subHierarchy) {
+        let sub_tag = Object.assign([], this.state.sub_tag);
+        for (let idx in subHierarchy) {
+            if (subHierarchy.hasOwnProperty(idx)) {
+                const tag_idx = parseInt(idx);
+                if (!sub_tag.includes(tag_idx)) {
+                    sub_tag.push(tag_idx);
+                }
+            }
+        }
+        this.setState({sub_tag: sub_tag});
+    }
+
+    handleRemoveAllSubTag(subHierarchy) {
+        let sub_tag = Object.assign([], this.state.sub_tag);
+        for (let idx in subHierarchy) {
+            if (subHierarchy.hasOwnProperty(idx)) {
+                const tag_idx = parseInt(idx);
+                if (sub_tag.includes(tag_idx)) {
+                    sub_tag.splice(sub_tag.indexOf(tag_idx), 1);
+                }
+            }
         }
         this.setState({sub_tag: sub_tag});
     }
@@ -295,6 +323,8 @@ export class MaterialConfig extends BaseConfig {
         const hierarchy = TagHierarchy.inst().tags;
         const majorTags = MajorTag.inst().tags;
 
+        const buttonStyle = {padding: "0px 4px 2px 4px", fontSize: "9pt"};
+
         let buffer = [];
 
         for (let majorTagIdx in hierarchy) {
@@ -303,8 +333,28 @@ export class MaterialConfig extends BaseConfig {
                 const subHierarchy = hierarchy[majorTagIdx];
                 buffer.push(<div className="col mt-3" key={majorTagIdx}>
                     <div className="row" key={majorTagIdx}>
-                        <div>{majorTagName}</div>
-                        <div className="input-group">{this.renderSubTags(subHierarchy)}</div>
+                        <div className="col">
+                            <div className="row">
+                                <div className="col-1">
+                                    {majorTagName}
+                                </div>
+                                <div className="col-1" style={{fontSize: "9pt"}}>
+                                    <button className="btn btn-outline-secondary" style={buttonStyle}
+                                        onClick={() => {this.handleChooseAllSubTag(subHierarchy);}}>
+                                        全选
+                                    </button>
+                                    <button className="btn btn-outline-secondary ml-1" style={buttonStyle}
+                                        onClick={() => {this.handleRemoveAllSubTag(subHierarchy);}}>
+                                        取消
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col">
+                                    <div className="input-group">{this.renderSubTags(subHierarchy)}</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>);
             }
