@@ -41,7 +41,11 @@ export class NodeCache {
     saveToDisk() {
         for (let nodePath in this._cache) {
             if (this._cache.hasOwnProperty(nodePath)) {
-                fs.writeFileSync(nodePath, JSON.stringify(this._cache[nodePath], null, 2));
+                try {
+                    fs.writeFileSync(nodePath, JSON.stringify(this._cache[nodePath], null, 2));
+                } catch(e) {
+                    // 跳过保存失败的文件
+                }
             }
         }
 

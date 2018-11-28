@@ -5,7 +5,7 @@ import ReactDOM from "react-dom";
 import {ipcRenderer, remote} from "electron";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderOpen, faSave} from "@fortawesome/free-regular-svg-icons";
-import {faFileExport, faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
+import {faFileExport, faMinus, faCog, faSyncAlt} from "@fortawesome/free-solid-svg-icons";
 import { FileTree } from "./js/view/file_tree/file_tree";
 import {exportScript} from "./js/utils/exporter";
 import {NodeCache} from "./js/model/nodeCache";
@@ -26,6 +26,7 @@ class DH_Parser extends React.Component {
         };
 
         this.openFolder = this.openFolder.bind(this);
+        this.refreshFolder = this.refreshFolder.bind(this);
 
         this.handleHotKeySave = this.handleHotKeySave.bind(this);
 
@@ -35,10 +36,12 @@ class DH_Parser extends React.Component {
         this.saveAllConfig = this.saveAllConfig.bind(this);
         this.exportScript = this.exportScript.bind(this);
 
-        ipcRenderer.on("saveAll", this.saveAllConfig);
+        ipcRenderer.on("saveAll", () => {this.saveAllConfig(true);});
     }
 
     openFolder() {
+        this.saveAllConfig(false);
+
         const dir_path = dialog.showOpenDialog(remote.getCurrentWindow(), {properties: ["openDirectory"]});
         if (dir_path !== undefined && dir_path.length > 0) {
             this.setState({
@@ -47,7 +50,17 @@ class DH_Parser extends React.Component {
         }
     }
 
-    saveAllConfig() {
+    refreshFolder() {
+        if (this.state.path && this.state.path !== "") {
+            this.saveAllConfig(false);
+
+            this.setState({
+                path: this.state.path
+            });
+        }
+    }
+
+    saveAllConfig(showMsg) {
         const fileTree = this.fileTree.current;
         if (fileTree) {
             const configDetail = fileTree.configDetailRef.current;
@@ -57,12 +70,14 @@ class DH_Parser extends React.Component {
 
             NodeCache.inst().saveToDisk();
 
-            dialog.showMessageBox(
-                remote.getCurrentWindow(),
-                {
-                    type: "info",
-                    message: "保存成功"
-                });
+            if (showMsg) {
+                dialog.showMessageBox(
+                    remote.getCurrentWindow(),
+                    {
+                        type: "info",
+                        message: "保存成功"
+                    });
+            }
         }
     }
 
@@ -107,7 +122,7 @@ class DH_Parser extends React.Component {
 
     handleHotKeySave(event) {
         if (event.key === "s" && event.ctrlKey === true) {
-            this.saveAllConfig();
+            this.saveAllConfig(true);
         }
     }
 
@@ -138,8 +153,18 @@ class DH_Parser extends React.Component {
                 <button className={btnClass}
                     data-toggle="tooltip"
                     data-placement="bottom"
+                    title="刷新目录"
+                    onClick={this.refreshFolder}>
+                    <FontAwesomeIcon icon={faSyncAlt}/>
+                </button>
+
+                &nbsp;&nbsp;
+
+                <button className={btnClass}
+                    data-toggle="tooltip"
+                    data-placement="bottom"
                     title="保存配置"
-                    onClick={this.saveAllConfig}>
+                    onClick={() => {this.saveAllConfig(true);}}>
                     <FontAwesomeIcon icon={faSave}/>
                 </button>
 
@@ -150,7 +175,7 @@ class DH_Parser extends React.Component {
                     data-placement="bottom"
                     title="新建配置"
                     onClick={this.createConfig}>
-                    <FontAwesomeIcon icon={faPlus}/>
+                    <FontAwesomeIcon icon={faCog}/>
                 </button>
 
                 <button className={btnClass}

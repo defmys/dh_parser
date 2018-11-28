@@ -28,7 +28,7 @@ export class FileTree extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.path !== this.props.path && this.props.path && this.props.path !== "") {
+        if (prevProps !== this.props && this.props.path && this.props.path !== "") {
             let newData = this.loadDirInfo(this.props.path, "root");
             newData.toggled = true;
             this.setState({dirList: newData});
@@ -38,7 +38,8 @@ export class FileTree extends React.Component {
     loadDirInfo(dirPath, name) {
         let data = {
             name: name,
-            path: dirPath
+            path: dirPath,
+            toggled: true,
         };
         let children = [];
 
@@ -57,7 +58,7 @@ export class FileTree extends React.Component {
         return data;
     }
 
-    onToggle(node, toggled){
+    onToggle(node/*, toggled*/){
         if (this.props.path === undefined || this.props.path === "") {
             return;
         }
@@ -68,7 +69,7 @@ export class FileTree extends React.Component {
         }
         node.active = true;
         if(node.children) {
-            node.toggled = toggled;
+            // node.toggled = toggled;
         }
         this.setState({ cursor: node });
 
