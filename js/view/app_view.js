@@ -46,6 +46,7 @@ class DH_Parser extends React.Component {
     validate() {
         this.validator.validate(this.state.path);
         this.setState({issueCount: this.validator.issueCount()});
+        ipcRenderer.send("refreshIssueList", this.validator.issueList);
     }
 
     openFolder() {
@@ -152,7 +153,8 @@ class DH_Parser extends React.Component {
         let ret = null;
 
         if (this.state.issueCount > 0) {
-            ret = <div id="issueDiv" className="row mt-2" style={{color: "red", fontSize: "15pt", cursor: "pointer"}}>
+            ret = <div id="issueDiv" className="row mt-2" style={{color: "red", fontSize: "15pt", cursor: "pointer"}}
+                onClick={() => {ipcRenderer.send("showIssueWindow", this.validator.issueList);}}>
                 <div className="col p-0 pr-1 text-right"><FontAwesomeIcon icon={faTimesCircle} /></div>
                 <div className="col p-0 pl-1 text-left">{this.state.issueCount}</div>
             </div>;
