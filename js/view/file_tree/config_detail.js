@@ -73,7 +73,7 @@ export class ConfigDetail extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps !== this.props) {
+        if (prevProps.path !== this.props.path) {
             this.saveToCache(prevProps.path);
 
             this.initContent();
@@ -88,7 +88,7 @@ export class ConfigDetail extends React.Component {
     }
 
     saveToCache(configPath) {
-        if (this.configRef.current && configPath !== undefined && configPath !== "") {
+        if (this.configRef && this.configRef.current && configPath !== undefined && configPath !== "") {
             NodeCache.inst().save(configPath, this.configRef.current.content());
         }
     }
