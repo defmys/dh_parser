@@ -4,10 +4,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import {ipcRenderer, remote} from "electron";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faFolderOpen, faSave} from "@fortawesome/free-regular-svg-icons";
+import {faFolderOpen, faSave, faTimesCircle} from "@fortawesome/free-regular-svg-icons";
 import {faFileExport, faMinus, faCog, faSyncAlt} from "@fortawesome/free-solid-svg-icons";
 import { FileTree } from "./js/view/file_tree/file_tree";
 import {exportScript} from "./js/utils/exporter";
+import {Validator} from "./js/utils/validator";
 import {NodeCache} from "./js/model/nodeCache";
 
 import "bootstrap";
@@ -22,8 +23,11 @@ class DH_Parser extends React.Component {
 
         this.state = {
             path: "",
-            fileTreeStyle: {}
+            fileTreeStyle: {},
+            issueCount: 0
         };
+
+        this.validator = new Validator();
 
         this.openFolder = this.openFolder.bind(this);
         this.refreshFolder = this.refreshFolder.bind(this);
@@ -39,14 +43,17 @@ class DH_Parser extends React.Component {
         ipcRenderer.on("saveAll", () => {this.saveAllConfig(true);});
     }
 
+    validate() {
+        this.validator.validate(this.state.path);
+        this.setState({issueCount: this.validator.issueCount()});
+    }
+
     openFolder() {
         this.saveAllConfig(false);
 
         const dir_path = dialog.showOpenDialog(remote.getCurrentWindow(), {properties: ["openDirectory"]});
         if (dir_path !== undefined && dir_path.length > 0) {
-            this.setState({
-                path: dir_path[0]
-            });
+            this.setState({path: dir_path[0]}, () => { this.validate(); });
         }
     }
 
@@ -68,7 +75,10 @@ class DH_Parser extends React.Component {
                 configDetail.save();
             }
 
-            NodeCache.inst().saveToDisk();
+            if (this.state.path) {
+                NodeCache.inst().saveToDisk();
+                this.validate();
+            }
 
             if (showMsg) {
                 dialog.showMessageBox(
@@ -138,6 +148,19 @@ class DH_Parser extends React.Component {
         }
     }
 
+    renderIssueCount() {
+        let ret = null;
+
+        if (this.state.issueCount > 0) {
+            ret = <div id="issueDiv" className="row mt-2" style={{color: "red", fontSize: "15pt", cursor: "pointer"}}>
+                <div className="col p-0 pr-1 text-right"><FontAwesomeIcon icon={faTimesCircle} /></div>
+                <div className="col p-0 pl-1 text-left">{this.state.issueCount}</div>
+            </div>;
+        }
+
+        return ret;
+    }
+
     renderMenuBar() {
         const btnClass = "btn btn-outline-secondary mr-1";
         return <div id="menuBar" className="row border-secondary border-bottom">
@@ -195,6 +218,9 @@ class DH_Parser extends React.Component {
                     onClick={this.exportScript}>
                     <FontAwesomeIcon icon={faFileExport}/>
                 </button>
+            </div>
+            <div className="col-1">
+                {this.renderIssueCount()}
             </div>
         </div>;
     }
