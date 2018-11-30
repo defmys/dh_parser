@@ -45,17 +45,19 @@ class IssueView extends React.Component {
             }
         }
 
-        return <table className="table table-sm table-striped table-bordered" style={{fontSize: "9pt"}}>
-            <thead>
-                <tr className="table-warning text-center">
-                    <th>路径</th>
-                    <th><FontAwesomeIcon icon={faTimesCircle} className="fa-sm text-danger font-weight-bold" /> 错误</th>
-                </tr>
-            </thead>
-            <tbody>
-                {buffer}
-            </tbody>
-        </table>;
+        return <div className="m-1 border">
+            <table className="table table-sm table-striped table-bordered mb-0" style={{fontSize: "9pt"}}>
+                <thead>
+                    <tr className="table-warning text-center">
+                        <th>路径</th>
+                        <th><FontAwesomeIcon icon={faTimesCircle} className="fa-sm text-danger font-weight-bold" /> 错误</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {buffer}
+                </tbody>
+            </table>
+        </div>;
     }
 }
 
