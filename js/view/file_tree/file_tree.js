@@ -40,6 +40,7 @@ export class FileTree extends React.Component {
             name: name,
             path: dirPath,
             toggled: true,
+            active: false
         };
         let children = [];
 
@@ -54,6 +55,12 @@ export class FileTree extends React.Component {
             });
         }
         data.children = children;
+
+        // 重新构建所有的node之后需要更新state.cursor，否则旧node不会释放，并且会覆盖在新node之上
+        if (this.state.cursor && this.state.cursor.path === data.path) {
+            data.active = true;
+            this.setState({cursor: data});
+        }
 
         return data;
     }
@@ -123,7 +130,7 @@ export class FileTree extends React.Component {
     }
 
     containerDecorator(props) {
-        const activeColor = this.state.cursor && this.state.cursor.path === props.node.path ? "#003d7d" : props.style.base.backgroundColor;
+        const activeColor = props.node.active ? "#003d7d" : props.style.base.backgroundColor;
         return (
             <div className="treeNodeDiv" onClick={props.onClick} style={{backgroundColor: activeColor}}>
                 <props.decorators.Toggle {...props} style={props.style.toggle} />
