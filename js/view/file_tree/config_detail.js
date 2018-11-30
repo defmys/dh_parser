@@ -33,6 +33,8 @@ export class ConfigDetail extends React.Component {
 
         this.state = {
             type: null,
+
+            // 如果窗口右侧的内容被刷新，刷新之前要更新一次此处的content，否则BasicConfig中的内容有可能跟这里不一致。
             content: {}
         };
 
@@ -100,7 +102,9 @@ export class ConfigDetail extends React.Component {
 
     saveToCache(configPath) {
         if (this.configRef && this.configRef.current && configPath !== undefined && configPath !== "") {
-            NodeCache.inst().save(configPath, this.configRef.current.content());
+            let content = this.configRef.current.content();
+            NodeCache.inst().save(configPath, content);
+            this.setState({content: content});
         }
     }
 
