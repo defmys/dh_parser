@@ -44,9 +44,39 @@ function checkID(configList) {
     return issueList;
 }
 
+function calcMaxIDs(configList) {
+    let ret = {
+        actor: 0,
+        material: 0
+    };
+
+    configList.forEach(function(config) {
+        switch (config.type) {
+        case "Actor":
+            if (ret.actor < config.id) {
+                ret.actor = config.id;
+            }
+            break;
+        case "Material":
+            if (ret.material < config.id) {
+                ret.material = config.id;
+            }
+            break;
+        default:
+            break;
+        }
+    });
+
+    return ret;
+}
+
 export class Validator {
     constructor() {
         this.issueList = [];
+        this.maxID = {
+            actor: 0,
+            material: 0
+        };
     }
 
     validate(rootPath) {
@@ -54,6 +84,8 @@ export class Validator {
 
         this.issueList = [];
         this.issueList = this.issueList.concat(checkID(configList));
+
+        this.maxID = calcMaxIDs(configList);
     }
 
     issueCount() {

@@ -24,7 +24,9 @@ class DH_Parser extends React.Component {
         this.state = {
             path: "",
             fileTreeStyle: {},
-            issueCount: 0
+            issueCount: 0,
+            maxActorID: 0,
+            maxMaterialID: 0
         };
 
         this.validator = new Validator();
@@ -45,7 +47,11 @@ class DH_Parser extends React.Component {
 
     validate() {
         this.validator.validate(this.state.path);
-        this.setState({issueCount: this.validator.issueCount()});
+        this.setState({
+            issueCount: this.validator.issueCount(),
+            maxActorID: this.validator.maxID.actor,
+            maxMaterialID: this.validator.maxID.material,
+        });
         ipcRenderer.send("refreshIssueList", this.validator.issueList);
     }
 
@@ -153,14 +159,37 @@ class DH_Parser extends React.Component {
         let ret = null;
 
         if (this.state.issueCount > 0) {
-            ret = <div id="issueDiv" className="row mt-2" style={{color: "red", fontSize: "15pt", cursor: "pointer"}}
-                onClick={() => {ipcRenderer.send("showIssueWindow", this.validator.issueList);}}>
-                <div className="col p-0 pr-1 text-right"><FontAwesomeIcon icon={faTimesCircle} /></div>
-                <div className="col p-0 pl-1 text-left">{this.state.issueCount}</div>
+            ret = <div className="col-3" key="statusIssue">
+                <div id="issueDiv" className="row mt-2" style={{color: "red", fontSize: "15pt", cursor: "pointer"}}
+                    onClick={() => {ipcRenderer.send("showIssueWindow", this.validator.issueList);}}>
+                    <div className="col p-0 pr-1 text-right"><FontAwesomeIcon icon={faTimesCircle} /></div>
+                    <div className="col p-0 pl-1 text-left">{this.state.issueCount}</div>
+                </div>
             </div>;
         }
 
         return ret;
+    }
+
+    renderMaxID() {
+        return <div className="col-6 mt-1 text-left" key="statusMaxID" style={{fontSize: "9pt"}}>
+            <div className="row">
+                <div className="col">模型最大ID: {this.state.maxActorID}</div>
+            </div>
+            <div className="row">
+                <div className="col">材质最大ID: {this.state.maxMaterialID}</div>
+            </div>
+        </div>;
+    }
+
+    renderStatus() {
+        let buffer = [];
+
+        buffer.push(<div className="col" key="statusPlaceholder"> </div>);
+        buffer.push(this.renderMaxID());
+        buffer.push(this.renderIssueCount());
+
+        return <div className="row">{buffer}</div>;
     }
 
     renderMenuBar() {
@@ -221,8 +250,8 @@ class DH_Parser extends React.Component {
                     <FontAwesomeIcon icon={faFileExport}/>
                 </button>
             </div>
-            <div className="col-1">
-                {this.renderIssueCount()}
+            <div className="col-md-3">
+                {this.renderStatus()}
             </div>
         </div>;
     }
