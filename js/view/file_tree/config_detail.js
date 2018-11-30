@@ -36,6 +36,8 @@ export class ConfigDetail extends React.Component {
             content: {}
         };
 
+        this._cache = {};
+
         this.handleTypeChange = this.handleTypeChange.bind(this);
     }
 
@@ -63,6 +65,8 @@ export class ConfigDetail extends React.Component {
             NodeCache.inst().save(this.props.path, content);
         }
 
+        this._cache = {[content.type]: content};
+
         if (content.type) {
             this.setState({type: content.type, content: content});
         }
@@ -81,10 +85,17 @@ export class ConfigDetail extends React.Component {
     }
 
     handleTypeChange(type) {
-        if (this.configRef.current) {
-            let content = this.configRef.current.content();
-            this.setState({type: type, content: content});
+        let content = {};
+
+        if (this._cache[type] !== null && this._cache[type] !== undefined) {
+            content = this._cache[type];
         }
+        if (this.configRef.current) {
+            this._cache[this.state.type] = this.configRef.current.content();
+        }
+
+        NodeCache.inst().save(this.props.path, content);
+        this.setState({type: type, content: content});
     }
 
     saveToCache(configPath) {
