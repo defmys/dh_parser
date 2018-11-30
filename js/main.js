@@ -7,7 +7,7 @@ let issueWin = null;
 
 function createIssueWindow(issueList) {
     if (issueWin === null) {
-        issueWin = new BrowserWindow({width: 600, height: 400});
+        issueWin = new BrowserWindow({width: 850, height: 550});
         issueWin.initIssueList = Object.assign([], issueList);
         issueWin.loadFile("src/issue.html");
 
