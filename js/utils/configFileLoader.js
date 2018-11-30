@@ -12,7 +12,13 @@ export function loadConfigFile(dirPath) {
                 if (next === "config.json") {
                     const configPath = path.resolve(dirPath, next);
                     let textContent = fs.readFileSync(configPath, "utf8");
-                    let content = JSON.parse(textContent);
+                    let content = {};
+                    try {
+                        content = JSON.parse(textContent);
+                    } catch (e) {
+                        // 如果解析失败，直接使用空对象初始化。
+                    }
+
                     content["node_path"] = dirPath;
                     dataList.push(content);
                 } else {
