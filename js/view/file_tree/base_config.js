@@ -15,6 +15,7 @@ export class BaseConfig extends React.Component {
     static get propTypes() {
         return {
             path: PropTypes.string,
+            root: PropTypes.string,
             configType: PropTypes.string,
             content: PropTypes.any
         };
@@ -30,7 +31,8 @@ export class BaseConfig extends React.Component {
     initialSate(props) {
         return {
             type: props.configType,
-            imgPath: ""
+            imgPath: "",
+            thumbnail: ""
         };
     }
 
@@ -53,16 +55,24 @@ export class BaseConfig extends React.Component {
 
     initThumbnailPath() {
         const dirPath = path.dirname(this.props.path);
+        const relativePath = path.relative(this.props.root, this.props.path);
+        const relativePathNames = path.dirname(relativePath).split(path.sep);
         const dirName = dirPath.split(path.sep).pop();
 
-        let imgPath = path.join(dirPath, dirName + ".png");
+        let fileName = dirName + ".png";
+        let imgPath = path.join(dirPath, fileName);
         if (!fs.existsSync(imgPath)) {
-            imgPath = path.join(dirPath, dirName + ".jpg");
+            fileName = dirName + ".jpg";
+            imgPath = path.join(dirPath, fileName);
             if (!fs.existsSync(imgPath)) {
                 imgPath = "";
             }
         }
-        this.setState({imgPath: imgPath});
+
+        this.setState({
+            imgPath: imgPath,
+            thumbnail: path.posix.join(...relativePathNames, fileName).toString()
+        });
     }
 
     prepareConfigContent(content) {
@@ -74,6 +84,7 @@ export class BaseConfig extends React.Component {
         BaseConfig.fillWithDefault(fixedContent, content, "package", "");
         BaseConfig.fillWithDefault(fixedContent, content, "mount_point", "");
         BaseConfig.fillWithDefault(fixedContent, content, "ref_path", "");
+        BaseConfig.fillWithDefault(fixedContent, content, "imgPath", "");
 
         return fixedContent;
     }
@@ -98,6 +109,7 @@ export class BaseConfig extends React.Component {
         content.package = this.state.package;
         content.mount_point = this.state.mount_point;
         content.ref_path = this.state.ref_path;
+        content.thumbnail = this.state.thumbnail;
         return content;
     }
 

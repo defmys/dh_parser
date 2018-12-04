@@ -22,7 +22,8 @@ const defaultType = types.Material;
 export class ConfigDetail extends React.Component {
     static get propTypes() {
         return {
-            path: PropTypes.string
+            path: PropTypes.string,
+            root: PropTypes.string
         };
     }
 
@@ -116,10 +117,10 @@ export class ConfigDetail extends React.Component {
         let ret = "";
         if (this.state.type) {
             if (this.state.type === types.Actor) {
-                ret = <ActorConfig path={this.props.path} configType={this.state.type} content={this.state.content} ref={this.configRef}/>;
+                ret = <ActorConfig path={this.props.path} root={this.props.root} configType={this.state.type} content={this.state.content} ref={this.configRef}/>;
             }
             else {
-                ret = <MaterialConfig path={this.props.path} configType={this.state.type} content={this.state.content} ref={this.configRef}/>;
+                ret = <MaterialConfig path={this.props.path} root={this.props.root} configType={this.state.type} content={this.state.content} ref={this.configRef}/>;
             }
         }
 
