@@ -4,7 +4,7 @@ import {
     ColorTag,
     MajorTag,
     MaterialHierarchy,
-    MaterialKeyword,
+    MaterialKeyword, MaterialSurface,
     MaterialTag,
     SubTag,
     TagHierarchy
@@ -21,6 +21,7 @@ export class MaterialConfig extends BaseConfig {
         this.handleSubTagChange = this.handleSubTagChange.bind(this);
         this.handleCategoryChange = this.handleCategoryChange.bind(this);
         this.handleKeywordChange = this.handleKeywordChange.bind(this);
+        this.handleSurfaceChange = this.handleSurfaceChange.bind(this);
         this.handleAddTextureRef = this.handleAddTextureRef.bind(this);
         this.handleTextureRefChange = this.handleTextureRefChange.bind(this);
         this.handleRemoveTextureRef = this.handleRemoveTextureRef.bind(this);
@@ -34,6 +35,7 @@ export class MaterialConfig extends BaseConfig {
         state["sub_tag"] = [];
         state["category"] = [];
         state["keyword"] = [];
+        state["surface"] = [];
         state["texture_ref_path"] = [];
         return state;
     }
@@ -45,6 +47,7 @@ export class MaterialConfig extends BaseConfig {
         BaseConfig.fillWithDefault(fixedContent, content, "sub_tag", []);
         BaseConfig.fillWithDefault(fixedContent, content, "category", 1);
         BaseConfig.fillWithDefault(fixedContent, content, "keyword", []);
+        BaseConfig.fillWithDefault(fixedContent, content, "surface", []);
         BaseConfig.fillWithDefault(fixedContent, content, "texture_ref_path", []);
 
         return fixedContent;
@@ -57,6 +60,7 @@ export class MaterialConfig extends BaseConfig {
         content.sub_tag = this.state.sub_tag;
         content.category = this.state.category;
         content.keyword = this.state.keyword;
+        content.surface = this.state.surface;
 
         let ref_path = [];
         this.state.texture_ref_path.forEach((element) => {
@@ -136,7 +140,7 @@ export class MaterialConfig extends BaseConfig {
     }
 
     handleCategoryChange(idx) {
-        this.setState({"category": idx, "keyword": []});
+        this.setState({"category": idx, "keyword": [], "surface": []});
     }
 
     handleKeywordChange(idx) {
@@ -147,6 +151,16 @@ export class MaterialConfig extends BaseConfig {
             keyword.push(idx);
         }
         this.setState({keyword: keyword});
+    }
+
+    handleSurfaceChange(idx) {
+        let surface = Object.assign([], this.state.surface);
+        if (surface.includes(idx)) {
+            surface.splice(surface.indexOf(idx), 1);
+        } else {
+            surface.push(idx);
+        }
+        this.setState({surface: surface});
     }
 
     renderTextureRefPathTextEle() {
@@ -214,7 +228,7 @@ export class MaterialConfig extends BaseConfig {
         </div>;
     }
 
-    renderKeyword(categoryInput) {
+    renderTexture(categoryInput) {
         const category = categoryInput.toString();
         const keywordHierarchy = MaterialHierarchy.inst().tags;
         const materialTags = MaterialKeyword.inst().tags;
@@ -222,7 +236,7 @@ export class MaterialConfig extends BaseConfig {
 
         let buffer = [];
 
-        const keyword_list = keywordHierarchy[category];
+        const keyword_list = keywordHierarchy[category]["texture"];
         if (keyword_list) {
             keyword_list.forEach((keywordIdx) => {
                 if (materialTags.hasOwnProperty(keywordIdx.toString())) {
@@ -237,6 +251,42 @@ export class MaterialConfig extends BaseConfig {
                     buffer.push(
                         <div className={divClass} key={keywordIdx} style={{cursor: "pointer", width: "150px"}}
                             onClick={() => this.handleKeywordChange(keywordIdx)}>
+                            <input type="checkbox" aria-label={name} style={{cursor: "pointer"}}
+                                onChange={() => {}}
+                                checked={checked}/>
+                            <span className="ml-2">{name}</span>
+                        </div>
+                    );
+                }
+            });
+        }
+
+        return <div className="input-group">{buffer}</div>;
+    }
+
+    renderSurface(categoryInput) {
+        const category = categoryInput.toString();
+        const keywordHierarchy = MaterialHierarchy.inst().tags;
+        const materialSurface = MaterialSurface.inst().tags;
+        const baseClass = "input-group-text ml-1 mr-1 ";
+
+        let buffer = [];
+
+        const surface_list = keywordHierarchy[category]["surface"];
+        if (surface_list) {
+            surface_list.forEach((surfaceIdx) => {
+                if (materialSurface.hasOwnProperty(surfaceIdx.toString())) {
+                    const name = materialSurface[surfaceIdx.toString()];
+                    const checked = this.state.surface.includes(surfaceIdx);
+
+                    let divClass = baseClass;
+                    if (checked) {
+                        divClass = baseClass + "bg-secondary text-light font-weight-bold";
+                    }
+
+                    buffer.push(
+                        <div className={divClass} key={surfaceIdx} style={{cursor: "pointer", width: "150px"}}
+                            onClick={() => this.handleSurfaceChange(surfaceIdx)}>
                             <input type="checkbox" aria-label={name} style={{cursor: "pointer"}}
                                 onChange={() => {}}
                                 checked={checked}/>
@@ -270,7 +320,8 @@ export class MaterialConfig extends BaseConfig {
                 <thead>
                     <tr>
                         <th scope="col" style={{width: "200px"}}>材质类别</th>
-                        <th scope="col">关键字(可选)</th>
+                        <th scope="col">纹路/图案</th>
+                        <th scope="col">表面特征</th>
                     </tr>
                 </thead>
 
@@ -285,7 +336,8 @@ export class MaterialConfig extends BaseConfig {
                                 {buffer}
                             </div>
                         </td>
-                        <td>{this.renderKeyword(category)}</td>
+                        <td>{this.renderTexture(category)}</td>
+                        <td>{this.renderSurface(category)}</td>
                     </tr>
                 </tbody>
             </table>

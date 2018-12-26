@@ -149,6 +149,25 @@ export class MaterialKeyword {
 }
 
 
+class MaterialSurfaceImpl extends TagImpl {
+    get filename() {
+        return "materialSurface.json";
+    }
+}
+
+
+let _materialSurface = null;
+export class MaterialSurface {
+    static inst() {
+        if (_materialSurface === null) {
+            _materialSurface = new MaterialSurfaceImpl();
+        }
+
+        return _materialSurface;
+    }
+}
+
+
 class MaterialHierarchyImpl extends TagImpl {
     get filename() {
         return "materialHierarchy.json";
