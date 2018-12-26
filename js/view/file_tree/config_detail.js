@@ -138,7 +138,7 @@ export class ConfigDetail extends React.Component {
         return (
             <div className="text-nowrap mt-3 mb-3">
                 <div className="row">
-                    <div className="col-2 text-center">类型</div>
+                    <div className="col-2 text-center d-flex justify-content-center flex-column">类型</div>
                     <div className="col-3">
                         <button className="btn btn-block btn-secondary dropdown-toggle text-center" type="button" id="typeDropDown"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -174,7 +174,7 @@ export class ActorConfig extends BaseConfig {
             if (tags.hasOwnProperty(tag_idx)) {
                 const checked = material_tags.includes(parseInt(tag_idx));
 
-                const baseClass = "MaterialTagCheckboxDiv input-group-text mb-1 mr-1 ";
+                const baseClass = "MaterialTagCheckboxDiv input-group-text btn btn-secondary mb-1 mr-1 ";
                 let divClass = baseClass;
                 if (checked) {
                     divClass = baseClass + "bg-secondary text-light font-weight-bold";

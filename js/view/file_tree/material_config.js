@@ -191,7 +191,7 @@ export class MaterialConfig extends BaseConfig {
 
     renderTextureRefPath() {
         return <div className="row mt-4 pt-2 pb-2 border border-1 border-secondary rounded" key="textureRefPath">
-            <div className="col-2">贴图引用路径</div>
+            <div className="col-2 d-flex justify-content-center flex-column text-center">贴图引用路径</div>
             <div className="col">
                 {this.renderTextureRefPathTextEle()}
                 <div className="row mr-1">
@@ -209,7 +209,7 @@ export class MaterialConfig extends BaseConfig {
         for (let tag_idx in tags) {
             if (tags.hasOwnProperty(tag_idx)) {
                 const style = {...basicStyle, ...ColorTag.getCheckboxStyle(tag_idx)};
-                dropDown.push(<div className="colorTagCheckboxDiv input-group-text mr-1 mt-1" key={tag_idx} style={style} onClick={() => this.handleColorTagChange(parseInt(tag_idx))}>
+                dropDown.push(<div className="colorTagCheckboxDiv btn btn-secondary input-group-text mr-1 mt-1" key={tag_idx} style={style} onClick={() => this.handleColorTagChange(parseInt(tag_idx))}>
                     <input type="checkbox" aria-label={tags[tag_idx]} style={{cursor: "pointer"}}
                         onChange={() => {}}
                         checked={this.state.color_tag.includes(parseInt(tag_idx))}/>
@@ -219,7 +219,7 @@ export class MaterialConfig extends BaseConfig {
         }
 
         return <div className="row mt-2 mb-2" key="color_tag">
-            <div className="col-2">色系</div>
+            <div className="col-2 d-flex justify-content-center flex-column text-center">色系</div>
             <div className="col">
                 <div className="input-group">
                     {dropDown}
@@ -232,7 +232,7 @@ export class MaterialConfig extends BaseConfig {
         const category = categoryInput.toString();
         const keywordHierarchy = MaterialHierarchy.inst().tags;
         const materialTags = MaterialKeyword.inst().tags;
-        const baseClass = "input-group-text ml-1 mr-1 ";
+        const baseClass = "input-group-text btn btn-secondary ml-1 mr-1 ";
 
         let buffer = [];
 
@@ -268,7 +268,7 @@ export class MaterialConfig extends BaseConfig {
         const category = categoryInput.toString();
         const keywordHierarchy = MaterialHierarchy.inst().tags;
         const materialSurface = MaterialSurface.inst().tags;
-        const baseClass = "input-group-text ml-1 mr-1 ";
+        const baseClass = "input-group-text btn btn-secondary ml-1 mr-1 ";
 
         let buffer = [];
 
@@ -353,7 +353,7 @@ export class MaterialConfig extends BaseConfig {
             if (subHierarchy.hasOwnProperty(subTagIdx) && subTags.hasOwnProperty(subTagIdx)) {
                 const subTagName = subTags[subTagIdx];
                 const checked = this.state.sub_tag.includes(parseInt(subTagIdx));
-                let divClass = "input-group-text ml-1 mr-1 ";
+                let divClass = "input-group-text btn btn-secondary ml-1 mr-1 ";
 
                 if (checked) {
                     divClass += "bg-secondary text-light font-weight-bold";
@@ -383,13 +383,13 @@ export class MaterialConfig extends BaseConfig {
             if (hierarchy.hasOwnProperty(majorTagIdx) && majorTags.hasOwnProperty(majorTagIdx)) {
                 const majorTagName = majorTags[majorTagIdx];
                 const subHierarchy = hierarchy[majorTagIdx];
-                buffer.push(<div className="col mt-3" key={majorTagIdx}>
+                buffer.push(<div className="col mt-4" key={majorTagIdx}>
                     <div className="row" key={majorTagIdx}>
-                        <div className="col">
-                            <div className="row mb-1">
-                                <div className="col-1">
-                                    {majorTagName}
-                                </div>
+                        <fieldset className="col border rounded">
+                            <legend className="mb-1 pl-2 pr-2" style={{fontSize: "12pt", width: "auto"}}>
+                                {majorTagName}
+                            </legend>
+                            <div className="row ml-1">
                                 <div className="col" style={{fontSize: "9pt", paddingLeft: "0"}}>
                                     <button className="btn btn-outline-secondary" style={buttonStyle}
                                         onClick={() => {this.handleChooseAllSubTag(subHierarchy);}}>
@@ -401,12 +401,12 @@ export class MaterialConfig extends BaseConfig {
                                     </button>
                                 </div>
                             </div>
-                            <div className="row">
+                            <div className="row mt-2 mb-2">
                                 <div className="col">
                                     <div className="input-group">{this.renderSubTags(subHierarchy)}</div>
                                 </div>
                             </div>
-                        </div>
+                        </fieldset>
                     </div>
                 </div>);
             }
@@ -414,7 +414,7 @@ export class MaterialConfig extends BaseConfig {
 
         return <div className="row mt-4 pt-4 pb-4 border border-1 border-secondary rounded" key="configBaseTags">
             <div className="col">
-                使用部位
+                <span style={{fontWeight: "bold", fontSize: "12pt"}}>使用部位</span>
                 <hr />
 
                 <div>

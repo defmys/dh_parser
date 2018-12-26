@@ -118,8 +118,6 @@ class DH_Parser extends React.Component {
         const newFileTreeStyle = {
             maxHeight: height,
             minHeight: height,
-            overflow: "auto",
-            backgroundColor: "#21252B"
         };
 
         this.setState({fileTreeStyle: newFileTreeStyle});
@@ -258,7 +256,7 @@ class DH_Parser extends React.Component {
 
     render() {
         return (
-            <div className="container-fluid bg-light">
+            <div className="container-fluid bg-light" style={{fontFamily: "微软雅黑", fontSize: "11pt"}}>
                 {this.renderMenuBar()}
                 <FileTree path={this.state.path} fileTreeStyle={this.state.fileTreeStyle} ref={this.fileTree}/>
             </div>
