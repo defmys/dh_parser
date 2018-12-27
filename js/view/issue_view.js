@@ -46,7 +46,7 @@ class IssueView extends React.Component {
         }
 
         return <div className="m-1 border">
-            <table className="table table-sm table-striped table-bordered mb-0" style={{fontSize: "9pt"}}>
+            <table className="table table-sm table-striped table-bordered mb-0" style={{fontFamily: "微软雅黑", fontSize: "9pt"}}>
                 <thead>
                     <tr className="table-warning text-center">
                         <th>路径</th>
