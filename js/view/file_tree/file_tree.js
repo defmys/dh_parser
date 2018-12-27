@@ -143,11 +143,12 @@ export class FileTree extends React.Component {
         const style = {
             ...this.props.fileTreeStyle,
             overflow: "auto",
-            backgroundColor: "#21252B"
+            backgroundColor: "#21252B",
+            minWidth: "250px"
         };
         return (
             <div className="row">
-                <div className="col-2 p-0 pl-1 text-nowrap" style={style}>
+                <div className="col-3 p-0 pl-1 text-nowrap" style={style}>
                     <Treebeard data={this.state.dirList} onToggle={this.onToggle} style={fileTreeTheme} decorators={{...decorators, Header: this.nodeHeaderStyle, Container: this.containerDecorator}}/>
                 </div>
                 {this.renderConfigDetail()}
