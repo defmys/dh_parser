@@ -6,7 +6,7 @@ import {loadConfigFile} from "./configFileLoader";
 function filterByType(configList, targetType) {
     let filtered = [];
     configList.forEach((value) => {
-        if (value.type === targetType) {
+        if (value.type === targetType && value.id > 0) {
             filtered.push(value);
         }
     });

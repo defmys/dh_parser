@@ -44,6 +44,33 @@ function checkID(configList) {
     return issueList;
 }
 
+
+function checkRefPath(issueList, config) {
+    if (config.ref_path !== undefined && config.ref_path !== null) {
+        if (!config.ref_path.startsWith("/Game/")) {
+            issueList.push(new Issue(config.node_path, "引用路径格式错误"));
+        }
+    }
+}
+
+
+function checkTextureRefPath(issueList, config) {
+    if (config.texture_ref_path) {
+        config.texture_ref_path.forEach(function(ref_path) {
+            if (!ref_path.startsWith("/Game/") && ref_path !== "") {
+                issueList.push(new Issue(config.node_path, "贴图引用路径格式错误"));
+            }
+        });
+    }
+}
+
+function checkUninitializedConfig(issueList, config) {
+    if (!config.hasOwnProperty("id")) {
+        issueList.push(new Issue(config.node_path, "配置文件未初始化"));
+    }
+}
+
+
 function calcMaxIDs(configList) {
     let ret = {
         actor: 0,
@@ -84,6 +111,13 @@ export class Validator {
 
         this.issueList = [];
         this.issueList = this.issueList.concat(checkID(configList));
+
+        let _this = this;
+        configList.forEach(function(config) {
+            checkUninitializedConfig(_this.issueList, config);
+            checkRefPath(_this.issueList, config);
+            checkTextureRefPath(_this.issueList, config);
+        });
 
         this.maxID = calcMaxIDs(configList);
     }
