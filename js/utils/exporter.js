@@ -16,7 +16,10 @@ function filterByType(configList, targetType) {
 
 function exportToFile(rootPath, contentList, type, dbCollection) {
     let targetContentList = filterByType(contentList, type);
-    let stringList = targetContentList.map((value) => {return JSON.stringify(value);});
+    let stringList = targetContentList.map((value) => {
+        delete value.node_path;
+        return JSON.stringify(value);
+    });
 
     let scriptContent = [];
 
