@@ -59,14 +59,22 @@ export class BaseConfig extends React.Component {
         const relativePathNames = path.dirname(relativePath).split(path.sep);
         const dirName = dirPath.split(path.sep).pop();
 
-        let fileName = dirName + ".png";
-        let imgPath = path.join(dirPath, fileName);
-        if (!fs.existsSync(imgPath)) {
-            fileName = dirName + ".jpg";
-            imgPath = path.join(dirPath, fileName);
-            if (!fs.existsSync(imgPath)) {
-                imgPath = "";
-            }
+        let imgPath = "";
+        let fileName = "";
+        let fileList = fs.readdirSync(dirPath);
+        if (fileList && fileList.length > 0) {
+            fileList.forEach((file) => {
+                const filePath = path.resolve(dirPath, file);
+                let stat = fs.statSync(filePath);
+                if (!stat.isDirectory()) {
+                    const extname = path.posix.extname(filePath);
+                    const basename = path.posix.basename(file, extname);
+                    if ((extname.toLowerCase() === ".jpg" || extname.toLowerCase() === ".png") && basename === dirName) {
+                        imgPath = filePath;
+                        fileName = file;
+                    }
+                }
+            });
         }
 
         this.setState({
