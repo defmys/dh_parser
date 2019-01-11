@@ -77,10 +77,17 @@ export class BaseConfig extends React.Component {
             });
         }
 
-        this.setState({
-            imgPath: imgPath,
-            thumbnail: path.posix.join(...relativePathNames, fileName).toString()
-        });
+        if (fileName !== "") {
+            this.setState({
+                imgPath: imgPath,
+                thumbnail: path.posix.join(...relativePathNames, fileName).toString()
+            });
+        } else {
+            this.setState({
+                imgPath: "",
+                thumbnail: ""
+            });
+        }
     }
 
     prepareConfigContent(content) {

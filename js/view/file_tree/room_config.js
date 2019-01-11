@@ -55,9 +55,15 @@ export class RoomConfig extends BaseConfig {
             });
         }
 
-        this.setState({
-            download_path: path.posix.join(...relativePathNames, fileName).toString()
-        });
+        if (fileName !== "") {
+            this.setState({
+                download_path: path.posix.join(...relativePathNames, fileName).toString()
+            });
+        } else {
+            this.setState({
+                download_path: ""
+            });
+        }
     }
 
     prepareConfigContent (content) {

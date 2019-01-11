@@ -75,6 +75,20 @@ function checkUninitializedConfig(issueList, config) {
 }
 
 
+function checkThumbnail(issueList, config) {
+    if (config.thumbnail === "") {
+        issueList.push(new Issue(config.node_path, "缺少缩略图"));
+    }
+}
+
+
+function checkRoomDatURL(issueList, config) {
+    if (config.type === "Room" && config.is_dat && config.download_path === "") {
+        issueList.push(new Issue(config.node_path, "缺少空间存档文件"));
+    }
+}
+
+
 function calcMaxIDs(configList) {
     let ret = {
         actor: 0,
@@ -121,6 +135,8 @@ export class Validator {
             checkUninitializedConfig(_this.issueList, config);
             checkRefPath(_this.issueList, config);
             checkTextureRefPath(_this.issueList, config);
+            checkThumbnail(_this.issueList, config);
+            checkRoomDatURL(_this.issueList, config);
         });
 
         this.maxID = calcMaxIDs(configList);
