@@ -198,7 +198,7 @@ export class RoomConfig extends BaseConfig {
     renderBasePart2() {
         let buffer = super.renderBasePart2();
         buffer.push(<div className="row mt-1" key="level_name">
-            <div className="col-2">Level Name</div>
+            <div className="col-2">地图名/方案名</div>
             <div className="col"><input name="level_name" value={this.state.level_name} style={{width: "100%"}} onChange={this.handleInputChange}/></div>
         </div>);
         buffer.push(
