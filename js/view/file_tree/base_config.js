@@ -196,7 +196,7 @@ export class BaseConfig extends React.Component {
 
         let img = "";
         if (this.state.imgPath !== "") {
-            img = <img className="border border-1" src={this.state.imgPath} height="130px" width="130px" data-toggle="tooltip" data-placement="bottom" title="缩略图"/>;
+            img = <img className="border border-1" src={this.state.imgPath} alt="" height="130px" width="130px" data-toggle="tooltip" data-placement="bottom" title="缩略图"/>;
         } else {
             img = <div style={{opacity: 0.1}}><FontAwesomeIcon icon={faTimesCircle} className="fa-8x" data-toggle="tooltip" data-placement="bottom" title="未找到缩略图"/></div>;
         }

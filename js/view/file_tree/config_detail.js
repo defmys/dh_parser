@@ -4,16 +4,19 @@ import {ActorConfig} from "./actor_config";
 import {MaterialConfig} from "./material_config";
 import {NodeCache} from "../../model/nodeCache";
 import PropTypes from "prop-types";
+import {RoomConfig} from "./room_config";
 
 
 const types = {
     Actor: "Actor",
-    Material: "Material"
+    Material: "Material",
+    Room: "Room"
 };
 
 const typeName = {
     "Actor": "物件",
-    "Material": "材质"
+    "Material": "材质",
+    "Room": "房间"
 };
 
 const defaultType = types.Material;
@@ -119,6 +122,9 @@ export class ConfigDetail extends React.Component {
             if (this.state.type === types.Actor) {
                 ret = <ActorConfig path={this.props.path} root={this.props.root} configType={this.state.type} content={this.state.content} ref={this.configRef}/>;
             }
+            else if (this.state.type === types.Room) {
+                ret = <RoomConfig path={this.props.path} root={this.props.root} configType={this.state.type} content={this.state.content} ref={this.configRef}/>;
+            }
             else {
                 ret = <MaterialConfig path={this.props.path} root={this.props.root} configType={this.state.type} content={this.state.content} ref={this.configRef}/>;
             }
@@ -147,6 +153,7 @@ export class ConfigDetail extends React.Component {
                         <div className="dropdown-menu text-center" aria-labelledby="typeDropDown">
                             <a className="dropdown-item" href="#" onClick={() => this.handleTypeChange(types.Actor)}>{typeName[types.Actor]}</a>
                             <a className="dropdown-item" href="#" onClick={() => this.handleTypeChange(types.Material)}>{typeName[types.Material]}</a>
+                            <a className="dropdown-item" href="#" onClick={() => this.handleTypeChange(types.Room)}>{typeName[types.Room]}</a>
                         </div>
                     </div>
                 </div>

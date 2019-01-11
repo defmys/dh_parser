@@ -14,6 +14,7 @@ function checkID(configList) {
 
     let actors = new Set();
     let materials = new Set();
+    let rooms = new Set();
 
     configList.forEach(function(config) {
         let targetSet = null;
@@ -24,6 +25,9 @@ function checkID(configList) {
             break;
         case "Material":
             targetSet = materials;
+            break;
+        case "Room":
+            targetSet = rooms;
             break;
         default:
             break;

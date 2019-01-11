@@ -185,3 +185,41 @@ export class MaterialHierarchy {
         return _materialHierarchy;
     }
 }
+
+
+class RoomTypeImpl extends TagImpl {
+    get filename() {
+        return "roomType.json";
+    }
+}
+
+
+let _roomType = null;
+export class RoomType {
+    static inst() {
+        if (_roomType === null) {
+            _roomType = new RoomTypeImpl();
+        }
+
+        return _roomType;
+    }
+}
+
+
+class RoomStyleImpl extends TagImpl {
+    get filename() {
+        return "roomStyle.json";
+    }
+}
+
+
+let _roomStyle = null;
+export class RoomStyle {
+    static inst() {
+        if (_roomStyle === null) {
+            _roomStyle = new RoomStyleImpl();
+        }
+
+        return _roomStyle;
+    }
+}

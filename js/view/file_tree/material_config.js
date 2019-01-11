@@ -1,7 +1,6 @@
 import {BaseConfig} from "./base_config";
 import React from "react";
 import {
-    ColorTag,
     MajorTag,
     MaterialHierarchy,
     MaterialKeyword, MaterialSurface,
@@ -11,6 +10,7 @@ import {
 } from "../../model/tag";
 import {faPlusCircle, faMinusCircle} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {ColorTagRenderer} from "./color_tag";
 
 export class MaterialConfig extends BaseConfig {
 
@@ -196,33 +196,6 @@ export class MaterialConfig extends BaseConfig {
                 {this.renderTextureRefPathTextEle()}
                 <div className="row mr-1">
                     <button className="col btn btn-block btn-outline-primary" onClick={this.handleAddTextureRef}><FontAwesomeIcon icon={faPlusCircle}/></button>
-                </div>
-            </div>
-        </div>;
-    }
-
-    renderColorTag() {
-        const dropDown = [];
-        const tags = ColorTag.inst().tags;
-        const basicStyle={cursor: "pointer", width: "90px"};
-
-        for (let tag_idx in tags) {
-            if (tags.hasOwnProperty(tag_idx)) {
-                const style = {...basicStyle, ...ColorTag.getCheckboxStyle(tag_idx)};
-                dropDown.push(<div className="colorTagCheckboxDiv btn btn-secondary input-group-text mr-1 mt-1" key={tag_idx} style={style} onClick={() => this.handleColorTagChange(parseInt(tag_idx))}>
-                    <input type="checkbox" aria-label={tags[tag_idx]} style={{cursor: "pointer"}}
-                        onChange={() => {}}
-                        checked={this.state.color_tag.includes(parseInt(tag_idx))}/>
-                    {tags[tag_idx]}
-                </div>);
-            }
-        }
-
-        return <div className="row mt-2 mb-2" key="color_tag">
-            <div className="col-2 d-flex justify-content-center flex-column text-center">色系</div>
-            <div className="col">
-                <div className="input-group">
-                    {dropDown}
                 </div>
             </div>
         </div>;
@@ -427,9 +400,9 @@ export class MaterialConfig extends BaseConfig {
     additionalRender() {
         let buffer = [];
 
-        buffer.push(<div className="row mt-4 border border-1 border-secondary rounded" key="tagRow">
+        buffer.push(<div className="row mt-4 border border-1 border-secondary rounded" key="color_tag">
             <div className="col">
-                {this.renderColorTag()}
+                <ColorTagRenderer color_tag={this.state.color_tag} handler={this.handleColorTagChange}/>
             </div>
         </div>);
         buffer.push(this.renderCategory());
