@@ -46,10 +46,10 @@ export class BaseConfig extends React.Component {
         }
     }
 
-    initContent() {
+    initContent(setStateCallback=null) {
         let fixedContent = this.prepareConfigContent(this.props.content);
-        this.fillState(fixedContent);
 
+        this.fillState(fixedContent, setStateCallback);
         this.initThumbnailPath();
     }
 
@@ -104,16 +104,20 @@ export class BaseConfig extends React.Component {
         return fixedContent;
     }
 
-    fillState(content) {
+    fillState(content, setStateCallback=null) {
+        let newState = {};
         for (let property in content) {
             if (content.hasOwnProperty(property)) {
-                this.setState({
-                    [property]: content[property]
-                });
+                newState[[property]] = content[property];
             }
         }
 
-        this.setState({type: this.props.configType});
+        newState["type"] = this.props.configType;
+        if (setStateCallback !== null) {
+            this.setState(newState, setStateCallback);
+        } else {
+            this.setState(newState);
+        }
     }
 
     content() {

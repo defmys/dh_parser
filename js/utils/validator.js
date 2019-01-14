@@ -50,9 +50,35 @@ function checkID(configList) {
 
 
 function checkRefPath(issueList, config) {
-    if (config.ref_path !== undefined && config.ref_path !== null) {
+    if (config.type === "Room") {
+        checkRoomRefPath(issueList, config);
+    } else if (config.ref_path !== undefined && config.ref_path !== null) {
         if (!config.ref_path.startsWith("/Game/")) {
             issueList.push(new Issue(config.node_path, "引用路径格式错误"));
+        }
+    }
+}
+
+
+function checkRoomRefPath(issueList, config) {
+    if (!config.ref_path) {
+        issueList.push(new Issue(config.node_path, "缺少房间引用路径"));
+    }
+    else {
+        if (config.is_dat) {
+            if (config.ref_path.includes("/") || config.ref_path.includes("\\")) {
+                issueList.push(new Issue(config.node_path, "房间存档引用路径中包含有文件夹"));
+            }
+            if (!config.ref_path.endsWith(".dat")) {
+                issueList.push(new Issue(config.node_path, "房间存档引用路径不是dat文件"));
+            }
+        } else {
+            if (config.ref_path.includes("/") || config.ref_path.includes("\\")) {
+                issueList.push(new Issue(config.node_path, "房间引用路径中包含有文件夹"));
+            }
+            if (!config.ref_path.endsWith(".umap")) {
+                issueList.push(new Issue(config.node_path, "房间引用路径不是umap文件"));
+            }
         }
     }
 }
@@ -68,6 +94,7 @@ function checkTextureRefPath(issueList, config) {
     }
 }
 
+
 function checkUninitializedConfig(issueList, config) {
     if (!config.hasOwnProperty("id")) {
         issueList.push(new Issue(config.node_path, "配置文件未初始化"));
@@ -78,13 +105,6 @@ function checkUninitializedConfig(issueList, config) {
 function checkThumbnail(issueList, config) {
     if (config.thumbnail === "") {
         issueList.push(new Issue(config.node_path, "缺少缩略图"));
-    }
-}
-
-
-function checkRoomDatURL(issueList, config) {
-    if (config.type === "Room" && config.is_dat && config.download_path === "") {
-        issueList.push(new Issue(config.node_path, "缺少空间存档文件"));
     }
 }
 
@@ -136,7 +156,6 @@ export class Validator {
             checkRefPath(_this.issueList, config);
             checkTextureRefPath(_this.issueList, config);
             checkThumbnail(_this.issueList, config);
-            checkRoomDatURL(_this.issueList, config);
         });
 
         this.maxID = calcMaxIDs(configList);

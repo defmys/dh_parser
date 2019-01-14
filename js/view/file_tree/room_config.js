@@ -3,7 +3,7 @@ import {BaseConfig} from "./base_config";
 import {ColorTagRenderer} from "./color_tag";
 import {RoomStyle, RoomType} from "../../model/tag";
 import path from "path";
-import fs from "fs";
+
 
 export class RoomConfig extends BaseConfig {
     constructor(props) {
@@ -29,31 +29,14 @@ export class RoomConfig extends BaseConfig {
     }
 
     initContent() {
-        super.initContent();
-        this.initDownloadURL();
+        super.initContent(() => {this.initDownloadURL(this.state.ref_path);});
     }
 
-    initDownloadURL() {
-        const dirPath = path.dirname(this.props.path);
+    initDownloadURL(ref_path) {
         const relativePath = path.relative(this.props.root, this.props.path);
         const relativePathNames = path.dirname(relativePath).split(path.sep);
-        const dirName = dirPath.split(path.sep).pop();
 
-        let fileName = "";
-        let fileList = fs.readdirSync(dirPath);
-        if (fileList && fileList.length > 0) {
-            fileList.forEach((file) => {
-                const filePath = path.resolve(dirPath, file);
-                let stat = fs.statSync(filePath);
-                if (!stat.isDirectory()) {
-                    const extname = path.posix.extname(filePath);
-                    const basename = path.posix.basename(file, extname);
-                    if ((extname.toLowerCase() === ".dat") && basename === dirName) {
-                        fileName = file;
-                    }
-                }
-            });
-        }
+        let fileName = ref_path;
 
         if (fileName !== "") {
             this.setState({
@@ -120,6 +103,11 @@ export class RoomConfig extends BaseConfig {
         this.setState({"room_style": idx});
     }
 
+    handleRefPathChange(event) {
+        super.handleInputChange(event);
+        this.initDownloadURL(event.target.value);
+    }
+
     renderRoomType() {
         const tags = RoomType.inst().tags;
 
@@ -183,6 +171,13 @@ export class RoomConfig extends BaseConfig {
                     </div>
                 </div>
             </div>
+        </div>;
+    }
+
+    renderRefPath() {
+        return <div className="row mt-1" key="ref_path">
+            <div className="col-2">引用路径</div>
+            <div className="col"><input name="ref_path" className="" value={this.state.ref_path || ""} style={{width: "100%"}} onChange={(e) => this.handleRefPathChange(e)}/></div>
         </div>;
     }
 
