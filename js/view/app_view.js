@@ -203,7 +203,7 @@ class DH_Parser extends React.Component {
     renderMenuBar() {
         const btnClass = "btn btn-outline-secondary mr-1";
         return <div id="menuBar" className="row border-secondary border-bottom">
-            <div className="col p-1 d-flex justify-content-left">
+            <div className="col p-1 d-flex justify-content-start">
                 <button className={btnClass}
                     data-toggle="tooltip"
                     data-placement="bottom"
