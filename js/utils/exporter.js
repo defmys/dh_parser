@@ -38,5 +38,5 @@ export function exportScript(rootPath) {
 
     exportToFile(rootPath, configList, "Actor", "actor");
     exportToFile(rootPath, configList, "Material", "material");
-    exportToFile(rootPath, configList, "Room", "material");
+    exportToFile(rootPath, configList, "Room", "room");
 }
