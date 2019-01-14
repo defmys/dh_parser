@@ -112,7 +112,8 @@ function checkThumbnail(issueList, config) {
 function calcMaxIDs(configList) {
     let ret = {
         actor: 0,
-        material: 0
+        material: 0,
+        room: 0,
     };
 
     configList.forEach(function(config) {
@@ -125,6 +126,11 @@ function calcMaxIDs(configList) {
         case "Material":
             if (ret.material < config.id) {
                 ret.material = config.id;
+            }
+            break;
+        case "Room":
+            if (ret.room < config.id) {
+                ret.room = config.id;
             }
             break;
         default:
@@ -140,7 +146,8 @@ export class Validator {
         this.issueList = [];
         this.maxID = {
             actor: 0,
-            material: 0
+            material: 0,
+            room: 0
         };
     }
 

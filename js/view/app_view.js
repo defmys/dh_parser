@@ -27,6 +27,7 @@ class DH_Parser extends React.Component {
             issueCount: 0,
             maxActorID: 0,
             maxMaterialID: 0,
+            maxRoomID: 0,
             refresh: 0
         };
 
@@ -52,6 +53,7 @@ class DH_Parser extends React.Component {
             issueCount: this.validator.issueCount(),
             maxActorID: this.validator.maxID.actor,
             maxMaterialID: this.validator.maxID.material,
+            maxRoomID: this.validator.maxID.room,
         });
         ipcRenderer.send("refreshIssueList", this.validator.issueList);
     }
@@ -175,12 +177,15 @@ class DH_Parser extends React.Component {
     }
 
     renderMaxID() {
-        return <div className="col-6 mt-1 text-left" key="statusMaxID" style={{fontSize: "9pt"}}>
+        return <div className="col-6 mt-1 text-left" key="statusMaxID" style={{fontSize: "8pt"}}>
             <div className="row">
                 <div className="col">模型最大ID: {this.state.maxActorID}</div>
             </div>
             <div className="row">
                 <div className="col">材质最大ID: {this.state.maxMaterialID}</div>
+            </div>
+            <div className="row">
+                <div className="col">房间最大ID: {this.state.maxRoomID}</div>
             </div>
         </div>;
     }
@@ -198,7 +203,7 @@ class DH_Parser extends React.Component {
     renderMenuBar() {
         const btnClass = "btn btn-outline-secondary mr-1";
         return <div id="menuBar" className="row border-secondary border-bottom">
-            <div className="col p-1">
+            <div className="col p-1 d-flex justify-content-left">
                 <button className={btnClass}
                     data-toggle="tooltip"
                     data-placement="bottom"
