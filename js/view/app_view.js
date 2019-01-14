@@ -26,7 +26,8 @@ class DH_Parser extends React.Component {
             fileTreeStyle: {},
             issueCount: 0,
             maxActorID: 0,
-            maxMaterialID: 0
+            maxMaterialID: 0,
+            refresh: 0
         };
 
         this.validator = new Validator();
@@ -60,7 +61,10 @@ class DH_Parser extends React.Component {
 
         const dir_path = dialog.showOpenDialog(remote.getCurrentWindow(), {properties: ["openDirectory"]});
         if (dir_path !== undefined && dir_path.length > 0) {
-            this.setState({path: dir_path[0]}, () => { this.validate(); });
+            this.setState(
+                {path: dir_path[0], refresh: this.state.refresh + 1},
+                () => { this.validate(); }
+            );
         }
     }
 
@@ -69,7 +73,8 @@ class DH_Parser extends React.Component {
             this.saveAllConfig(false);
 
             this.setState({
-                path: this.state.path
+                path: this.state.path,
+                refresh: this.state.refresh + 1
             });
         }
     }
@@ -258,7 +263,7 @@ class DH_Parser extends React.Component {
         return (
             <div className="container-fluid bg-light" style={{fontFamily: "微软雅黑", fontSize: "11pt"}}>
                 {this.renderMenuBar()}
-                <FileTree path={this.state.path} fileTreeStyle={this.state.fileTreeStyle} ref={this.fileTree}/>
+                <FileTree path={this.state.path} refresh={this.state.refresh} fileTreeStyle={this.state.fileTreeStyle} ref={this.fileTree}/>
             </div>
         );
     }
