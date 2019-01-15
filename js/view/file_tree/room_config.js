@@ -71,8 +71,9 @@ export class RoomConfig extends BaseConfig {
         content.color_tag = this.state.color_tag;
         content.room_type = this.state.room_type;
         content.room_style = this.state.room_style;
-        content.level_name = this.state.level_name;
         content.download_path = this.state.download_path;
+
+        content.level_name = this.state.ref_path.split(".").slice(0, -1).join(".");
 
         return content;
     }
@@ -192,10 +193,6 @@ export class RoomConfig extends BaseConfig {
 
     renderBasePart2() {
         let buffer = super.renderBasePart2();
-        buffer.push(<div className="row mt-1" key="level_name">
-            <div className="col-2">地图名/方案名</div>
-            <div className="col"><input name="level_name" value={this.state.level_name} style={{width: "100%"}} onChange={this.handleInputChange}/></div>
-        </div>);
         buffer.push(
             <div className="row mt-1" key="is_dat">
                 <div className="col-2">是否为存档文件</div>
