@@ -18,6 +18,7 @@ export class ActorConfig extends BaseConfig {
         this.handleMajorTagChange = this.handleMajorTagChange.bind(this);
         this.handleSubTagChange = this.handleSubTagChange.bind(this);
         this.handleDisplaySizeChange = this.handleDisplaySizeChange.bind(this);
+        this.handleIsBlueprintChange = this.handleIsBlueprintChange.bind(this);
     }
 
     initialSate(props) {
@@ -25,6 +26,7 @@ export class ActorConfig extends BaseConfig {
         state["major_tag"] = "1";
         state["sub_tag"] = "1";
         state["display_size"] = "";
+        state["is_blueprint"] = false;
         return state;
     }
 
@@ -33,6 +35,7 @@ export class ActorConfig extends BaseConfig {
         BaseConfig.fillWithDefault(fixedContent, content, "major_tag", "1");
         BaseConfig.fillWithDefault(fixedContent, content, "sub_tag", "1");
         BaseConfig.fillWithDefault(fixedContent, content, "display_size", "");
+        BaseConfig.fillWithDefault(fixedContent, content, "is_blueprint", false);
 
         fixedContent["slots"] = {};
         if (content["slots"] !== undefined) {
@@ -66,6 +69,7 @@ export class ActorConfig extends BaseConfig {
         content.major_tag = parseInt(this.state.major_tag);
         content.sub_tag = parseInt(this.state.sub_tag);
         content.display_size = this.state.display_size;
+        content.is_blueprint = this.state.is_blueprint;
 
         return content;
     }
@@ -155,6 +159,10 @@ export class ActorConfig extends BaseConfig {
 
     handleDisplaySizeChange(event) {
         this.setState({"display_size": event.target.value});
+    }
+
+    handleIsBlueprintChange() {
+        this.setState({"is_blueprint": !this.state.is_blueprint});
     }
 
     renderDisplaySize() {
@@ -352,6 +360,17 @@ export class ActorConfig extends BaseConfig {
     renderBasePart1() {
         let buffer = super.renderBasePart1();
         buffer.push(this.renderDisplaySize());
+        return buffer;
+    }
+
+    renderBasePart2() {
+        let buffer = super.renderBasePart2();
+
+        buffer.push(<div className="row mt-1" key="is_blueprint">
+            <div className="col-2">Blueprint</div>
+            <div className="col"><input name="is_blueprint" type="checkbox" className="" checked={this.state.is_blueprint} onChange={this.handleIsBlueprintChange}/></div>
+        </div>);
+
         return buffer;
     }
 }
