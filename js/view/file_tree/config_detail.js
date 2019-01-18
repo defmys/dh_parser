@@ -90,6 +90,10 @@ export class ConfigDetail extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        this.save();
+    }
+
     handleTypeChange(type) {
         let content = {};
 
