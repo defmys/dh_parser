@@ -5,18 +5,23 @@ import {MaterialConfig} from "./material_config";
 import {NodeCache} from "../../model/nodeCache";
 import PropTypes from "prop-types";
 import {RoomConfig} from "./room_config";
+import {InteriorFinishMaterial} from "./interior_m_config";
 
 
 const types = {
     Actor: "Actor",
     Material: "Material",
-    Room: "Room"
+    Room: "Room",
+    InteriorFinishMaterial: "InteriorFinishMaterial",
+    InteriorFinishMaterialGroup: "InteriorFinishMaterialGroup"
 };
 
 const typeName = {
     "Actor": "物件",
     "Material": "材质",
-    "Room": "房间"
+    "Room": "房间",
+    "InteriorFinishMaterial": "硬装材质",
+    "InteriorFinishMaterialGroup": "硬装材质分组",
 };
 
 const defaultType = types.Material;
@@ -129,12 +134,27 @@ export class ConfigDetail extends React.Component {
             else if (this.state.type === types.Room) {
                 ret = <RoomConfig path={this.props.path} root={this.props.root} configType={this.state.type} content={this.state.content} ref={this.configRef}/>;
             }
+            else if (this.state.type === types.InteriorFinishMaterial) {
+                ret = <InteriorFinishMaterial path={this.props.path} root={this.props.root} configType={this.state.type} content={this.state.content} ref={this.configRef}/>;
+            }
             else {
                 ret = <MaterialConfig path={this.props.path} root={this.props.root} configType={this.state.type} content={this.state.content} ref={this.configRef}/>;
             }
         }
 
         return <div className="col">{ret}</div>;
+    }
+
+    renderTypeDropdownList() {
+        let buffer = [];
+
+        for (let curType in types) {
+            if (types.hasOwnProperty(curType) && typeName.hasOwnProperty(curType)) {
+                buffer.push(<a className="dropdown-item" href="#" key={typeName[types.Actor]} onClick={() => this.handleTypeChange(curType)}>{typeName[curType]}</a>);
+            }
+        }
+
+        return buffer;
     }
 
     render() {
@@ -155,9 +175,7 @@ export class ConfigDetail extends React.Component {
                             {typeName[curType]}
                         </button>
                         <div className="dropdown-menu text-center" aria-labelledby="typeDropDown">
-                            <a className="dropdown-item" href="#" onClick={() => this.handleTypeChange(types.Actor)}>{typeName[types.Actor]}</a>
-                            <a className="dropdown-item" href="#" onClick={() => this.handleTypeChange(types.Material)}>{typeName[types.Material]}</a>
-                            <a className="dropdown-item" href="#" onClick={() => this.handleTypeChange(types.Room)}>{typeName[types.Room]}</a>
+                            {this.renderTypeDropdownList()}
                         </div>
                     </div>
                 </div>
