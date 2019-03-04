@@ -31,7 +31,7 @@ export class FileTree extends React.Component {
         if (prevProps !== this.props && this.props.refresh !== prevProps.refresh) {
             let newData = this.loadDirInfo(this.props.path, "root");
             newData.toggled = true;
-            this.setState({dirList: newData});
+            this.setState({dirList: newData, curPath: ""});
         }
     }
 

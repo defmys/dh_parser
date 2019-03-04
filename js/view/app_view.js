@@ -59,10 +59,11 @@ class DH_Parser extends React.Component {
     }
 
     openFolder() {
-        this.saveAllConfig(false);
+        this.saveAllConfig(false );
 
         const dir_path = dialog.showOpenDialog(remote.getCurrentWindow(), {properties: ["openDirectory"]});
         if (dir_path !== undefined && dir_path.length > 0) {
+            NodeCache.inst().clear();
             this.setState(
                 {path: dir_path[0], refresh: this.state.refresh + 1},
                 () => { this.validate(); }
