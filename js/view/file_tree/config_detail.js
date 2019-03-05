@@ -6,6 +6,7 @@ import {NodeCache} from "../../model/nodeCache";
 import PropTypes from "prop-types";
 import {RoomConfig} from "./room_config";
 import {InteriorFinishMaterial} from "./interior_m_config";
+import {InteriorFinishMaterialGroup} from "./interior_m_g_config";
 
 
 const types = {
@@ -137,6 +138,9 @@ export class ConfigDetail extends React.Component {
             else if (this.state.type === types.InteriorFinishMaterial) {
                 ret = <InteriorFinishMaterial path={this.props.path} root={this.props.root} configType={this.state.type} content={this.state.content} ref={this.configRef}/>;
             }
+            else if (this.state.type === types.InteriorFinishMaterialGroup) {
+                ret = <InteriorFinishMaterialGroup path={this.props.path} root={this.props.root} configType={this.state.type} content={this.state.content} ref={this.configRef}/>;
+            }
             else {
                 ret = <MaterialConfig path={this.props.path} root={this.props.root} configType={this.state.type} content={this.state.content} ref={this.configRef}/>;
             }
@@ -150,7 +154,7 @@ export class ConfigDetail extends React.Component {
 
         for (let curType in types) {
             if (types.hasOwnProperty(curType) && typeName.hasOwnProperty(curType)) {
-                buffer.push(<a className="dropdown-item" href="#" key={typeName[types.Actor]} onClick={() => this.handleTypeChange(curType)}>{typeName[curType]}</a>);
+                buffer.push(<a className="dropdown-item" href="#" key={typeName[curType]} onClick={() => this.handleTypeChange(curType)}>{typeName[curType]}</a>);
             }
         }
 

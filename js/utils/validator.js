@@ -15,6 +15,8 @@ function checkID(configList) {
     let actors = new Set();
     let materials = new Set();
     let rooms = new Set();
+    let interior_finish_m = new Set();
+    let interior_finish_m_g = new Set();
 
     configList.forEach(function(config) {
         let targetSet = null;
@@ -28,6 +30,12 @@ function checkID(configList) {
             break;
         case "Room":
             targetSet = rooms;
+            break;
+        case "InteriorFinishMaterial":
+            targetSet = interior_finish_m;
+            break;
+        case "InteriorFinishMaterialGroup":
+            targetSet = interior_finish_m_g;
             break;
         default:
             break;
@@ -52,7 +60,7 @@ function checkID(configList) {
 function checkRefPath(issueList, config) {
     if (config.type === "Room") {
         checkRoomRefPath(issueList, config);
-    } else if (config.ref_path !== undefined && config.ref_path !== null) {
+    } else if (config.type !== "InteriorFinishMaterialGroup" && config.ref_path !== undefined && config.ref_path !== null) {
         if (!config.ref_path.startsWith("/Game/")) {
             issueList.push(new Issue(config.node_path, "引用路径格式错误"));
         }
