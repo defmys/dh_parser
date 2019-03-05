@@ -1,6 +1,8 @@
 import React from "react";
 
 import {BaseConfig} from "./base_config";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
 
 
 const ActorType = {
@@ -25,6 +27,12 @@ export class InteriorFinishMaterialGroup extends BaseConfig {
 
         this.handleActorTypeChange = this.handleActorTypeChange.bind(this);
         this.handleInteriorFinishTypeChange = this.handleInteriorFinishTypeChange.bind(this);
+        this.handleMaterialIndexChange = this.handleMaterialIndexChange.bind(this);
+        this.handleMaterialIDChange = this.handleMaterialIDChange.bind(this);
+        this.handleAddSlot = this.handleAddSlot.bind(this);
+        this.handleRemoveSlot = this.handleRemoveSlot.bind(this);
+        this.handleHighLight = this.handleHighLight.bind(this);
+        this.handleRemoveHighLight = this.handleRemoveHighLight.bind(this);
     }
 
     initialSate(props) {
@@ -32,6 +40,7 @@ export class InteriorFinishMaterialGroup extends BaseConfig {
 
         state["actor_type"] = 0;
         state["architecture_type"] = 0;
+        state["materials"] = [];
 
         return state;
     }
@@ -42,6 +51,18 @@ export class InteriorFinishMaterialGroup extends BaseConfig {
         BaseConfig.fillWithDefault(fixedContent, content, "actor_type", 0);
         BaseConfig.fillWithDefault(fixedContent, content, "architecture_type", 0);
 
+        fixedContent["materials"] = [];
+        if (content["materials"] !== undefined) {
+            for (let idx in content["materials"]) {
+                if (content["materials"].hasOwnProperty(idx)) {
+                    fixedContent["materials"].push({
+                        "index": parseInt(idx),
+                        "material_id": content["materials"][idx],
+                    });
+                }
+            }
+        }
+
         return fixedContent;
     }
 
@@ -50,6 +71,14 @@ export class InteriorFinishMaterialGroup extends BaseConfig {
 
         content.actor_type = this.state.actor_type;
         content.architecture_type = this.state.architecture_type;
+
+        content.materials = {};
+        for (let slotIdx in this.state.materials) {
+            if (this.state.materials.hasOwnProperty(slotIdx)) {
+                const slot = this.state.materials[slotIdx];
+                content.materials[slot.index] = slot.material_id;
+            }
+        }
 
         return content;
     }
@@ -60,6 +89,58 @@ export class InteriorFinishMaterialGroup extends BaseConfig {
 
     handleInteriorFinishTypeChange(type_idx) {
         this.setState({"architecture_type": type_idx});
+    }
+
+    handleMaterialIndexChange(event, idx) {
+        const value = parseInt(event.target.value);
+        let slots = {...this.state.materials};
+        if (slots[idx]) {
+            slots[idx].index = value;
+
+            this.setState({materials: slots});
+        }
+    }
+
+    handleMaterialIDChange(event, idx) {
+        const value = parseInt(event.target.value);
+        let slots = {...this.state.materials};
+        if (slots[idx]) {
+            slots[idx].material_id = value;
+
+            this.setState({materials: slots});
+        }
+    }
+
+    handleRemoveSlot(idx) {
+        let slots = {...this.state.materials};
+        delete slots[idx];
+        this.setState({materials: slots});
+    }
+
+    handleHighLight(idText) {
+        let element = document.getElementById(idText);
+        element.classList.add("bg-warning");
+    }
+
+    handleRemoveHighLight(idText) {
+        let element = document.getElementById(idText);
+        element.classList.remove("bg-warning");
+    }
+
+    handleAddSlot() {
+        let slots = {...this.state.materials};
+
+        let index = 0;
+        while (slots[index]) {
+            index++;
+        }
+
+        slots[index] = {
+            index: 0,
+            material_id: 0,
+        };
+
+        this.setState({materials: slots});
     }
 
     renderActorType() {
@@ -106,6 +187,65 @@ export class InteriorFinishMaterialGroup extends BaseConfig {
         </div>;
     }
 
+    renderGroupType() {
+        return <div key="groupType" className="container mt-3 border border-1 border-secondary rounded text-center ">
+            <div className="row p-1 font-weight-bold">
+                <div className="col">硬装类型</div>
+                <div className="col">硬装属性</div>
+            </div>
+            <div className="row p-1">
+                {this.renderActorType()}
+                {this.renderInteriorFinishType()}
+            </div>
+        </div>;
+    }
+
+    renderSlots() {
+        let buffer = [];
+
+        for (let slotIdx in this.state.materials) {
+            if (this.state.materials.hasOwnProperty(slotIdx)) {
+                let slot = this.state.materials[slotIdx];
+                const keyName = `slot_${slotIdx.toString()}`;
+
+                buffer.push(<tr id={keyName} key={keyName}>
+                    <td><input type="number" value={slot.index} onChange={(event) => {this.handleMaterialIndexChange(event, slotIdx);}} /></td>
+                    <td><input type="number" value={slot.material_id} onChange={(event) => {this.handleMaterialIDChange(event, slotIdx);}} /></td>
+                    <td>
+                        <button className="btn btn-outline-danger ml-1 mr-1"
+                            onClick={() => this.handleRemoveSlot(slotIdx)}
+                            onMouseEnter={() => this.handleHighLight(keyName)}
+                            onMouseLeave={() => this.handleRemoveHighLight(keyName)}>
+                            <FontAwesomeIcon icon={faMinus}/>
+                        </button>
+                    </td>
+                </tr>);
+            }
+        }
+
+        return <div className="card border-secondary">
+            <table className="table text-center table-striped" key="groupSlots">
+                <thead>
+                    <tr>
+                        <th>Slot Index</th>
+                        <th>硬装材质ID</th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {buffer}
+                </tbody>
+            </table>
+            <div className="row mt-2 mb-2">
+                <div className="col-1"> </div>
+                <div className="col">
+                    <button className="btn btn-block btn-outline-primary" onClick={this.handleAddSlot}><FontAwesomeIcon icon={faPlus}/></button>
+                </div>
+                <div className="col-1"> </div>
+            </div>
+        </div>;
+    }
+
     renderBasePart1() {
         let buffer = [];
 
@@ -120,15 +260,13 @@ export class InteriorFinishMaterialGroup extends BaseConfig {
     }
 
     additionalRender() {
-        return <div className="container mt-3 border border-1 border-secondary rounded text-center ">
-            <div className="row p-1 font-weight-bold">
-                <div className="col">类别一</div>
-                <div className="col">类别二</div>
-            </div>
-            <div className="row p-1">
-                {this.renderActorType()}
-                {this.renderInteriorFinishType()}
-            </div>
-        </div>;
+        let buffer = [];
+
+        buffer.push(this.renderGroupType());
+
+        buffer.push(<h5 className="pt-5" key="slots_title">材质集</h5>);
+        buffer.push(this.renderSlots());
+
+        return buffer;
     }
 }
