@@ -40,7 +40,7 @@ export class InteriorFinishMaterialGroup extends BaseConfig {
 
         state["actor_type"] = 0;
         state["architecture_type"] = 0;
-        state["materials"] = [];
+        state["materials"] = {};
 
         return state;
     }
@@ -51,14 +51,12 @@ export class InteriorFinishMaterialGroup extends BaseConfig {
         BaseConfig.fillWithDefault(fixedContent, content, "actor_type", 0);
         BaseConfig.fillWithDefault(fixedContent, content, "architecture_type", 0);
 
-        fixedContent["materials"] = [];
+        fixedContent["materials"] = {};
         if (content["materials"] !== undefined) {
             for (let idx in content["materials"]) {
                 if (content["materials"].hasOwnProperty(idx)) {
-                    fixedContent["materials"].push({
-                        "index": parseInt(idx),
-                        "material_id": content["materials"][idx],
-                    });
+                    let material = content["materials"][idx];
+                    fixedContent["materials"][material.index] = material;
                 }
             }
         }
@@ -72,11 +70,11 @@ export class InteriorFinishMaterialGroup extends BaseConfig {
         content.actor_type = this.state.actor_type;
         content.architecture_type = this.state.architecture_type;
 
-        content.materials = {};
+        content.materials = [];
         for (let slotIdx in this.state.materials) {
             if (this.state.materials.hasOwnProperty(slotIdx)) {
                 const slot = this.state.materials[slotIdx];
-                content.materials[slot.index] = slot.material_id;
+                content.materials.push(slot);
             }
         }
 
@@ -136,7 +134,7 @@ export class InteriorFinishMaterialGroup extends BaseConfig {
         }
 
         slots[index] = {
-            index: 0,
+            index: index,
             material_id: 0,
         };
 

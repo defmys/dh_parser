@@ -39,4 +39,6 @@ export function exportScript(rootPath) {
     exportToFile(rootPath, configList, "Actor", "actor");
     exportToFile(rootPath, configList, "Material", "material");
     exportToFile(rootPath, configList, "Room", "room");
+    exportToFile(rootPath, configList, "InteriorFinishMaterial", "interior_finish_m");
+    exportToFile(rootPath, configList, "InteriorFinishMaterialGroup", "interior_finish_m_g");
 }
