@@ -21,6 +21,20 @@ const InteriorFinishType = {
 };
 
 
+const SlotIndex = {
+    0: "天花板",
+    1: "地面",
+    2: "墙面混油木作1",
+    3: "墙面混油木作2",
+    4: "墙面混油木作3",
+    5: "墙面混油木作线条",
+    6: "墙面合金铜条",
+    7: "踢脚线",
+    8: "门套",
+    9: "窗套",
+};
+
+
 export class InteriorFinishMaterialGroup extends BaseConfig {
     constructor(props) {
         super(props);
@@ -89,11 +103,10 @@ export class InteriorFinishMaterialGroup extends BaseConfig {
         this.setState({"architecture_type": type_idx});
     }
 
-    handleMaterialIndexChange(event, idx) {
-        const value = parseInt(event.target.value);
+    handleMaterialIndexChange(idx, new_idx) {
         let slots = {...this.state.materials};
         if (slots[idx]) {
-            slots[idx].index = value;
+            slots[idx].index = new_idx;
 
             this.setState({materials: slots});
         }
@@ -206,8 +219,26 @@ export class InteriorFinishMaterialGroup extends BaseConfig {
                 let slot = this.state.materials[slotIdx];
                 const keyName = `slot_${slotIdx.toString()}`;
 
+                let slot_buffer = [];
+                for (let slot_idx in SlotIndex) {
+                    if (SlotIndex.hasOwnProperty(slot_idx)) {
+                        const slot_key_name = `slot_${slotIdx.toString()}_${slot_idx.toString()}`;
+                        slot_buffer.push(<a className="dropdown-item" href="#" key={slot_key_name}
+                            onClick={() => this.handleMaterialIndexChange(parseInt(slotIdx), parseInt(slot_idx))}>{SlotIndex[slot_idx]}
+                        </a>);
+                    }
+                }
+
                 buffer.push(<tr id={keyName} key={keyName}>
-                    <td><input type="number" value={slot.index} onChange={(event) => {this.handleMaterialIndexChange(event, slotIdx);}} /></td>
+                    <td>
+                        <button className="btn btn-block btn-secondary dropdown-toggle text-center" type="button" id="slotIdxDropDown"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {SlotIndex[slot.index]}
+                        </button>
+                        <div className="dropdown-menu text-center" aria-labelledby="slotIdxDropDown">
+                            {slot_buffer}
+                        </div>
+                    </td>
                     <td><input type="number" value={slot.material_id} onChange={(event) => {this.handleMaterialIDChange(event, slotIdx);}} /></td>
                     <td>
                         <button className="btn btn-outline-danger ml-1 mr-1"
@@ -221,8 +252,8 @@ export class InteriorFinishMaterialGroup extends BaseConfig {
             }
         }
 
-        return <div className="card border-secondary">
-            <table className="table text-center table-striped" key="groupSlots">
+        return <div className="card border-secondary" key="groupSlots">
+            <table className="table text-center table-striped">
                 <thead>
                     <tr>
                         <th>Slot Index</th>
@@ -262,7 +293,7 @@ export class InteriorFinishMaterialGroup extends BaseConfig {
 
         buffer.push(this.renderGroupType());
 
-        buffer.push(<h5 className="pt-5" key="slots_title">材质集</h5>);
+        buffer.push(<h5 className="pt-5" key="slots_title">方案</h5>);
         buffer.push(this.renderSlots());
 
         return buffer;
