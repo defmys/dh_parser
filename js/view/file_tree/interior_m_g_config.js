@@ -69,8 +69,7 @@ export class InteriorFinishMaterialGroup extends BaseConfig {
         if (content["materials"] !== undefined) {
             for (let idx in content["materials"]) {
                 if (content["materials"].hasOwnProperty(idx)) {
-                    let material = content["materials"][idx];
-                    fixedContent["materials"][material.index] = material;
+                    fixedContent["materials"][idx] = content["materials"][idx];
                 }
             }
         }
@@ -142,12 +141,16 @@ export class InteriorFinishMaterialGroup extends BaseConfig {
         let slots = {...this.state.materials};
 
         let index = 0;
-        while (slots[index]) {
-            index++;
+        for (let idx in slots) {
+            if (slots.hasOwnProperty(idx)) {
+                if (parseInt(idx) >= index) {
+                    index = parseInt(idx) + 1;
+                }
+            }
         }
 
         slots[index] = {
-            index: index,
+            index: 0,
             material_id: 0,
         };
 
