@@ -13,16 +13,16 @@ const types = {
     Actor: "Actor",
     Material: "Material",
     Room: "Room",
-    InteriorFinishMaterial: "InteriorFinishMaterial",
-    InteriorFinishMaterialGroup: "InteriorFinishMaterialGroup"
+    ArchitectureMaterial: "ArchitectureMaterial",
+    ArchitectureMaterialGroup: "ArchitectureMaterialGroup"
 };
 
 const typeName = {
     "Actor": "物件",
     "Material": "材质",
     "Room": "房间",
-    "InteriorFinishMaterial": "硬装材质",
-    "InteriorFinishMaterialGroup": "硬装材质分组",
+    "ArchitectureMaterial": "硬装材质",
+    "ArchitectureMaterialGroup": "硬装材质分组",
 };
 
 const defaultType = types.Material;
@@ -135,10 +135,10 @@ export class ConfigDetail extends React.Component {
             else if (this.state.type === types.Room) {
                 ret = <RoomConfig path={this.props.path} root={this.props.root} configType={this.state.type} content={this.state.content} ref={this.configRef}/>;
             }
-            else if (this.state.type === types.InteriorFinishMaterial) {
+            else if (this.state.type === types.ArchitectureMaterial) {
                 ret = <InteriorFinishMaterial path={this.props.path} root={this.props.root} configType={this.state.type} content={this.state.content} ref={this.configRef}/>;
             }
-            else if (this.state.type === types.InteriorFinishMaterialGroup) {
+            else if (this.state.type === types.ArchitectureMaterialGroup) {
                 ret = <InteriorFinishMaterialGroup path={this.props.path} root={this.props.root} configType={this.state.type} content={this.state.content} ref={this.configRef}/>;
             }
             else {

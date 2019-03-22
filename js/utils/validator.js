@@ -31,10 +31,10 @@ function checkID(configList) {
         case "Room":
             targetSet = rooms;
             break;
-        case "InteriorFinishMaterial":
+        case "ArchitectureMaterial":
             targetSet = interior_finish_m;
             break;
-        case "InteriorFinishMaterialGroup":
+        case "ArchitectureMaterialGroup":
             targetSet = interior_finish_m_g;
             break;
         default:
@@ -60,7 +60,7 @@ function checkID(configList) {
 function checkRefPath(issueList, config) {
     if (config.type === "Room") {
         checkRoomRefPath(issueList, config);
-    } else if (config.type !== "InteriorFinishMaterialGroup" && config.ref_path !== undefined && config.ref_path !== null) {
+    } else if (config.type !== "ArchitectureMaterialGroup" && config.ref_path !== undefined && config.ref_path !== null) {
         if (!config.ref_path.startsWith("/Game/")) {
             issueList.push(new Issue(config.node_path, "引用路径格式错误"));
         }
