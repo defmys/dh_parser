@@ -122,6 +122,8 @@ function calcMaxIDs(configList) {
         actor: 0,
         material: 0,
         room: 0,
+        interior_m:0,
+        interior_m_g: 0,
     };
 
     configList.forEach(function(config) {
@@ -139,6 +141,16 @@ function calcMaxIDs(configList) {
         case "Room":
             if (ret.room < config.id) {
                 ret.room = config.id;
+            }
+            break;
+        case "ArchitectureMaterial":
+            if (ret.interior_m < config.id) {
+                ret.interior_m = config.id;
+            }
+            break;
+        case "ArchitectureMaterialGroup":
+            if (ret.interior_m_g < config.id) {
+                ret.interior_m_g = config.id;
             }
             break;
         default:

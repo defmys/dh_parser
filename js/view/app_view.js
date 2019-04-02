@@ -28,7 +28,9 @@ class DH_Parser extends React.Component {
             maxActorID: 0,
             maxMaterialID: 0,
             maxRoomID: 0,
-            refresh: 0
+            refresh: 0,
+            maxInteriorMID: 0,
+            maxInteriorGID: 0
         };
 
         this.validator = new Validator();
@@ -54,6 +56,8 @@ class DH_Parser extends React.Component {
             maxActorID: this.validator.maxID.actor,
             maxMaterialID: this.validator.maxID.material,
             maxRoomID: this.validator.maxID.room,
+            maxInteriorMID: this.validator.maxID.interior_m,
+            maxInteriorGID: this.validator.maxID.interior_m_g,
         });
         ipcRenderer.send("refreshIssueList", this.validator.issueList);
     }
@@ -178,24 +182,41 @@ class DH_Parser extends React.Component {
     }
 
     renderMaxID() {
-        return <div className="col-6 mt-1 text-left" key="statusMaxID" style={{fontSize: "8pt"}}>
-            <div className="row">
-                <div className="col">模型最大ID: {this.state.maxActorID}</div>
+        let buffer = [];
+
+        buffer.push(
+            <div className="col-4 mt-1 text-left" key="statusMaxID_0" style={{fontSize: "8pt"}}>
+                <div className="row">
+                    <div className="col">模型最大ID: {this.state.maxActorID}</div>
+                </div>
+                <div className="row">
+                    <div className="col">材质最大ID: {this.state.maxMaterialID}</div>
+                </div>
+                <div className="row">
+                    <div className="col">房间最大ID: {this.state.maxRoomID}</div>
+                </div>
             </div>
-            <div className="row">
-                <div className="col">材质最大ID: {this.state.maxMaterialID}</div>
+        );
+
+        buffer.push(
+            <div className="col-4 mt-1 text-left" key="statusMaxID_1" style={{fontSize: "8pt"}}>
+                <div className="row">
+                    <div className="col">硬装材质分组最大ID: {this.state.maxInteriorGID}</div>
+                </div>
+                <div className="row">
+                    <div className="col">硬装材质最大ID: {this.state.maxInteriorMID}</div>
+                </div>
             </div>
-            <div className="row">
-                <div className="col">房间最大ID: {this.state.maxRoomID}</div>
-            </div>
-        </div>;
+        );
+
+        return buffer;
     }
 
     renderStatus() {
         let buffer = [];
 
         buffer.push(<div className="col" key="statusPlaceholder"> </div>);
-        buffer.push(this.renderMaxID());
+        buffer = buffer.concat(this.renderMaxID());
         buffer.push(this.renderIssueCount());
 
         return <div className="row">{buffer}</div>;
@@ -259,7 +280,7 @@ class DH_Parser extends React.Component {
                     <FontAwesomeIcon icon={faFileExport}/>
                 </button>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-4 text-nowrap">
                 {this.renderStatus()}
             </div>
         </div>;
